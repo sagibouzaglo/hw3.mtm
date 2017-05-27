@@ -8,8 +8,25 @@
 
 #include "system.h"
 
+#define CHECK_NULL(ptr) if (ptr==NULL){\
+                            return MTM_NULL_PARAMETER;\
+                            };
+#define CHECK_MEMORY(ptr) if (ptr==NULL){\
+                            return MTM_OUT_OF_MEMORY;\
+                            };
 
-int create_system(){
+struct system {
+    int day;
+    Set company;
+    Set escaper;
+    Set rooms;
+    List orders;
+    int profit[(((int)UNKNOWN)+1)];
+};
+
+int create_system(char* init_file, System **sys){
+    CHECK_NULL(*sys);
+    *sys = malloc(sizeof(System));
     
     return MTM_SUCCESS;
 }

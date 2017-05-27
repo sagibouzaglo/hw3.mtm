@@ -13,6 +13,7 @@
 		2417BB351ED98CC3008B4326 /* room.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB331ED98CC3008B4326 /* room.c */; };
 		2417BB371ED98CEA008B4326 /* mtm_ex3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB361ED98CEA008B4326 /* mtm_ex3.c */; };
 		2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB381ED98CFD008B4326 /* list_mtm1.c */; };
+		24BF5ED31ED9A829003703DD /* mtm_escape.c in Sources */ = {isa = PBXBuildFile; fileRef = 24BF5ED11ED9A829003703DD /* mtm_escape.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,8 @@
 		24526EFF1ED1F2A3008271EF /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = SOURCE_ROOT; };
 		24526F001ED1F2A3008271EF /* mtm_ex3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mtm_ex3.h; sourceTree = SOURCE_ROOT; };
 		24526F011ED1F2A3008271EF /* set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = set.h; sourceTree = SOURCE_ROOT; };
+		24BF5ED11ED9A829003703DD /* mtm_escape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mtm_escape.c; sourceTree = SOURCE_ROOT; };
+		24BF5ED21ED9A829003703DD /* mtm_escape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mtm_escape.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				24526EFE1ED1F2A3008271EF /* list_mtm1.h */,
 				2417BB361ED98CEA008B4326 /* mtm_ex3.c */,
 				24526F001ED1F2A3008271EF /* mtm_ex3.h */,
+				24BF5ED11ED9A829003703DD /* mtm_escape.c */,
+				24BF5ED21ED9A829003703DD /* mtm_escape.h */,
 				2417BB291ED98C03008B4326 /* system.c */,
 				2417BB2A1ED98C03008B4326 /* system.h */,
 				2417BB2C1ED98C69008B4326 /* company.c */,
@@ -153,6 +158,7 @@
 				2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */,
 				2417BB351ED98CC3008B4326 /* room.c in Sources */,
 				2417BB321ED98CB5008B4326 /* order.c in Sources */,
+				24BF5ED31ED9A829003703DD /* mtm_escape.c in Sources */,
 				2417BB2B1ED98C03008B4326 /* system.c in Sources */,
 				2417BB2E1ED98C69008B4326 /* company.c in Sources */,
 				2417BB371ED98CEA008B4326 /* mtm_ex3.c in Sources */,

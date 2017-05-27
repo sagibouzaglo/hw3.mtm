@@ -13,16 +13,10 @@
 #include "mtm_ex3.h"
 #include "set.h"
 #include "list.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 
-struct system {
-    int day;
-    Set company;
-    Set escaper;
-    List orders;
-    int profit[(((int)UNKNOWN)+1)];
-};
+typedef struct system* System;
 
 /*
  
@@ -64,12 +58,34 @@ int system_add_company();
 int system_remove_company();
 
 /*
+ Recieve 6 arguments:
+ email - the company email.
+ id - the id of the room.
+ price - price per person, multiplier of 4.
+ num_ppl - reccomended people in the room.
+ working_hours - xx-yy, xx- opening hours, yy - closing hours.
+ difficulty - difficulty of the room, from 1-10.
  
+ The function allocate new room and add it to the set rooms.
+ 
+ Errors:
+ MTM_INVALID_PARAMETER
+ MTM_COMPANY_EMAIL_DOES_NOT_EXIST
+ MTM_ID_ALREADY_EXISTS
  */
 int system_add_room();
 
 /*
+ Recieve 2 argument:
+ faculty - the faculty the room belong to.
+ id - room id.
  
+ The function check if there are open reservation to the room.
+ if not, the room will be removed and all the allocated memory will free.
+ errors:
+ MTM_INVALID_PARAMETER
+ MTM_ID_DOES_NOT_EXIST
+ MTM_RESERVATION_EXISTS
  */
 int system_remove_room();
 
