@@ -197,7 +197,7 @@ SetResult setAdd(Set set, SetElement element);
 */
 SetResult setRemove(Set set, SetElement element);
 
-/**
+/*
 * setClear: Removes all elements from target set.
 * The elements are deallocated using the stored free function
 * @param set
