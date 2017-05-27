@@ -21,14 +21,13 @@ struct system {
     Set company;
     Set escaper;
     List orders;
-    int profit[UNKNOWN];
+    int profit[(((int)UNKNOWN)+1)];
 };
 
 /*
  
  */
 int create_system();
-
 
 /*
  
