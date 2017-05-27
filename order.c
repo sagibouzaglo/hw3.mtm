@@ -7,3 +7,13 @@
 //
 
 #include "order.h"
+
+struct order {
+    int time;
+    Escaper* escaper;
+    int num_ppl;
+    int room_id;
+    Company* compeny;
+};
+
+

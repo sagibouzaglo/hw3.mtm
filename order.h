@@ -10,5 +10,19 @@
 #define order_h
 
 #include <stdio.h>
+#include "mtm_ex3.h"
+
+typedef struct order* Order;
+
+typedef enum {
+
+} OrderResult;
+
+/** Allocates a new order */
+Order orderCreate(int time, Escaper* escaper, int num_ppl, Company* company, int room_id);
+ 
+/** Frees an existing order object */
+void orderDestroy(Order order);
+ 
 
 #endif /* order_h */
