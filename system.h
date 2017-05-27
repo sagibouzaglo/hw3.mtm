@@ -35,12 +35,31 @@ int create_system();
 int destroy_system();
 
 /*
- 
+    Recieve 2 arguments:
+    email - the company email.
+    faculty - the faculty the company belong to.
+    
+    The function allocate new company and add it.
+    
+    Errors:
+    MTM_INVALID_PARAMETER
+    MTM_EMAIL_ALREADY_EXISTS
  */
 int system_add_company();
 
 /*
+    Recieve 1 argument:
+    email - the company email.
  
+    the function search the company match the recieved mail and remove it from 
+    the set of companies.
+    the function add the company earning of the day to the faculty earnings
+    and free all memory allocated for the company.
+ 
+    errors:
+    MTM_INVALID_PARAMETER
+    MTM_COMPANY_EMAIL_DOES_NOT_EXIST
+    MTM_RESERVATION_EXISTS
  */
 int system_remove_company();
 
