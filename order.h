@@ -14,15 +14,14 @@
 
 typedef struct order* Order;
 
-typedef enum {
-
-} OrderResult;
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper* escaper, int num_ppl, Company* company, int room_id);
- 
+Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id);
+
 /** Frees an existing order object */
 void orderDestroy(Order order);
- 
+
+/** Allocates a new date which is a copy of the argument */
+Order  orderCopy(Order order);
 
 #endif /* order_h */
