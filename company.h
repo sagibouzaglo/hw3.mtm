@@ -10,5 +10,5 @@
 #define company_h
 
 #include <stdio.h>
-
+typedef struct company* Company;
 #endif /* company_h */

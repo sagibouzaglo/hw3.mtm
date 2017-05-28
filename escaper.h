@@ -10,5 +10,5 @@
 #define escaper_h
 
 #include <stdio.h>
-
+typedef struct escaper* Escaper;
 #endif /* escaper_h */
