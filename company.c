@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include <set.h>
+#include "set.h"
+#include <string.h>
+
 
 struct company {
     char* email;
