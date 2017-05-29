@@ -10,13 +10,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "company.h"
+#include "escaper.h"
 
 struct order {
     int time;
-    Escaper* escaper;
+    Escaper escaper;
     int num_ppl;
     int room_id;
-    Company* compeny;
+    Company compeny;
 };
 
 
@@ -29,7 +31,7 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
     if (!order) {
         return NULL;
     }
-    order->compeny;
+    order->compeny=company;
     order->time = time;
     order->escaper=escaper;
     order->num_ppl = num_ppl;
@@ -42,7 +44,7 @@ void orderDestroy(Order order){
     free(order);
 }
 
-/** Allocates a new date which is a copy of the argument */
+/** Allocates a new order which is a copy of the argument */
 Order  orderCopy(Order order){
     if (!order) {
         return NULL;
