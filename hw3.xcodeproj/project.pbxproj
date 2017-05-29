@@ -15,7 +15,6 @@
 		2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB381ED98CFD008B4326 /* list_mtm1.c */; };
 		24DA7C551EDB1C29004EE698 /* escaper.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C531EDB1C29004EE698 /* escaper.c */; };
 		24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */; };
-		24DA7C5A1EDB1F3C004EE698 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C591EDB1F3C004EE698 /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,7 +49,6 @@
 		24DA7C541EDB1C29004EE698 /* escaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = escaper.h; sourceTree = SOURCE_ROOT; };
 		24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = EscapeTechnion.c; sourceTree = SOURCE_ROOT; };
 		24DA7C571EDB1DC0004EE698 /* EscapeTechnion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EscapeTechnion.h; sourceTree = SOURCE_ROOT; };
-		24DA7C591EDB1F3C004EE698 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +81,6 @@
 		24526EF61ED1F271008271EF /* hw3 */ = {
 			isa = PBXGroup;
 			children = (
-				24DA7C591EDB1F3C004EE698 /* main.c */,
 				24526F011ED1F2A3008271EF /* set.h */,
 				24526EFF1ED1F2A3008271EF /* list.h */,
 				2417BB381ED98CFD008B4326 /* list_mtm1.c */,
@@ -168,7 +165,6 @@
 				24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */,
 				2417BB321ED98CB5008B4326 /* order.c in Sources */,
 				2417BB2B1ED98C03008B4326 /* system.c in Sources */,
-				24DA7C5A1EDB1F3C004EE698 /* main.c in Sources */,
 				24DA7C551EDB1C29004EE698 /* escaper.c in Sources */,
 				2417BB2E1ED98C69008B4326 /* company.c in Sources */,
 				2417BB371ED98CEA008B4326 /* mtm_ex3.c in Sources */,
