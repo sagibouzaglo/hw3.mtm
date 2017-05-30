@@ -38,6 +38,7 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level){
 
 /** Frees an existing escaper object */
 void escaperDestroy(Escaper escaper){
+    free(escaper->email);
     free(escaper);
 }
 
