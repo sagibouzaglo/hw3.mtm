@@ -35,12 +35,17 @@ Company companyCreate(char* email, TechnionFaculty faculty){
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    company->skill_level=skill_level;
+    company->rooms=malloc(sizeof(Set));
+    if(!company->rooms){
+        return NULL;
+    }
     return company;
 }
 
 /** Frees an existing company object */
 void companyDestroy(Company company){
+    free(company->rooms);
+    free(company->email);
     free(company);
 }
 
@@ -49,10 +54,23 @@ Company companyCopy(Company company){
     if (!company) {
         return NULL;
     }
-    return companyCreate(company->email,company->Faculty,company->skill_level);
+    return companyCreate(company->email,company->Faculty);
 }
 /** Returns true if both email company are identical */
 bool companyEquals(Company company1, Company company2) {
     assert(company1 && company2);
     return strcmp(company1->email,company2->email)==0;
+}
+char* getEmailCompany(Company company){
+    if(!company){
+        return NULL;
+    }
+    return company->email;
+}
+
+TechnionFaculty getFacultyOfCompuny(Company company){
+    if(!company){
+        return NULL;
+    }
+    return company->Faculty;
 }
