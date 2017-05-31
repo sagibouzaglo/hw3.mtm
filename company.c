@@ -35,17 +35,16 @@ Company companyCreate(char* email, TechnionFaculty faculty){
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    company->rooms=malloc(sizeof(Set));
-    if(!company->rooms){
+    setCreate(,);
         return NULL;
     }
     return company;
 }
 
 /** Frees an existing company object */
-void companyDestroy(Company company){
-    free(company->rooms);
-    free(company->email);
+void companyDestroy(void* company){
+    setDestroy(((Company)company)->rooms);
+    free(((Company)company)->email);
     free(company);
 }
 
