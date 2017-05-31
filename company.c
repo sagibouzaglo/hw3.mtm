@@ -35,8 +35,9 @@ Company companyCreate(char* email, TechnionFaculty faculty){
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    setCreate(,);
-        return NULL;
+    setCreate(roomCopy,setDestroy,roomCompare); //<---void* in room.c
+    if(!company->rooms){
+        return  NULL;
     }
     return company;
 }
@@ -49,22 +50,27 @@ void companyDestroy(void* company){
 }
 
 /** Allocates a new company which is a copy of the argument */
-Company companyCopy(Company company){
+void* companyCopy(void* company){
     if (!company) {
         return NULL;
     }
-    return companyCreate(company->email,company->Faculty);
+    return companyCreate(((Company)company)->email,((Company)company)->Faculty);
 }
 /** Returns true if both email company are identical */
-bool companyEquals(Company company1, Company company2) {
+int companyCompare(void* company1, void* company2) {
     assert(company1 && company2);
-    return strcmp(company1->email,company2->email)==0;
+    return strcmp(((Company)company1)->email,((Company)company2)->email)==0;
 }
 char* getEmailCompany(Company company){
     if(!company){
         return NULL;
     }
-    return company->email;
+    char* emailReturn = malloc(sizeof(strlen(company->email)+1));
+    if(!emailReturn){
+        return NULL;
+    }
+    strcpy(company->email,emailReturn);
+    return emailReturn;
 }
 
 TechnionFaculty getFacultyOfCompuny(Company company){

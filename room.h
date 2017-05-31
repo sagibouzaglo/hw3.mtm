@@ -10,5 +10,5 @@
 #define room_h
 
 #include <stdio.h>
-
+typedef struct room* Room;
 #endif /* room_h */
