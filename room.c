@@ -16,9 +16,6 @@
 #include <string.h>
 #define HOURS_DAY 24
 
-
-
-
 static bool hourWorking (char* working_hour, Room room);
 
 struct room {
@@ -38,10 +35,10 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     if (!room) {
         return NULL;
     }
-
     room->id=id;
     room->price=price;
     room->num_ppl=num_ppl;
+    room->difficulty=difficulty;
     room->working_h=malloc(sizeof(strlen(working_hour)+1));
     if(!room->working_h){
         return NULL;

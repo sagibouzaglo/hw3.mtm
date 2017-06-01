@@ -12,6 +12,7 @@
 #include <assert.h>
 #include "company.h"
 #include "escaper.h"
+#include "room.h"
 
 struct order {
     int time;
@@ -64,4 +65,38 @@ bool orderEqualsEscaper(Order order1, Order order2) {
     assert(order1 && order2);
     return order1->time == order2->time &&
             order1->escaper == order2->escaper;
+}
+int getTimeOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->time;
+}
+int getNumPOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->num_ppl;
+}
+int getRoomIdOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->room_id;
+}
+Escaper getEscaperOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->escaper;
+}
+Company getCompanyOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->compeny;
+}
+void PayToFaculty(Escaper escaper,Room room,int* profitFaculty, int num_ppl){
+    assert(escaper && profitFaculty);
+
 }
