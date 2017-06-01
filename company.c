@@ -9,6 +9,7 @@
 
 #include "company.h"
 #include "order.h"
+#include "room.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -25,6 +26,9 @@ struct company {
 
 /** Allocates a new company */
 Company companyCreate(char* email, TechnionFaculty faculty){
+    if(!IfEmailValid(email)){
+        return NULL;
+    }
     Company company = malloc(sizeof(*company));
     if (!company) {
         return NULL;
@@ -35,37 +39,42 @@ Company companyCreate(char* email, TechnionFaculty faculty){
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    company->rooms=malloc(sizeof(Set));
+    setCreate(roomCopy,roomDestroy,roomCompare); //<---void* in room.c
     if(!company->rooms){
-        return NULL;
+        return  NULL;
     }
     return company;
 }
 
 /** Frees an existing company object */
-void companyDestroy(Company company){
-    free(company->rooms);
-    free(company->email);
+void companyDestroy(void* company){
+    setDestroy(((Company)company)->rooms);
+    free(((Company)company)->email);
     free(company);
 }
 
 /** Allocates a new company which is a copy of the argument */
-Company companyCopy(Company company){
+void* companyCopy(void* company){
     if (!company) {
         return NULL;
     }
-    return companyCreate(company->email,company->Faculty);
+    return companyCreate(((Company)company)->email,((Company)company)->Faculty);
 }
 /** Returns true if both email company are identical */
-bool companyEquals(Company company1, Company company2) {
+int companyCompare(void* company1, void* company2) {
     assert(company1 && company2);
-    return strcmp(company1->email,company2->email)==0;
+    return strcmp(((Company)company1)->email,((Company)company2)->email)==0;
 }
 char* getEmailCompany(Company company){
     if(!company){
         return NULL;
     }
-    return company->email;
+    char* emailReturn = malloc(sizeof(strlen(company->email)+1));
+    if(!emailReturn){
+        return NULL;
+    }
+    strcpy(company->email,emailReturn);
+    return emailReturn;
 }
 
 TechnionFaculty getFacultyOfCompuny(Company company){
@@ -73,4 +82,23 @@ TechnionFaculty getFacultyOfCompuny(Company company){
         return NULL;
     }
     return company->Faculty;
+}
+
+bool IfEmailValid(char* email){
+    if(!email){
+        return NULL;
+    }
+    int counter=0;
+    for(int i=0;i<strlen(email);++i){
+        if(*(email+i)=='@'){
+            ++counter;
+            if(counter>1){
+                return false;
+            }
+        }
+    }
+    if(counter==1){
+        return true;
+    }
+    return false;
 }

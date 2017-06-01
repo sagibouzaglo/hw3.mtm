@@ -11,6 +11,11 @@
 
 #include <stdio.h>
 #include "mtm_ex3.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+#include "company.h"
+#include "escaper.h"
 
 typedef struct order* Order;
 
@@ -23,5 +28,11 @@ void orderDestroy(Order order);
 
 /** Allocates a new date which is a copy of the argument */
 Order  orderCopy(Order order);
+
+/** Returns true if both room orders and time are identical */
+bool orderEqualsRoom(Order order1, Order order2);
+
+/** Returns true if both Escaper order and time are identical */
+bool orderEqualsEscaper(Order order1, Order order2);
 
 #endif /* order_h */

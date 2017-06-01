@@ -26,6 +26,9 @@ struct escaper {
 
 /** Allocates a new escaper */
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level){
+    if(!IfEmailValid(email)){
+        return NULL;
+    }
     Escaper escaper = malloc(sizeof(*escaper));
     if (!escaper) {
         return NULL;
@@ -47,7 +50,7 @@ void escaperDestroy(Escaper escaper){
 }
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper companyCopy(Escaper escaper){
+Escaper escaperCopy(Escaper escaper){
     if (!escaper) {
         return NULL;
     }
@@ -58,4 +61,28 @@ bool escaperEquals(Escaper escaper1, Escaper escaper2) {
     assert(escaper1 && escaper2);
     return strcmp(escaper1->email,escaper2->email)==0;
 }
-#include "escaper.h"
+
+char* getEmailEscaper(Escaper escaper){
+    if(!escaper){
+        return NULL;
+    }
+    char* emailReturn = malloc(sizeof(strlen(escaper->email)+1));
+    if(!emailReturn){
+        return NULL;
+    }
+    strcpy(escaper->email,emailReturn);
+    return emailReturn;
+}
+int getSkillLevel(Escaper escaper){
+    if(!escaper){
+        return NULL;
+    }
+    return escaper->skill_level;
+}
+
+TechnionFaculty getFacultyEscaper(Escaper escaper){
+    if(!escaper){
+        return NULL;
+    }
+    return escaper->Faculty;
+}
