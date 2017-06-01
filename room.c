@@ -72,7 +72,7 @@ int roomCompare(void* room1, void* room2) {
     assert(room1 && room2);
     return (((Room)room1)->id==((Room)room2)->id);
 }
-int getIDroom(Room room){
+int getIdRoom(Room room){
     if(!room){
         return NULL;
     }
@@ -86,7 +86,7 @@ int getPriceRoom(Room room){
     return room->price;
 }
 
-int getNumPPlroom(Room room){
+int getNumPplRoom(Room room){
     if(!room){
         return NULL;
     }

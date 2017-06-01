@@ -9,7 +9,15 @@
 #ifndef room_h
 #define room_h
 
-#include <stdio.h>
+#include "company.h"
+#include "order.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+#include "set.h"
+#include <string.h>
+
+
 typedef struct room* Room;
 
 
@@ -31,16 +39,18 @@ void* roomCopy(void* room);
 
 int roomCompare(void* room1, void* room2);
 
-int getIDroom(Room room);
+int getIdRoom(Room room);
 
 int getPriceRoom(Room room);
 
-int getNumPPlroom(Room room);
+int getNumPplRoom(Room room);
 
 int getDifficultyRoom(Room room);
 
 int getOpenHRoom(Room room);
 
 int getCloseHRoom(Room room);
+
+static bool hourWorking (char* working_hour, Room room);
 
 #endif /* room_h */

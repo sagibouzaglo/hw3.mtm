@@ -19,6 +19,7 @@ struct order {
     int num_ppl;
     int room_id;
     Company compeny;
+    int tot_price;
 };
 
 
@@ -36,6 +37,7 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
+    order->tot_price=0;
     return order;
 }
 
