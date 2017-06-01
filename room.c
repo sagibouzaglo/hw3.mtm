@@ -16,16 +16,7 @@
 #include <string.h>
 #define HOURS_DAY 24
 
-Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty);
-void roomDestroy(Room room);
-Room roomCopy(Room room);
-int roomCompare(Room room1, Room room2);
-int getIDroom(Room room);
-int getPriceRoom(Room room);
-int getNumPPlroom(Room room);
-int getDifficultyRoom(Room room);
-int getOpenHRoom(Room room);
-int getCloseHRoom(Room room);
+
 
 
 static bool hourWorking (char* working_hour, Room room);

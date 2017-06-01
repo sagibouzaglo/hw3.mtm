@@ -63,6 +63,3 @@ bool orderEqualsEscaper(Order order1, Order order2) {
     return order1->time == order2->time &&
             order1->escaper == order2->escaper;
 }
-
-
-#endif /* order_h */
