@@ -13,9 +13,14 @@
                             };
 
 int main(int argc, char **argv){
-    char input[]={0};
-    fscanf("%s",input);
-    if (strcmp(input,"mtm_escape")){
+    char* buffer;
+    // setting input and output channels
+    FILE *input = fopen(stdin,"r");
+    CHECK_NULL(input);
+    FILE *output = fopen(stdout,"w");
+    CHECK_NULL(output);
+    fscanf(input, "%s",buffer);
+    if (strcmp(buffer,"mtm_escape")){
         
     }
 
