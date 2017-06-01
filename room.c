@@ -14,8 +14,20 @@
 #include <assert.h>
 #include "set.h"
 #include <string.h>
-
 #define HOURS_DAY 24
+
+Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty);
+void roomDestroy(Room room);
+Room roomCopy(Room room);
+int roomCompare(Room room1, Room room2);
+int getIDroom(Room room);
+int getPriceRoom(Room room);
+int getNumPPlroom(Room room);
+int getDifficultyRoom(Room room);
+int getOpenHRoom(Room room);
+int getCloseHRoom(Room room);
+
+
 static bool hourWorking (char* working_hour, Room room);
 
 struct room {
@@ -25,10 +37,11 @@ struct room {
     int open_hour; //working hour;
     int close_hour;
     int difficulty;
+    char* working_h;
 };
 
 
-/** Allocates a new company */
+/** Allocates a new room */
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty){
     Room room = malloc(sizeof(*room));
     if (!room) {
@@ -38,47 +51,77 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     room->id=id;
     room->price=price;
     room->num_ppl=num_ppl;
+    room->working_h=malloc(sizeof(strlen(working_hour)+1));
+    if(!room->working_h){
+        return NULL;
+    }
+    strcpy(working_hour,room->working_h);
+
     if(!hourWorking(working_hour,room)){
         return NULL;
     }
     return room;
 }
 
-/** Frees an existing company object */
+/** Frees an existing room object */
 void roomDestroy(Room room){
+    free(room->working_h);
     free(room);
 }
 
-/** Allocates a new company which is a copy of the argument */
-void* roomCopy(Room room){
+/** Allocates a new room which is a copy of the argument */
+Room roomCopy(Room room){
     if (!room) {
         return NULL;
     }
-    return roomCreate(room->id,room->price,room->);
+    return roomCreate(room->id,room->price,room->num_ppl,room->working_h,room->difficulty);
 }
-/** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2) {
-    assert(company1 && company2);
-    return strcmp(((Company)company1)->email,((Company)company2)->email)==0;
+/** Returns true if both ids rooms are identical */
+int roomCompare(Room room1, Room room2) {
+    assert(room1 && room2);
+    return (room1->id==room2->id);
 }
-char* getEmailCompany(Company company){
-    if(!company){
+int getIDroom(Room room){
+    if(!room){
         return NULL;
     }
-    char* emailReturn = malloc(sizeof(strlen(company->email)+1));
-    if(!emailReturn){
-        return NULL;
-    }
-    strcpy(company->email,emailReturn);
-    return emailReturn;
+    return room->id;
 }
 
-TechnionFaculty getFacultyOfCompuny(Company company){
-    if(!company){
+int getPriceRoom(Room room){
+    if(!room){
         return NULL;
     }
-    return company->Faculty;
+    return room->price;
 }
+
+int getNumPPlroom(Room room){
+    if(!room){
+        return NULL;
+    }
+    return room->num_ppl;
+}
+
+int getDifficultyRoom(Room room){
+    if(!room){
+        return NULL;
+    }
+    return room->difficulty;
+}
+
+int getOpenHRoom(Room room){
+    if(!room){
+        return NULL;
+    }
+    return room->open_hour;
+}
+int getCloseHRoom(Room room){
+    if(!room){
+        return NULL;
+    }
+    return room->close_hour;
+}
+
 static bool hourWorking (char* working_hour, Room room){
     assert(room & working_hour);
     for(int i=0;i<strlen(working_hour);++i){
