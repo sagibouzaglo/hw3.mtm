@@ -15,6 +15,7 @@
 #include "set.h"
 #include <string.h>
 
+#define HOURS_DAY 24
 static bool hourWorking (char* working_hour, Room room);
 
 struct room {
@@ -28,7 +29,7 @@ struct room {
 
 
 /** Allocates a new company */
-Room roomCreate(int id, int price, int num_ppl, char* workin_hour, int difficulty){
+Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty){
     Room room = malloc(sizeof(*room));
     if (!room) {
         return NULL;
@@ -37,23 +38,23 @@ Room roomCreate(int id, int price, int num_ppl, char* workin_hour, int difficult
     room->id=id;
     room->price=price;
     room->num_ppl=num_ppl;
-
-    return company;
+    if(!hourWorking(working_hour,room)){
+        return NULL;
+    }
+    return room;
 }
 
 /** Frees an existing company object */
-void companyDestroy(void* company){
-    setDestroy(((Company)company)->rooms);
-    free(((Company)company)->email);
-    free(company);
+void roomDestroy(Room room){
+    free(room);
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company){
-    if (!company) {
+void* roomCopy(Room room){
+    if (!room) {
         return NULL;
     }
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty);
+    return roomCreate(room->id,room->price,room->);
 }
 /** Returns true if both email company are identical */
 int companyCompare(void* company1, void* company2) {
@@ -89,5 +90,10 @@ static bool hourWorking (char* working_hour, Room room){
             break;
         }
     }
-    if(room->open_hour <0 || room->open_hour>24 )
+    if(room->open_hour>=room->close_hour || room->open_hour <0 || room->open_hour>HOURS_DAY ){
+        room->close_hour=0;
+        room->open_hour=0;
+        return false;
+    }
+    return true;
 }
