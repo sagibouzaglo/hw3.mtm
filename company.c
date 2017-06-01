@@ -26,6 +26,9 @@ struct company {
 
 /** Allocates a new company */
 Company companyCreate(char* email, TechnionFaculty faculty){
+    if(!IfEmailValid(email)){
+        return NULL;
+    }
     Company company = malloc(sizeof(*company));
     if (!company) {
         return NULL;
@@ -79,4 +82,23 @@ TechnionFaculty getFacultyOfCompuny(Company company){
         return NULL;
     }
     return company->Faculty;
+}
+
+bool IfEmailValid(char* email){
+    if(!email){
+        return NULL;
+    }
+    int counter=0;
+    for(int i=0;i<strlen(email);++i){
+        if(*(email+i)=='@'){
+            ++counter;
+            if(counter>1){
+                return false;
+            }
+        }
+    }
+    if(counter==1){
+        return true;
+    }
+    return false;
 }

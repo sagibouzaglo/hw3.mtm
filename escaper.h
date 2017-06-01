@@ -32,4 +32,10 @@ Escaper escaperCopy(Escaper escaper);
 /** Returns true if both email escaper are identical */
 bool escaperEquals(Escaper escaper1, Escaper escaper2);
 
+char* getEmailEscaper(Escaper escaper);
+
+int getSkillLevel(Escaper escaper);
+
+TechnionFaculty getFacultyEscaper(Escaper escaper);
+
 #endif /* escaper_h */

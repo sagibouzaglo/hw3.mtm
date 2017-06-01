@@ -36,5 +36,6 @@ char* getEmailCompany(Company company);
 
 TechnionFaculty getFacultyOfCompuny(Company company);
 
+bool IfEmailValid(char* email);
 #endif /* company_h */
 
