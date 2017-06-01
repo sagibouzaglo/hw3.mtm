@@ -43,7 +43,7 @@ void escaperDestroy(Escaper escaper){
 }
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper companyCopy(Escaper escaper){
+Escaper escaperCopy(Escaper escaper){
     if (!escaper) {
         return NULL;
     }
@@ -54,4 +54,6 @@ bool escaperEquals(Escaper escaper1, Escaper escaper2) {
     assert(escaper1 && escaper2);
     return strcmp(escaper1->email,escaper2->email)==0;
 }
-#include "escaper.h"
+static char* getEmailEscaper(Escaper escaper){
+
+}

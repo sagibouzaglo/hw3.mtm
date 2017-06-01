@@ -31,8 +31,8 @@ Order  orderCopy(Order order);
 
 /** Returns true if both room orders and time are identical */
 bool orderEqualsRoom(Order order1, Order order2);
-}
+
 /** Returns true if both Escaper order and time are identical */
-bool orderEqualsEscaper(Order order1, Order order2) ;
+bool orderEqualsEscaper(Order order1, Order order2);
 
 #endif /* order_h */

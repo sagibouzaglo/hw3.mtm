@@ -25,11 +25,11 @@ typedef struct room* Room;
  */
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty);
 
-void roomDestroy(Room room);
+void roomDestroy(void* room);
 
-Room roomCopy(Room room);
+void* roomCopy(void* room);
 
-int roomCompare(Room room1, Room room2);
+int roomCompare(void* room1, void* room2);
 
 int getIDroom(Room room);
 

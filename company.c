@@ -9,6 +9,7 @@
 
 #include "company.h"
 #include "order.h"
+#include "room.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -35,7 +36,7 @@ Company companyCreate(char* email, TechnionFaculty faculty){
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    setCreate(roomCopy,setDestroy,roomCompare); //<---void* in room.c
+    setCreate(roomCopy,roomDestroy,roomCompare); //<---void* in room.c
     if(!company->rooms){
         return  NULL;
     }

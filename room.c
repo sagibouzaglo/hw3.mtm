@@ -55,22 +55,22 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
 }
 
 /** Frees an existing room object */
-void roomDestroy(Room room){
-    free(room->working_h);
+void roomDestroy(void* room){
+    free(((Room)room)->working_h);
     free(room);
 }
 
 /** Allocates a new room which is a copy of the argument */
-Room roomCopy(Room room){
+void* roomCopy(void* room){
     if (!room) {
         return NULL;
     }
-    return roomCreate(room->id,room->price,room->num_ppl,room->working_h,room->difficulty);
+    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty);
 }
 /** Returns true if both ids rooms are identical */
-int roomCompare(Room room1, Room room2) {
+int roomCompare(void* room1, void* room2) {
     assert(room1 && room2);
-    return (room1->id==room2->id);
+    return (((Room)room1)->id==((Room)room2)->id);
 }
 int getIDroom(Room room){
     if(!room){
