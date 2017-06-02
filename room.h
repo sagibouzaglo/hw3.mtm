@@ -51,6 +51,6 @@ int getOpenHRoom(Room room);
 
 int getCloseHRoom(Room room);
 
-static bool hourWorking (char* working_hour, Room room);
+
 
 #endif /* room_h */
