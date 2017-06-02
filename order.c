@@ -13,7 +13,7 @@
 #include "company.h"
 #include "escaper.h"
 #include "room.h"
-
+#define AFTER_DISCOUNT 0.75
 struct order {
     int time;
     Escaper escaper;
@@ -96,7 +96,10 @@ Company getCompanyOrder(Order order){
     }
     return order->compeny;
 }
-void PayToFaculty(Escaper escaper,Room room,int* profitFaculty, int num_ppl){
-    assert(escaper && profitFaculty);
-
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
+    assert(escaper && profitFaculty && room && order);
+    if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
+        order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);
+        
+    }
 }
