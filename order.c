@@ -14,6 +14,9 @@
 #include "escaper.h"
 #include "room.h"
 #define AFTER_DISCOUNT 0.75
+
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order);
+
 struct order {
     int time;
     Escaper escaper;
@@ -100,6 +103,7 @@ void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
     assert(escaper && profitFaculty && room && order);
     if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
         order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);
-        
+    } else {
+        order->tot_price=num_ppl*(getPriceRoom(room));
     }
 }
