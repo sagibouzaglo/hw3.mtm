@@ -12,12 +12,8 @@
 #include <assert.h>
 #include "company.h"
 #include "escaper.h"
-
-
-#define CHECK_NULL(ptr) if (!ptr){\
-                            return NULL;\
-                            };
-
+#include "room.h"
+#define AFTER_DISCOUNT 0.75
 struct order {
     int time;
     Escaper escaper;
@@ -76,8 +72,44 @@ bool orderEqualsRoom(Order order1, Order order2) {
     Returns true if both Escaper order and time are identical
  */
 bool orderEqualsEscaper(Order order1, Order order2) {
-    assert(order1 && order2);
-    return order1->time == order2->time &&
+
+int getTimeOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->time;
+}
+int getNumPOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->num_ppl;
+}
+int getRoomIdOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->room_id;
+}
+Escaper getEscaperOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->escaper;
+}
+Company getCompanyOrder(Order order){
+    if(!order){
+        return NULL;
+    }
+    return order->compeny;
+}
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
+    assert(escaper && profitFaculty && room && order);
+    if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
+        order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);
+        
+    }
+}
                 order1->escaper == order2->escaper;
 }
 
