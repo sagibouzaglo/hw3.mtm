@@ -7,16 +7,18 @@
 //
 
 #include "EscapeTechnion.h"
-enum check {INPUT=1,
-            OUTPUT,
-            OK};
+typedef enum check {INPUT=1,
+                    OUTPUT,
+                    FAILED,
+                    OK}Check;
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+MtmErrorCode set_input_output(FILE* input, FILE* output, Check check);
 
 int main(int argc, char **argv){
     char* buffer, buffer2[2];
-    int check=OK;
+    Check check=OK;
     // setting input and output channels
     FILE *input = stdin;
     CHECK_NULL(input);
@@ -25,14 +27,14 @@ int main(int argc, char **argv){
     fscanf(input," %s",buffer);
     // check legal statment
     if (strcmp(buffer,"mtm_escape")){
-        while(check != NULL){
+        while(check != FAILED){
             fscanf(input, " %s", buffer2);
             if (strcmp("-i",buffer2)==0){
                 check = INPUT;
             }else if (strcmp("-o",buffer2)==0){
                 check = OUTPUT;
             }else{
-                check == NULL;
+                check = FAILED;
             }
             if (set_input_output(input,output,check)!= MTM_SUCCESS){
                 return MTM_CANNOT_OPEN_FILE;
@@ -40,6 +42,11 @@ int main(int argc, char **argv){
         }
         
     }
-// check
+    return MTM_SUCCESS;
+}
+
+
+MtmErrorCode set_input_output(FILE* input, FILE* output, Check check){
+    
     return MTM_SUCCESS;
 }
