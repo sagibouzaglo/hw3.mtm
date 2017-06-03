@@ -15,11 +15,10 @@
 #include "list.h"
 #include <stdlib.h>
 
-
 typedef struct system* System;
 
 /*
- 
+    
  */
 int create_system();
 

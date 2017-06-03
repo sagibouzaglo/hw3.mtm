@@ -13,6 +13,10 @@
 #include <assert.h>
 #include <string.h>
 
+#define CHECK_NULL(ptr) if (!ptr){\
+                            return MTM_NULL_PARAMETER;\
+                            };
+
 struct escaper {
     char* email;
     TechnionFaculty Faculty;

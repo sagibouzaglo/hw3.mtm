@@ -50,25 +50,32 @@ void orderDestroy(Order order){
     free(order);
 }
 
-/** Allocates a new order which is a copy of the argument */
+/** 
+    Allocates a new order which is a copy of the argument
+    errors:
+    NULL - order is null
+    
+ */
 Order  orderCopy(Order order){
-    if (!order) {
-        return NULL;
-    }
-    return orderCreate(order->time, order->escaper ,order->num_ppl,order->compeny ,order->room_id );
+    CHECK_NULL(order);
+    return orderCreate(order->time, order->escaper ,order->num_ppl,
+                                            order->compeny ,order->room_id );
 }
-/** Returns true if both room orders and time are identical */
+
+/**
+    Returns true if both room orders and time are identical
+ */
 bool orderEqualsRoom(Order order1, Order order2) {
     assert(order1 && order2);
     return order1->time == order2->time &&
-           order1->room_id == order2->room_id;
+            order1->room_id == order2->room_id;
 }
-/** Returns true if both Escaper order and time are identical */
+
+/** 
+    Returns true if both Escaper order and time are identical
+ */
 bool orderEqualsEscaper(Order order1, Order order2) {
-    assert(order1 && order2);
-    return order1->time == order2->time &&
-            order1->escaper == order2->escaper;
-}
+
 int getTimeOrder(Order order){
     if(!order){
         return NULL;
@@ -107,3 +114,7 @@ void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
         order->tot_price=num_ppl*(getPriceRoom(room));
     }
 }
+                order1->escaper == order2->escaper;
+}
+
+

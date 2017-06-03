@@ -19,7 +19,6 @@ struct system {
     int day;
     Set company;
     Set escaper;
-    Set rooms;
     List orders;
     int profit[(((int)UNKNOWN)+1)];
 };
