@@ -17,8 +17,9 @@ typedef enum check {INPUT=1,
 MtmErrorCode set_input_output(FILE* input, FILE* output, Check check);
 
 int main(int argc, char **argv){
-    char* buffer, buffer2[2];
+    char buffer[256], buffer2[2];
     Check check=OK;
+    MtmErrorCode ret_value;
     // setting input and output channels
     FILE *input = stdin;
     CHECK_NULL(input);
@@ -36,9 +37,10 @@ int main(int argc, char **argv){
             }else{
                 check = FAILED;
             }
-            if (set_input_output(input,output,check)!= MTM_SUCCESS){
-                return MTM_CANNOT_OPEN_FILE;
-            }; // need to write function
+            ret_value = set_input_output(input,output,check);
+            if (ret_value != MTM_SUCCESS){
+                return ret_value;
+            };
         }
         
     }
