@@ -28,7 +28,7 @@ struct order {
 
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn Result){
+Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
     if (!escaper || !company) {
         return NULL;
     }
@@ -46,7 +46,7 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
 }
 
 /** Frees an existing order object */
-void orderDestroy(Order order,OrderReturn Result){
+void orderDestroy(Order order){
     free(order);
 }
 
@@ -56,16 +56,17 @@ void orderDestroy(Order order,OrderReturn Result){
     NULL - order is null
     
  */
-Order  orderCopy(Order order,OrderReturn Result){
-    CHECK_NULL(order);
-    return orderCreate(order->time, order->escaper ,order->num_ppl,
-                                            order->compeny ,order->room_id );
+void*  orderCopy(void* order){
+    assert(order);
+    OrderReturn Result;
+    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
+                       ((Order)order)->compeny ,((Order)order)->room_id ,&Result);
 }
 
 /**
     Returns true if both room orders and time are identical
  */
-bool orderEqualsRoom(Order order1, Order order2,OrderReturn Result) {
+bool orderEqualsRoom(Order order1, Order order2,OrderReturn* Result) {
     assert(order1 && order2);
     return order1->time == order2->time &&
             order1->room_id == order2->room_id;
@@ -74,7 +75,7 @@ bool orderEqualsRoom(Order order1, Order order2,OrderReturn Result) {
 /** 
     Returns true if both Escaper order and time are identical
  */
-bool orderEqualsEscaper(Order order1, Order order2,OrderReturn Result) {
+bool orderEqualsEscaper(Order order1, Order order2,OrderReturn* Result) {
 
 int getTimeOrder(Order order){
     if(!order){
@@ -106,7 +107,7 @@ Company getCompanyOrder(Order order){
     }
     return order->compeny;
 }
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result){
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
     assert(escaper && profitFaculty && room && order);
     if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
         order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);

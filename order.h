@@ -38,19 +38,19 @@ typedef struct order* Order;
 
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn Result);
+Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result);
 
 /** Frees an existing order object */
-void orderDestroy(Order order ,OrderReturn Result);
+void orderDestroy(Order order);
 
 /** Allocates a new date which is a copy of the argument */
-Order  orderCopy(Order order, OrderReturn Result);
+void*  orderCopy(void* order);
 
 /** Returns true if both room orders and time are identical */
-bool orderEqualsRoom(Order order1, Order order2,OrderReturn Result);
+bool orderEqualsRoom(Order order1, Order order2,OrderReturn* Result);
 
 /** Returns true if both Escaper order and time are identical */
-bool orderEqualsEscaper(Order order1, Order order2,OrderReturn Result);
+bool orderEqualsEscaper(Order order1, Order order2,OrderReturn* Result);
 
 int getTimeOrder(Order order);
 
