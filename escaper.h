@@ -18,24 +18,41 @@
 #include <string.h>
 
 #include <stdio.h>
+
+typedef enum {
+    Esc_OUT_OF_MEMORY, // You should exit program after this error
+    Esc_NULL_PARAMETER,
+    Esc_INVALID_PARAMETER,
+    Esc_EMAIL_ALREADY_EXISTS,
+    Esc_COMPANY_EMAIL_DOES_NOT_EXIST,
+    Esc_CLIENT_EMAIL_DOES_NOT_EXIST,
+    Esc_ID_ALREADY_EXIST,
+    Esc_ID_DOES_NOT_EXIST,
+    Esc_CLIENT_IN_ROOM,
+    Esc_ROOM_NOT_AVAILABLE,
+    Esc_RESERVATION_EXISTS,
+    Esc_NO_ROOMS_AVAILABLE,
+    Esc_SUCCESS,
+} EscaperReturn;
+
 typedef struct escaper* Escaper;
 
 /** Allocates a new escaper */
-Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level);
+Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn Result);
 
 /** Frees an existing escaper object */
-void escaperDestroy(Escaper escaper);
+void escaperDestroy(Escaper escaper,EscaperReturn Result);
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper escaperCopy(Escaper escaper);
+Escaper escaperCopy(Escaper escaper,EscaperReturn Result);
 
 /** Returns true if both email escaper are identical */
-bool escaperEquals(Escaper escaper1, Escaper escaper2);
+bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn Result);
 
-char* getEmailEscaper(Escaper escaper);
+char* getEmailEscaper(Escaper escaper,EscaperReturn Result);
 
-int getSkillLevel(Escaper escaper);
+int getSkillLevel(Escaper escaper,EscaperReturn Result);
 
-TechnionFaculty getFacultyEscaper(Escaper escaper);
+TechnionFaculty getFacultyEscaper(Escaper escaper,EscaperReturn Result);
 
 #endif /* escaper_h */

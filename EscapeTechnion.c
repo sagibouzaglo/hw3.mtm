@@ -5,6 +5,9 @@
 //  Created by sagi bouzaglo on 28/05/2017.
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
+#include "company.h"
+#include "room.h"
+#include "order.h"
 
 #include "EscapeTechnion.h"
 typedef enum check {INPUT=1,
@@ -104,6 +107,14 @@ MtmErrorCode get_command(FILE* input,FILE* output){
         escaper_command(input,output);
     }else if (strcmp(buffer,"report")==0){
         report_command(input,output);
+    }
+    return MTM_SUCCESS;
+}
+MtmErrorCode company_add(char* email, TechnionFaculty faculty){
+    assert(email);
+    Company company = companyCreate(email,faculty);
+    if(!company){
+        return MTM_OUT_OF_MEMORY;
     }
     return MTM_SUCCESS;
 }

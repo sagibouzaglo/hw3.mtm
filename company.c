@@ -25,7 +25,7 @@ struct company {
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty){
+Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn Result){
     if(!IfEmailValid(email)){
         return NULL;
     }
@@ -47,25 +47,25 @@ Company companyCreate(char* email, TechnionFaculty faculty){
 }
 
 /** Frees an existing company object */
-void companyDestroy(void* company){
+void companyDestroy(void* company,CompanyReturn Result){
     setDestroy(((Company)company)->rooms);
     free(((Company)company)->email);
     free(company);
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company){
+void* companyCopy(void* company,CompanyReturn Result){
     if (!company) {
         return NULL;
     }
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty);
+    return companyCreate(((Company)company)->email,((Company)company)->Faculty,Result);
 }
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2) {
+int companyCompare(void* company1, void* company2,CompanyReturn Result) {
     assert(company1 && company2);
     return strcmp(((Company)company1)->email,((Company)company2)->email)==0;
 }
-char* getEmailCompany(Company company){
+char* getEmailCompany(Company company,CompanyReturn Result){
     if(!company){
         return NULL;
     }
@@ -77,7 +77,7 @@ char* getEmailCompany(Company company){
     return emailReturn;
 }
 
-TechnionFaculty getFacultyOfCompuny(Company company){
+TechnionFaculty getFacultyOfCompuny(Company company,CompanyReturn Result){
     if(!company){
         return NULL;
     }
