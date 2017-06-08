@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2417BB2B1ED98C03008B4326 /* system.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB291ED98C03008B4326 /* system.c */; };
 		2417BB2E1ED98C69008B4326 /* company.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB2C1ED98C69008B4326 /* company.c */; };
 		2417BB321ED98CB5008B4326 /* order.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB301ED98CB5008B4326 /* order.c */; };
 		2417BB351ED98CC3008B4326 /* room.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB331ED98CC3008B4326 /* room.c */; };
@@ -31,8 +30,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2417BB291ED98C03008B4326 /* system.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = system.c; sourceTree = SOURCE_ROOT; };
-		2417BB2A1ED98C03008B4326 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = SOURCE_ROOT; };
 		2417BB2C1ED98C69008B4326 /* company.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = company.c; sourceTree = SOURCE_ROOT; };
 		2417BB2D1ED98C69008B4326 /* company.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = company.h; sourceTree = SOURCE_ROOT; };
 		2417BB301ED98CB5008B4326 /* order.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = order.c; sourceTree = SOURCE_ROOT; };
@@ -94,8 +91,6 @@
 				24DA7C5D1EE98F73004EE698 /* parser.h */,
 				24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */,
 				24DA7C571EDB1DC0004EE698 /* EscapeTechnion.h */,
-				2417BB291ED98C03008B4326 /* system.c */,
-				2417BB2A1ED98C03008B4326 /* system.h */,
 				2417BB2C1ED98C69008B4326 /* company.c */,
 				2417BB2D1ED98C69008B4326 /* company.h */,
 				2417BB301ED98CB5008B4326 /* order.c */,
@@ -170,7 +165,6 @@
 				24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */,
 				2417BB321ED98CB5008B4326 /* order.c in Sources */,
 				24DA7C5E1EE98F73004EE698 /* parser.c in Sources */,
-				2417BB2B1ED98C03008B4326 /* system.c in Sources */,
 				24DA7C551EDB1C29004EE698 /* escaper.c in Sources */,
 				2417BB2E1ED98C69008B4326 /* company.c in Sources */,
 				2417BB371ED98CEA008B4326 /* mtm_ex3.c in Sources */,
