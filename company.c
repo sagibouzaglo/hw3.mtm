@@ -25,22 +25,26 @@ struct company {
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty){
+Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
     if(!IfEmailValid(email)){
+        *Result= COM_NULL_PARAMETER;
         return NULL;
     }
     Company company = malloc(sizeof(*company));
     if (!company) {
+        *Result= COM_OUT_OF_MEMORY;
         return NULL;
     }
     company->email=malloc((sizeof(char)*strlen(email))+1);
     if (!company->email) {
+        *Result= COM_OUT_OF_MEMORY;
         return NULL;
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    setCreate(roomCopy,roomDestroy,roomCompare); //<---void* in room.c
+    company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); //<---void* in room.c
     if(!company->rooms){
+        *Result= COM_OUT_OF_MEMORY;
         return  NULL;
     }
     return company;
@@ -54,16 +58,20 @@ void companyDestroy(void* company){
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company){
+void* companyCopy(void* company,CompanyReturn* Result){
     if (!company) {
+        *Result= COM_NULL_PARAMETER;
         return NULL;
     }
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty);
+    return companyCreate(((Company)company)->email,((Company)company)->Faculty,Result);
 }
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2) {
-    assert(company1 && company2);
-    return strcmp(((Company)company1)->email,((Company)company2)->email)==0;
+int companyCompare(void* company1, void* company2,CompanyReturn* Result) {
+    if(!company1 || !company2){
+        *Result= COM_NULL_PARAMETER;
+        return NULL;
+    }
+    return strcmp(((Company)company1)->email,((Company)company2)->email);
 }
 char* getEmailCompany(Company company){
     if(!company){

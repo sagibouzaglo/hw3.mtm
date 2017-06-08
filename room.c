@@ -30,7 +30,7 @@ struct room {
 
 
 /** Allocates a new room */
-Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty){
+Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return){
     Room room = malloc(sizeof(*room));
     if (!room) {
         return NULL;
@@ -62,7 +62,8 @@ void* roomCopy(void* room){
     if (!room) {
         return NULL;
     }
-    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty);
+    RoomReturn* Return;
+    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty,Return);
 }
 /** Returns true if both ids rooms are identical */
 int roomCompare(void* room1, void* room2) {

@@ -15,7 +15,7 @@
 #include "room.h"
 #define AFTER_DISCOUNT 0.75
 
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order);
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result);
 
 struct order {
     int time;
@@ -28,12 +28,14 @@ struct order {
 
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id){
+Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
     if (!escaper || !company) {
+        *Result= ORD_NULL_PARAMETER;
         return NULL;
     }
     Order order = malloc(sizeof(*order));
     if (!order) {
+        *Result= ORD_OUT_OF_MEMORY;
         return NULL;
     }
     order->compeny=company;
@@ -56,10 +58,11 @@ void orderDestroy(Order order){
     NULL - order is null
     
  */
-Order  orderCopy(Order order){
-    CHECK_NULL(order);
-    return orderCreate(order->time, order->escaper ,order->num_ppl,
-                                            order->compeny ,order->room_id );
+void*  orderCopy(void* order){
+    assert(order);
+    OrderReturn Result;
+    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
+                       ((Order)order)->compeny ,((Order)order)->room_id ,&Result);
 }
 
 /**
@@ -74,47 +77,51 @@ bool orderEqualsRoom(Order order1, Order order2) {
 /** 
     Returns true if both Escaper order and time are identical
  */
-bool orderEqualsEscaper(Order order1, Order order2) {
+int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result){
+    assert(order1 && order2);
+    return strcmp(getEmailEscaper(order1->escaper,Result),getEmailEscaper(order1->escaper,Result));
+}
 
-int getTimeOrder(Order order){
-    if(!order){
-        return NULL;
+int getTimeOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->time;
     }
-    return order->time;
-}
-int getNumPOrder(Order order){
-    if(!order){
-        return NULL;
+int getNumPOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->num_ppl;
     }
-    return order->num_ppl;
-}
-int getRoomIdOrder(Order order){
-    if(!order){
-        return NULL;
+int getRoomIdOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->room_id;
     }
-    return order->room_id;
-}
-Escaper getEscaperOrder(Order order){
-    if(!order){
-        return NULL;
+Escaper getEscaperOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->escaper;
     }
-    return order->escaper;
-}
-Company getCompanyOrder(Order order){
-    if(!order){
-        return NULL;
+Company getCompanyOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->compeny;
     }
-    return order->compeny;
-}
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
-    assert(escaper && profitFaculty && room && order);
-    if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
-        order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);
-    } else {
-        order->tot_price=num_ppl*(getPriceRoom(room));
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
+        assert(escaper && profitFaculty && room && order);
+        if (getFacultyOfCompuny(getCompanyOrder(order)) ==
+            getFacultyEscaper(getEscaperOrder(order))) {
+            order->tot_price = (int) (num_ppl * (getPriceRoom(room)) *
+                                      AFTER_DISCOUNT);
+        } else {
+            order->tot_price = num_ppl * (getPriceRoom(room));
+        }
     }
-}
-                order1->escaper == order2->escaper;
-}
+
 
 
