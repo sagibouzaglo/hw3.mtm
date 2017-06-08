@@ -15,6 +15,7 @@
 		2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB381ED98CFD008B4326 /* list_mtm1.c */; };
 		24DA7C551EDB1C29004EE698 /* escaper.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C531EDB1C29004EE698 /* escaper.c */; };
 		24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */; };
+		24DA7C5E1EE98F73004EE698 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C5C1EE98F73004EE698 /* parser.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +50,8 @@
 		24DA7C541EDB1C29004EE698 /* escaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = escaper.h; sourceTree = SOURCE_ROOT; };
 		24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = EscapeTechnion.c; sourceTree = SOURCE_ROOT; };
 		24DA7C571EDB1DC0004EE698 /* EscapeTechnion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EscapeTechnion.h; sourceTree = SOURCE_ROOT; };
+		24DA7C5C1EE98F73004EE698 /* parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = SOURCE_ROOT; };
+		24DA7C5D1EE98F73004EE698 /* parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +90,8 @@
 				24526EFE1ED1F2A3008271EF /* list_mtm1.h */,
 				2417BB361ED98CEA008B4326 /* mtm_ex3.c */,
 				24526F001ED1F2A3008271EF /* mtm_ex3.h */,
+				24DA7C5C1EE98F73004EE698 /* parser.c */,
+				24DA7C5D1EE98F73004EE698 /* parser.h */,
 				24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */,
 				24DA7C571EDB1DC0004EE698 /* EscapeTechnion.h */,
 				2417BB291ED98C03008B4326 /* system.c */,
@@ -164,6 +169,7 @@
 				2417BB351ED98CC3008B4326 /* room.c in Sources */,
 				24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */,
 				2417BB321ED98CB5008B4326 /* order.c in Sources */,
+				24DA7C5E1EE98F73004EE698 /* parser.c in Sources */,
 				2417BB2B1ED98C03008B4326 /* system.c in Sources */,
 				24DA7C551EDB1C29004EE698 /* escaper.c in Sources */,
 				2417BB2E1ED98C69008B4326 /* company.c in Sources */,

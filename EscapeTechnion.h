@@ -9,10 +9,6 @@
 #ifndef EscapeTechnion_h
 #define EscapeTechnion_h
 
-#include <stdio.h>
-#include "mtm_ex3.h"
-#include "list.h"
-#include "set.h"
-#include <string.h>
+
 
 #endif /* EscapeTechnion_h */
