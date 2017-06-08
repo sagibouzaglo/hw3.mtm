@@ -30,10 +30,12 @@ struct order {
 /** Allocates a new order */
 Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
     if (!escaper || !company) {
+        *Result= ORD_NULL_PARAMETER;
         return NULL;
     }
     Order order = malloc(sizeof(*order));
     if (!order) {
+        *Result= ORD_OUT_OF_MEMORY;
         return NULL;
     }
     order->compeny=company;
@@ -66,7 +68,7 @@ void*  orderCopy(void* order){
 /**
     Returns true if both room orders and time are identical
  */
-bool orderEqualsRoom(Order order1, Order order2,OrderReturn* Result) {
+bool orderEqualsRoom(Order order1, Order order2) {
     assert(order1 && order2);
     return order1->time == order2->time &&
             order1->room_id == order2->room_id;
@@ -75,45 +77,51 @@ bool orderEqualsRoom(Order order1, Order order2,OrderReturn* Result) {
 /** 
     Returns true if both Escaper order and time are identical
  */
-bool orderEqualsEscaper(Order order1, Order order2,OrderReturn* Result) {
+int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result){
+    assert(order1 && order2);
+    return strcmp(getEmailEscaper(order1->escaper,Result),getEmailEscaper(order1->escaper,Result));
+}
 
-int getTimeOrder(Order order){
-    if(!order){
-        return NULL;
+int getTimeOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->time;
     }
-    return order->time;
-}
-int getNumPOrder(Order order){
-    if(!order){
-        return NULL;
+int getNumPOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->num_ppl;
     }
-    return order->num_ppl;
-}
-int getRoomIdOrder(Order order){
-    if(!order){
-        return NULL;
+int getRoomIdOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->room_id;
     }
-    return order->room_id;
-}
-Escaper getEscaperOrder(Order order){
-    if(!order){
-        return NULL;
+Escaper getEscaperOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->escaper;
     }
-    return order->escaper;
-}
-Company getCompanyOrder(Order order){
-    if(!order){
-        return NULL;
+Company getCompanyOrder(Order order) {
+        if (!order) {
+            return NULL;
+        }
+        return order->compeny;
     }
-    return order->compeny;
-}
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
-    assert(escaper && profitFaculty && room && order);
-    if(getFacultyOfCompuny(getCompanyOrder(order))==getFacultyEscaper(getEscaperOrder(order))){
-        order->tot_price=(int)(num_ppl*(getPriceRoom(room))*AFTER_DISCOUNT);
-    } else {
-        order->tot_price=num_ppl*(getPriceRoom(room));
+void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
+        assert(escaper && profitFaculty && room && order);
+        if (getFacultyOfCompuny(getCompanyOrder(order)) ==
+            getFacultyEscaper(getEscaperOrder(order))) {
+            order->tot_price = (int) (num_ppl * (getPriceRoom(room)) *
+                                      AFTER_DISCOUNT);
+        } else {
+            order->tot_price = num_ppl * (getPriceRoom(room));
+        }
     }
-}
+
 
 

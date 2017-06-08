@@ -47,9 +47,9 @@ void escaperDestroy(Escaper escaper);
 Escaper escaperCopy(Escaper escaper,EscaperReturn* Result);
 
 /** Returns true if both email escaper are identical */
-bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result);
+int escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result);
 
-char* getEmailEscaper(Escaper escaper);
+char* getEmailEscaper(Escaper escaper,EscaperReturn* Result);
 
 int getSkillLevel(Escaper escaper);
 

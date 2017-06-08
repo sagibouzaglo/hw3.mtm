@@ -47,10 +47,10 @@ void orderDestroy(Order order);
 void*  orderCopy(void* order);
 
 /** Returns true if both room orders and time are identical */
-bool orderEqualsRoom(Order order1, Order order2,OrderReturn* Result);
+bool orderEqualsRoom(Order order1, Order order2);
 
 /** Returns true if both Escaper order and time are identical */
-bool orderEqualsEscaper(Order order1, Order order2,OrderReturn* Result);
+int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result);
 
 int getTimeOrder(Order order);
 
