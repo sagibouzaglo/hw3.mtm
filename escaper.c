@@ -25,7 +25,7 @@ struct escaper {
 
 
 /** Allocates a new escaper */
-Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn Result){
+Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn* Result){
     if(!IfEmailValid(email)){
         return NULL;
     }
@@ -44,13 +44,13 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,Esc
 }
 
 /** Frees an existing escaper object */
-void escaperDestroy(Escaper escaper,EscaperReturn Result){
+void escaperDestroy(Escaper escaper){
     free(escaper->email);
     free(escaper);
 }
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper escaperCopy(Escaper escaper,EscaperReturn Result){
+Escaper escaperCopy(Escaper escaper,EscaperReturn* Result){
     if (!escaper) {
         return NULL;
     }
@@ -58,12 +58,12 @@ Escaper escaperCopy(Escaper escaper,EscaperReturn Result){
     return escaperCreate(escaper->email,escaper->Faculty,escaper->skill_level, Result);
 }
 /** Returns true if both email escaper are identical */
-bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn Result) {
+bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result) {
     assert(escaper1 && escaper2);
     return strcmp(escaper1->email,escaper2->email)==0;
 }
 
-char* getEmailEscaper(Escaper escaper,EscaperReturn Result){
+char* getEmailEscaper(Escaper escaper){
     if(!escaper){
         return NULL;
     }
@@ -74,14 +74,14 @@ char* getEmailEscaper(Escaper escaper,EscaperReturn Result){
     strcpy(escaper->email,emailReturn);
     return emailReturn;
 }
-int getSkillLevel(Escaper escaper,EscaperReturn Result){
+int getSkillLevel(Escaper escaper){
     if(!escaper){
         return NULL;
     }
     return escaper->skill_level;
 }
 
-TechnionFaculty getFacultyEscaper(Escaper escaper,EscaperReturn Result){
+TechnionFaculty getFacultyEscaper(Escaper escaper){
     if(!escaper){
         return NULL;
     }

@@ -32,20 +32,20 @@ typedef struct company* Company;
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn Result);
+Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
 
 /** Frees an existing company object */
-void companyDestroy(void* company,CompanyReturn Result);
+void companyDestroy(void* company);
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company,CompanyReturn Result);
+void* companyCopy(void* company,CompanyReturn* Result);
 
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2,CompanyReturn Result);
+int companyCompare(void* company1, void* company2,CompanyReturn* Result);
 
-char* getEmailCompany(Company company,CompanyReturn Result);
+char* getEmailCompany(Company company);
 
-TechnionFaculty getFacultyOfCompuny(Company company,CompanyReturn Result);
+TechnionFaculty getFacultyOfCompuny(Company company);
 
 bool IfEmailValid(char* email);
 #endif /* company_h */

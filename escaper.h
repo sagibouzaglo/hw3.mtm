@@ -38,21 +38,21 @@ typedef enum {
 typedef struct escaper* Escaper;
 
 /** Allocates a new escaper */
-Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn Result);
+Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn* Result);
 
 /** Frees an existing escaper object */
-void escaperDestroy(Escaper escaper,EscaperReturn Result);
+void escaperDestroy(Escaper escaper);
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper escaperCopy(Escaper escaper,EscaperReturn Result);
+Escaper escaperCopy(Escaper escaper,EscaperReturn* Result);
 
 /** Returns true if both email escaper are identical */
-bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn Result);
+bool escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result);
 
-char* getEmailEscaper(Escaper escaper,EscaperReturn Result);
+char* getEmailEscaper(Escaper escaper);
 
-int getSkillLevel(Escaper escaper,EscaperReturn Result);
+int getSkillLevel(Escaper escaper);
 
-TechnionFaculty getFacultyEscaper(Escaper escaper,EscaperReturn Result);
+TechnionFaculty getFacultyEscaper(Escaper escaper);
 
 #endif /* escaper_h */

@@ -115,7 +115,5 @@ void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order){
         order->tot_price=num_ppl*(getPriceRoom(room));
     }
 }
-                order1->escaper == order2->escaper;
-}
 
 
