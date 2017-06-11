@@ -41,7 +41,7 @@ typedef struct order* Order;
 Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result);
 
 /** Frees an existing order object */
-void orderDestroy(Order order);
+void orderDestroy(void* order);
 
 /** Allocates a new date which is a copy of the argument */
 void*  orderCopy(void* order);

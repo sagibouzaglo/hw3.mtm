@@ -48,7 +48,7 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
 }
 
 /** Frees an existing order object */
-void orderDestroy(Order order){
+void orderDestroy(void* order){
     free(order);
 }
 

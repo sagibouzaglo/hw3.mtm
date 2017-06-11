@@ -26,7 +26,7 @@ MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
 /*
 
  */
-MtmErrorCode destroy_EscapeTechnion();
+MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion);
 
 /*
     Recieve 2 arguments:
