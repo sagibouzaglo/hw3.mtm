@@ -41,13 +41,13 @@ typedef struct escaper* Escaper;
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn* Result);
 
 /** Frees an existing escaper object */
-void escaperDestroy(Escaper escaper);
+void escaperDestroy(void* escaper);
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper escaperCopy(Escaper escaper,EscaperReturn* Result);
+void* escaperCopy(void* escaper);
 
 /** Returns true if both email escaper are identical */
-int escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result);
+int escaperEquals(void* escaper1, void* escaper2);
 
 char* getEmailEscaper(Escaper escaper,EscaperReturn* Result);
 

@@ -47,27 +47,27 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,Esc
 }
 
 /** Frees an existing escaper object */
-void escaperDestroy(Escaper escaper){
-    free(escaper->email);
+void escaperDestroy(void* escaper){
+    free(((Escaper)escaper)->email);
     free(escaper);
 }
 
 /** Allocates a new escaper which is a copy of the argument */
-Escaper escaperCopy(Escaper escaper,EscaperReturn* Result){
+void* escaperCopy(void* escaper){
     if (!escaper) {
-        *Result= Esc_NULL_PARAMETER;
         return NULL;
     }
-
-    return escaperCreate(escaper->email,escaper->Faculty,escaper->skill_level, Result);
+    EscaperReturn Result;
+    return escaperCreate(((Escaper)escaper)->email,((Escaper)escaper)->Faculty,((Escaper)escaper)->skill_level, &Result);
 }
+
 /** Returns true if both email escaper are identical */
-int escaperEquals(Escaper escaper1, Escaper escaper2,EscaperReturn* Result) {
+int escaperEquals(void* escaper1, void* escaper2) {
     if( !escaper1 || !escaper2){
-        *Result= Esc_NULL_PARAMETER;
         return NULL;
     }
-    return strcmp(escaper1->email,escaper2->email);
+    EscaperReturn Result;
+    return strcmp(((Escaper)escaper1)->email,((Escaper)escaper2)->email);
 }
 
 char* getEmailEscaper(Escaper escaper,EscaperReturn* Result){

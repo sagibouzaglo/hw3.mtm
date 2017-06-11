@@ -38,10 +38,10 @@ Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Resul
 void companyDestroy(void* company);
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company,CompanyReturn* Result);
+void* companyCopy(void* company);
 
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2,CompanyReturn* Result);
+int companyCompare(void* company1, void* company2);
 
 char* getEmailCompany(Company company);
 

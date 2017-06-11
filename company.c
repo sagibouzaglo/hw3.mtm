@@ -58,19 +58,20 @@ void companyDestroy(void* company){
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company,CompanyReturn* Result){
+void* companyCopy(void* company){
     if (!company) {
-        *Result= COM_NULL_PARAMETER;
         return NULL;
     }
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty,Result);
+    CompanyReturn Result;
+    return companyCreate(((Company)company)->email,((Company)company)->Faculty,&Result);
 }
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2,CompanyReturn* Result) {
+int companyCompare(void* company1, void* company2) {
     if(!company1 || !company2){
-        *Result= COM_NULL_PARAMETER;
+        NULL;
         return NULL;
     }
+    CompanyReturn Result;
     return strcmp(((Company)company1)->email,((Company)company2)->email);
 }
 char* getEmailCompany(Company company){
