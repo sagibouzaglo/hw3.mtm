@@ -100,12 +100,21 @@ MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion){
    CHECK_NULL(email);
    CHECK_NULL(EscapeTechnion);
 
-    SET_FOREACH(Company,comp,(*EscapeTechnion)->company){
-        if(strcmp(email,getEmailCompany((Company)comp))==0){
+    SET_FOREACH(Company,iterator_comp,(*EscapeTechnion)->company){
+        if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
             return MTM_EMAIL_ALREADY_EXISTS;
         }
     }
-    LIST_FOREACH()
+    EscaperReturn Result;
+    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+        char* emailCompany = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+        if (Result!=ORD_SUCCESS){
+            return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY : MTM_NULL_PARAMETER);
+        }
+        if(strcmp(email,emailCompany)==0){
+            return MTM_EMAIL_ALREADY_EXISTS;
+        }
+    }
 
 }
 
