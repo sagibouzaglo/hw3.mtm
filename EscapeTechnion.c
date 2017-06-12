@@ -17,6 +17,7 @@
                             };
 
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
+static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 
 struct escapetechnion {
     int day;
@@ -72,14 +73,41 @@ MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechni
     return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_remove_company(){
+MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion *EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
+    CHECK_NULL(email);
+    Company company = findCompany(email,EscapeTechnion);
+    if(company==NULL){
+        return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
+    }
+    EscaperReturn Result;
+    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+        char* emailCompany = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+        if (Result!=ORD_SUCCESS){
+            return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY : MTM_NULL_PARAMETER);
+        }
+        if(strcmp(email,emailCompany)==0){
+            return MTM_RESERVATION_EXISTS;
+        }
+    }
+    companyDestroy(company);
 
-   return MTM_SUCCESS;
+    return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_add_room(){
-
-   return MTM_SUCCESS;
+MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
+                                     char* working_hour, int difficulty,
+                                     EscapeTechnion *EscapeTechnion){
+if(!email || !EscapeTechnion || !working_hour){
+    return MTM_NULL_PARAMETER;
+}
+    Company company = findCompany(email,EscapeTechnion);
+    if(company==NULL){
+        return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
+    }
+    Room room = roomCreate();
+    setAdd(getCompanyRooms(company),room);
+    return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_remove_room(){
@@ -136,6 +164,13 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechn
     return MTM_SUCCESS;
 }
 static Company findCompany (char* email,EscapeTechnion *EscapeTechnion){
-    
+
+
+    SET_FOREACH(Company,iterator_comp,(*EscapeTechnion)->company){
+        if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
+            return getEmailCompany((Company)iterator_comp;
+            }
+    }
+    return NULL;
 }
 
