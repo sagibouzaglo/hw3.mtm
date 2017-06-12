@@ -20,6 +20,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechn
 static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion);
+static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion);
 
 struct escapetechnion {
     int day;
@@ -111,7 +112,7 @@ if(!email || !EscapeTechnion || !working_hour){
         return (Return == ROOM_INVALID_PARAMETER ? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
     }
     setAdd(getCompanyRooms(company),room);
-    free(room);
+    roomDestroy(room);
     return MTM_SUCCESS;
 }
 
@@ -141,14 +142,38 @@ MtmErrorCode EscapeTechnion_add_escaper(char* email,TechnionFaculty faculty,int 
     if(ifEmailAlreadyExists(email,EscapeTechnion)==MTM_EMAIL_ALREADY_EXISTS){
         return MTM_EMAIL_ALREADY_EXISTS;
     }
-
+    EscaperReturn Result;
+    Escaper escaper = escaperCreate(email, faculty ,skill_level,&Result);
+    if(Result!=Esc_SUCCESS){
+        return (Result==Esc_INVALID_PARAMETER? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
+    }
+    setAdd((*EscapeTechnion)->escaper,escaper);
+    escaperDestroy(escaper);
     return MTM_SUCCESS;
 }
 
 
-MtmErrorCode EscapeTechnion_remove_escaper(){
+MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
+    CHECK_NULL(email);
+    Escaper escaper = findEscaper(email,EscapeTechnion);
+    if(!escaper){
+        return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
+    }
+    EscaperReturn Result;
+    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+        char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+        if (Result!=Esc_SUCCESS){
+            return NULL;
+        }
+        if(strcmp(email,emailEscaper)==0){
+            orderDestroy(iterator_order);
+            listRemoveCurrent((*EscapeTechnion)->orders);
 
-   return MTM_SUCCESS;
+        }
+    }
+
+    return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_add_order(){
@@ -177,11 +202,11 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechn
     }
     EscaperReturn Result;
     LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
-        char* emailCompany = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+        char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
         if (Result!=ORD_SUCCESS){
             return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY : MTM_NULL_PARAMETER);
         }
-        if(strcmp(email,emailCompany)==0){
+        if(strcmp(email,emailEscaper)==0){
             return MTM_EMAIL_ALREADY_EXISTS;
         }
     }
@@ -209,10 +234,23 @@ static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *Esca
 }
 static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion){
 
-        LIST_FOREACH(Order, iterator_order, (*EscapeTechnion)->orders) {
-            if(roomCompare((Room)getRoomIdOrder(iterator_order),(Room)getIdRoom(room))){
-                return MTM_RESERVATION_EXISTS;
-            }
+    LIST_FOREACH(Order, iterator_order, (*EscapeTechnion)->orders) {
+        if(roomCompare((Room)getRoomIdOrder(iterator_order),(Room)getIdRoom(room))){
+            return MTM_RESERVATION_EXISTS;
         }
+    }
     return MTM_SUCCESS;
+}
+static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion){
+    EscaperReturn Result;
+    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+        char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+        if (Result!=Esc_SUCCESS){
+            return NULL;
+        }
+        if(strcmp(email,emailEscaper)==0){
+            return getEscaperOrder((Order)iterator_order);
+        }
+    }
+    return NULL;
 }
