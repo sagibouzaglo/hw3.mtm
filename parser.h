@@ -23,23 +23,10 @@ typedef enum check {INPUT=1,
 
 
 MtmErrorCode set_input_output(FILE* input, FILE* output, Check check);
-
-
-MtmErrorCode get_input_output(FILE* input, FILE* output);
-
-
 MtmErrorCode get_command(FILE* input,FILE* output);
-
-
 MtmErrorCode company_command(FILE* input,FILE* output);
-
-
 MtmErrorCode room_command(FILE* input,FILE* output);
-
-
 MtmErrorCode escaper_command(FILE* input,FILE* output);
-
-
 MtmErrorCode report_command(FILE* input,FILE* output);
-
+MtmErrorCode close_channels(FILE* input, FILE* output);
 #endif /* parser_h */

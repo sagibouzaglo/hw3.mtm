@@ -17,8 +17,7 @@
                         };
 
 int main(int argc, const char * argv[]) {
-          // setting input and output channels
-    
+        // setting input and output channels
         FILE *input = stdin;
         CHECK_NULL(input);
         FILE *output = stdout;
@@ -43,12 +42,14 @@ int main(int argc, const char * argv[]) {
                     if (error_code != MTM_SUCCESS){
                         return error_code;
                 }
+            }else{
+                error_code = get_command(input,output);
+                if (error_code != MTM_SUCCESS){
+                    mtmPrintErrorMessage(error_channel,error_code);
+                    error_code = MTM_SUCCESS;
+                }
             }
         }
-        error_code = get_command(input,output);
-        if (error_code != MTM_SUCCESS){
-            mtmPrintErrorMessage(error_channel,error_code);
-            error_code = MTM_SUCCESS;
-        }
+        close_channels(input,output);
         return check;
 }

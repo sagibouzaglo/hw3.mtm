@@ -12,12 +12,6 @@
 return MTM_CANNOT_OPEN_FILE;\
 };
 
-MtmErrorCode set_input_output(FILE* input, FILE* output, Check check);
-MtmErrorCode get_command(FILE* input,FILE* output);
-MtmErrorCode company_command(FILE* input,FILE* output);
-MtmErrorCode room_command(FILE* input,FILE* output);
-MtmErrorCode escaper_command(FILE* input,FILE* output);
-MtmErrorCode report_command(FILE* input,FILE* output);
 
 // read the input/output channel and set it
 MtmErrorCode set_input_output(FILE* input, FILE* output, Check check){
@@ -139,6 +133,16 @@ MtmErrorCode report_command(FILE* input,FILE* output){
         }else if (strcmp(buffer,"best")==0){
             technion_report_best();
         }
+    }
+    return MTM_SUCCESS;
+}
+
+MtmErrorCode close_channels(FILE* input, FILE* output){
+    if (input != stdin){
+        fclose(input);
+    }
+    if (output != stdout){
+            fclose(output);
     }
     return MTM_SUCCESS;
 }
