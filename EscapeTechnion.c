@@ -80,18 +80,15 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion *EscapeTec
     if(company==NULL){
         return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
     }
-    EscaperReturn Result;
-    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
-        char* emailCompany = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
-        if (Result!=ORD_SUCCESS){
-            return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY : MTM_NULL_PARAMETER);
-        }
-        if(strcmp(email,emailCompany)==0){
-            return MTM_RESERVATION_EXISTS;
+
+    SET_FOREACH(Room,roomIterator,getCompanyRooms(company)) {
+        LIST_FOREACH(Order, iterator_order, (*EscapeTechnion)->orders) {
+            if(getRoomIdOrder(iterator_order)==getIdRoom(roomIterator)){
+                return MTM_RESERVATION_EXISTS;
+            }
         }
     }
     companyDestroy(company);
-
     return MTM_SUCCESS;
 }
 
@@ -107,7 +104,9 @@ if(!email || !EscapeTechnion || !working_hour){
     }
     Room room = roomCreate();
     setAdd(getCompanyRooms(company),room);
+    free(room);
     return MTM_SUCCESS;
+
 }
 
 MtmErrorCode EscapeTechnion_remove_room(){
