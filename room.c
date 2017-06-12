@@ -31,8 +31,13 @@ struct room {
 
 /** Allocates a new room */
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return){
+    if(!working_hour){
+        *Return=ROOM_INVALID_PARAMETER;
+        return NULL;
+    }
     Room room = malloc(sizeof(*room));
     if (!room) {
+        *Return=ROOM_OUT_OF_MEMORY;
         return NULL;
     }
     room->id=id;
@@ -46,8 +51,10 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     strcpy(working_hour,room->working_h);
 
     if(!hourWorking(working_hour,room)){
+        *Return=ROOM_INVALID_PARAMETER;
         return NULL;
     }
+    *Return=ROOM_SUCCESS;
     return room;
 }
 

@@ -102,11 +102,19 @@ if(!email || !EscapeTechnion || !working_hour){
     if(company==NULL){
         return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
     }
-    Room room = roomCreate();
+    SET_FOREACH(Room,roomIterator,getCompanyRooms(company)){
+        if(id==getIdRoom(roomIterator)){
+            return MTM_ID_ALREADY_EXIST;
+        }
+    }
+    RoomReturn Return;
+    Room room = roomCreate(id,price,num_ppl,working_hour,difficulty,&Return);
+    if(Return!=ROOM_SUCCESS){
+        return (Return == ROOM_INVALID_PARAMETER ? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
+    }
     setAdd(getCompanyRooms(company),room);
     free(room);
     return MTM_SUCCESS;
-
 }
 
 MtmErrorCode EscapeTechnion_remove_room(){
