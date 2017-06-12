@@ -39,7 +39,7 @@ MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion);
     MTM_INVALID_PARAMETER
     MTM_EMAIL_ALREADY_EXISTS
  */
-MtmErrorCode EscapeTechnion_add_company();
+MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechnion, TechnionFaculty faculty);
 
 /*
     Recieve 1 argument:

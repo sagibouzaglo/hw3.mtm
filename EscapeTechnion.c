@@ -16,6 +16,8 @@
                             return MTM_NULL_PARAMETER;\
                             };
 
+static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
+
 struct escapetechnion {
     int day;
     Set company;
@@ -25,21 +27,22 @@ struct escapetechnion {
 };
 
 MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion){
-   CHECK_NULL(EscapeTechnion);
-   *EscapeTechnion = malloc(sizeof(EscapeTechnion));
-   if(!*EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
+    *EscapeTechnion = malloc(sizeof(EscapeTechnion));
+    if(!*EscapeTechnion){
       return MTM_OUT_OF_MEMORY;
-   }
-   (*EscapeTechnion)->company = setCreate(companyCopy,companyDestroy,companyCompare);
-   (*EscapeTechnion)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
-   (*EscapeTechnion)->orders = listCreate(orderCopy,orderDestroy);
-   (*EscapeTechnion)->profit = malloc(sizeof((int)UNKNOWN)+1);
-   if (!(*EscapeTechnion)->profit){
-      return MTM_OUT_OF_MEMORY;
-   }
-   (*EscapeTechnion)->day=0;
+    }
 
-   return MTM_SUCCESS;
+    (*EscapeTechnion)->company = setCreate(companyCopy,companyDestroy,companyCompare);
+    (*EscapeTechnion)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
+    (*EscapeTechnion)->orders = listCreate(orderCopy,orderDestroy);
+    (*EscapeTechnion)->profit = malloc(sizeof((int)UNKNOWN)+1);
+    if (!(*EscapeTechnion)->profit){
+         return MTM_OUT_OF_MEMORY;
+    }
+    (*EscapeTechnion)->day=0;
+
+    return MTM_SUCCESS;
 }
 
 MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion){
@@ -49,9 +52,24 @@ MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion){
    return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_add_company(){
+MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechnion, TechnionFaculty faculty){
+    if(!email || !EscapeTechnion){
+        return MTM_NULL_PARAMETER;
+    }
+    MtmErrorCode cheak_email = ifEmailAlreadyExists(email,EscapeTechnion);
+    if(cheak_email!=MTM_SUCCESS){
+        return cheak_email;
+    }
+    CompanyReturn Result;
+    companyCreate(email,faculty,&Result);
+    if(Result==COM_OUT_OF_MEMORY){
+        return MTM_OUT_OF_MEMORY;
+    }
+    if(Result==COM_NULL_PARAMETER){
+        return MTM_NULL_PARAMETER;
+    }
 
-   return MTM_SUCCESS;
+    return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_remove_company(){
@@ -96,7 +114,7 @@ MtmErrorCode EscapeTechnion_best_faculty(){
    return MTM_SUCCESS;
 }
 
-MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion){
+static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion){
    CHECK_NULL(email);
    CHECK_NULL(EscapeTechnion);
 
@@ -115,7 +133,9 @@ MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion){
             return MTM_EMAIL_ALREADY_EXISTS;
         }
     }
-
+    return MTM_SUCCESS;
 }
-
+static Company findCompany (char* email,EscapeTechnion *EscapeTechnion){
+    
+}
 
