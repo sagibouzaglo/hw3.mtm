@@ -16,7 +16,7 @@
 #define CHECK_NULL(ptr) if (!ptr){\
                             return MTM_NULL_PARAMETER;\
                             };
-
+static bool IfEmailValid(char* email);
 struct escaper {
     char* email;
     TechnionFaculty Faculty;
@@ -96,3 +96,22 @@ TechnionFaculty getFacultyEscaper(Escaper escaper){
     }
     return escaper->Faculty;
 }
+static bool IfEmailValid(char* email) {
+    if (!email) {
+        return NULL;
+    }
+    int counter = 0;
+    for (int i = 0; i < strlen(email); ++i) {
+        if (*(email + i) == '@') {
+            ++counter;
+            if (counter > 1) {
+                return false;
+            }
+        }
+    }
+    if (counter == 1) {
+        return true;
+    }
+    return false;
+}
+

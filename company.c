@@ -16,6 +16,7 @@
 #include "set.h"
 #include <string.h>
 
+static bool IfEmailValid(char* email);
 
 struct company {
     char* email;
@@ -99,7 +100,7 @@ Set getCompanyRooms(Company company){
     return company->rooms;
 }
 
-bool IfEmailValid(char* email){
+static bool IfEmailValid(char* email){
     if(!email){
         return NULL;
     }

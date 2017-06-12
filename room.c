@@ -69,13 +69,13 @@ void* roomCopy(void* room){
     if (!room) {
         return NULL;
     }
-    RoomReturn* Return;
-    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty,Return);
+    RoomReturn Return;
+    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty,&Return);
 }
 /** Returns true if both ids rooms are identical */
 int roomCompare(void* room1, void* room2) {
     assert(room1 && room2);
-    return (((Room)room1)->id==((Room)room2)->id);
+    return (((Room)room1)->id==((Room)room2)->id)? 0 : 1;
 }
 int getIdRoom(Room room){
     if(!room){
