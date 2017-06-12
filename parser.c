@@ -8,66 +8,16 @@
 
 #include "parser.h"
 
-#define CHECK_NULL(ptr) if (ptr==NULL){\
-return MTM_NULL_PARAMETER;\
-};
 #define CHECK_FILE(ptr) if (ptr==NULL){\
 return MTM_CANNOT_OPEN_FILE;\
 };
 
 MtmErrorCode set_input_output(FILE* input, FILE* output, Check check);
-MtmErrorCode get_input_output(FILE* input, FILE* output);
 MtmErrorCode get_command(FILE* input,FILE* output);
 MtmErrorCode company_command(FILE* input,FILE* output);
 MtmErrorCode room_command(FILE* input,FILE* output);
 MtmErrorCode escaper_command(FILE* input,FILE* output);
 MtmErrorCode report_command(FILE* input,FILE* output);
-
-
-MtmErrorCode tmp (){
-    // setting input and output channels
-    FILE *input = stdin;
-    CHECK_NULL(input);
-    FILE *output = stdout;
-    CHECK_NULL(output);
-    FILE *error_channel = stderr;
-    CHECK_NULL(error_channel);
-    MtmErrorCode check = get_input_output(input,output);
-    while (check == MTM_SUCCESS){
-        check = get_command(input,output);
-        if (check != MTM_SUCCESS){
-            mtmPrintErrorMessage(error_channel,check);
-            check = MTM_SUCCESS;
-        }
-    }
-    return check;
-}
-
-
-MtmErrorCode get_input_output(FILE* input, FILE* output){
-    char buffer[256], buffer2[2];
-    Check check=OK;
-    MtmErrorCode ret_value;
-    fscanf(input," %s",buffer);
-    // check legal statment
-    if (strcmp(buffer,"mtm_escape")){
-        while(check != FAILED){
-            fscanf(input, " %s", buffer2);
-            if (strcmp("-i",buffer2)==0){
-                check = INPUT;
-            }else if (strcmp("-o",buffer2)==0){
-                check = OUTPUT;
-            }else{
-                check = FAILED;
-            }
-            ret_value = set_input_output(input,output,check);
-            if (ret_value != MTM_SUCCESS){
-                return ret_value;
-            };
-        }
-    }
-    return MTM_SUCCESS;
-}
 
 // read the input/output channel and set it
 MtmErrorCode set_input_output(FILE* input, FILE* output, Check check){
