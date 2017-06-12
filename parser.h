@@ -13,6 +13,7 @@ typedef enum check {INPUT=1,
     OUTPUT,
     FAILED,
     OK}Check;
+
 #include <stdio.h>
 #include "mtm_ex3.h"
 #include "list.h"

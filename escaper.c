@@ -25,7 +25,8 @@ struct escaper {
 
 
 /** Allocates a new escaper */
-Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn* Result){
+Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
+                                                    EscaperReturn* Result){
     if(!IfEmailValid(email)){
         *Result= Esc_NULL_PARAMETER;
         return NULL;
@@ -58,7 +59,8 @@ void* escaperCopy(void* escaper){
         return NULL;
     }
     EscaperReturn Result;
-    return escaperCreate(((Escaper)escaper)->email,((Escaper)escaper)->Faculty,((Escaper)escaper)->skill_level, &Result);
+    return escaperCreate(((Escaper)escaper)->email,((Escaper)escaper)->Faculty,
+                         ((Escaper)escaper)->skill_level, &Result);
 }
 
 /** Returns true if both email escaper are identical */
