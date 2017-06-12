@@ -55,7 +55,7 @@ MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechni
     MTM_COMPANY_EMAIL_DOES_NOT_EXIST
     MTM_RESERVATION_EXISTS
  */
-MtmErrorCode EscapeTechnion_remove_company();
+MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion *EscapeTechnion);
 
 /*
  Recieve 6 arguments:

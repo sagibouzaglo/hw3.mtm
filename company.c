@@ -92,6 +92,12 @@ TechnionFaculty getFacultyOfCompuny(Company company){
     }
     return company->Faculty;
 }
+Set getCompanyRooms(Company company){
+    if(!company){
+        return NULL;
+    }
+    return company->rooms;
+}
 
 bool IfEmailValid(char* email){
     if(!email){
