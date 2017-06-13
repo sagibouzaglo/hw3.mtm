@@ -9,13 +9,16 @@
 #ifndef company_h
 #define company_h
 
-#include "order.h"
+#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+
+#include "room.h"
+#include "order.h"
 #include "set.h"
-#include <string.h>
-#include <stdio.h>
+
 
 typedef enum {
     COM_OUT_OF_MEMORY, // You should exit program after this error

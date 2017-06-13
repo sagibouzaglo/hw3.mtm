@@ -17,6 +17,7 @@
                             return MTM_NULL_PARAMETER;\
                             };
 
+#define ERROR -1
 static bool IfEscaperEmailValid(char* email);
 
 struct escaper {
@@ -68,9 +69,8 @@ void* escaperCopy(void* escaper){
 /** Returns true if both email escaper are identical */
 int escaperEquals(void* escaper1, void* escaper2) {
     if( !escaper1 || !escaper2){
-        return NULL;
+        return ERROR;
     }
-    EscaperReturn Result;
     return strcmp(((Escaper)escaper1)->email,((Escaper)escaper2)->email);
 }
 
@@ -89,14 +89,14 @@ char* getEmailEscaper(Escaper escaper,EscaperReturn* Result){
 }
 int getSkillLevel(Escaper escaper){
     if(!escaper){
-        return NULL;
+        return ERROR;
     }
     return escaper->skill_level;
 }
 
 TechnionFaculty getFacultyEscaper(Escaper escaper){
     if(!escaper){
-        return NULL;
+        return ERROR;
     }
     return escaper->Faculty;
 }

@@ -9,12 +9,13 @@
 #ifndef order_h
 #define order_h
 #include <stdio.h>
-#include "mtm_ex3.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "company.h"
+#include "mtm_ex3.h"
+#include"company.h"
 #include "escaper.h"
+
 
 typedef enum {
     ORD_OUT_OF_MEMORY, // You should exit program after this error
@@ -36,9 +37,9 @@ typedef enum {
 
 typedef struct order* Order;
 
-
 /** Allocates a new order */
-Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result);
+Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company,
+                                               int room_id,OrderReturn* Result);
 
 /** Frees an existing order object */
 void orderDestroy(void* order);
