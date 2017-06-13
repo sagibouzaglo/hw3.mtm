@@ -38,7 +38,7 @@ typedef struct order* Order;
 
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result);
+Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result);
 
 /** Frees an existing order object */
 void orderDestroy(void* order);
@@ -54,7 +54,7 @@ int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result);
 
 int getPriceOrder(Order order);
 
-int getTimeOrder(Order order);
+char* getTimeOrder(Order order);
 
 int getNumPOrder(Order order);
 

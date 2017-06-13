@@ -14,11 +14,13 @@
 #include "escaper.h"
 #include "room.h"
 #define AFTER_DISCOUNT 0.75
+#define HOURS_DAY 23
 
-
-
+static bool hourOrder (char* time, Order order);
 struct order {
-    int time;
+    char* time;
+    int day;
+    int hour;
     Escaper escaper;
     int num_ppl;
     int room_id;
@@ -28,7 +30,7 @@ struct order {
 
 
 /** Allocates a new order */
-Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
+Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
     if (!escaper || !company) {
         *Result= ORD_NULL_PARAMETER;
         return NULL;
@@ -38,8 +40,12 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
         *Result= ORD_OUT_OF_MEMORY;
         return NULL;
     }
+    order->time=malloc((sizeof(char)*strlen(time))+1);
+    if(!order->time){
+        return NULL;
+    }
     order->company=company;
-    order->time = time;
+    strcmp(time,order->time);
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
@@ -89,7 +95,7 @@ int getPriceOrder(Order order){
     return order->tot_price;
 }
 
-int getTimeOrder(Order order) {
+char* getTimeOrder(Order order) {
         if (!order) {
             return NULL;
         }
@@ -120,6 +126,23 @@ Company getCompanyOrder(Order order) {
         return order->company;
     }
 
-
+static bool hourOrder (char* time, Order order){
+    assert(room && working_hour);
+    for(int i=0;i<strlen(time);++i){
+        if(*(time + i) == '-'){
+            *(time+i)=NULL;
+            order->day=atol(time);
+            ++i;
+            order->hour=atol(time+i);
+            break;
+        }
+    }
+    if(order->day<0 || order->hour <0 || order->hour >HOURS_DAY ){
+        order->hour=0;
+        order->day=0;
+        return false;
+    }
+    return true;
+}
 
 
