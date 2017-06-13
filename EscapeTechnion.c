@@ -16,7 +16,7 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
-static Room findRoom(int roomId,EscapeTechnion *EscapeTechnion);
+static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
 static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
@@ -185,8 +185,9 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTec
     return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
-                                       EscapeTechnion *EscapeTechnion){
+MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty,
+                                                int id,int time, int num_ppl,
+                                            EscapeTechnion *EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
     Escaper escaper = findEscaper(email,EscapeTechnion);
@@ -196,16 +197,6 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     OrderReturn Result;
     listInsertFirst((*EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
                                                          ,company,id, Result));
-
-   return MTM_SUCCESS;
-}
-
-MtmErrorCode EscapeTechnion_day(){
-
-   return MTM_SUCCESS;
-}
-
-MtmErrorCode EscapeTechnion_best_faculty(){
 
    return MTM_SUCCESS;
 }
@@ -274,8 +265,23 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,
     return MTM_SUCCESS;
 }
 
-static Room findRoom(int roomId,EscapeTechnion *EscapeTechnion){
-   }
+static Room findRoom(int roomId,TechnionFaculty Faculty,
+                                                EscapeTechnion *EscapeTechnion){
+    SET_FOREACH(Company, company_iterator, (*EscapeTechnion)->company){
+        TechnionFaculty tmp=getFacultyOfCompuny(company_iterator);
+        if (tmp == Faculty){
+            Set rooms = getCompanyRooms(company_iterator);
+            SET_FOREACH(Room, room_iterator,rooms ){
+                int id = getIdRoom(room_iterator);
+                if(id == roomId){
+                    return room_iterator;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
 static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion){
     EscaperReturn Result;
     LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
@@ -299,6 +305,10 @@ static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order ord
         order->tot_price = num_ppl * (getPriceRoom(room));
     }
 }
+
+/**
+ 
+ */
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion *EscapeTechnion){
     List tmp1=listCreate(orderCopy,orderDestroy),
                     tmp2=listCreate(orderCopy,orderDestroy);
@@ -315,18 +325,25 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion *EscapeTechnion){
     (*EscapeTechnion)->day++;
 }
 
+/**
+ 
+ */
 static MtmErrorCode order_filter(){
     return MTM_SUCCESS;
 }
+
+
+
 /**
 
  */
-
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeTechnion){
     Escaper escaper = getEscaperOrder(order);
     Company company = getCompanyOrder(order);
+    TechnionFaculty Faculty = getFacultyEscaper(escaper),
+                companyFaculty = getFacultyOfCompany(company);
     int roomId = getRoomIdOrder(order);
-    Room Room = findRoom(roomId, EscapeTechnion);
+    Room Room = findRoom(roomId, companyFaculty,EscapeTechnion);
     EscaperReturn *escaperResult;
     char *email = getEmailEscaper(escaper, escaperResult),
                     *companyEmail = getEmailCompany(company);
@@ -334,12 +351,7 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeT
                     time = getTimeOrder(order),
                         difficulty=getDifficultyRoom(Room),
     num_ppl = getNumPOrder(order), tot_price= getPriceOrder(order);
-    TechnionFaculty Faculty = getFacultyEscaper(escaper),
-                    companyFaculty = getFacultyOfCompany(company);
-    
     mtmPrintOrder(output,email,skill_level,Faculty,companyEmail,companyFaculty,
                         id,time,difficulty,num_ppl,tot_price);
-    
-
     return MTM_SUCCESS;
 }
