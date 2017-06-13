@@ -9,7 +9,7 @@
 #include "mtm_ex3.h"
 
 void mtmPrintErrorMessage(FILE* errorChannel, MtmErrorCode code){
-    fprintf(errorChannel,)
+    fprintf(errorChannel)
 }
 
 
