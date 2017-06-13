@@ -64,4 +64,9 @@ Escaper getEscaperOrder(Order order);
 
 Company getCompanyOrder(Order order);
 
+int getHourOrder(Order order);
+
+int compareOrders(void* order1,void* order2);
+
+
 #endif /* order_h */

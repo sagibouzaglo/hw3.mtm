@@ -16,6 +16,8 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
+static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
 static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
@@ -35,7 +37,6 @@ struct escapetechnion {
 };
 
 MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion){
-    CHECK_NULL(EscapeTechnion);
     *EscapeTechnion = malloc(sizeof(EscapeTechnion));
     if(!*EscapeTechnion){
       return MTM_OUT_OF_MEMORY;
@@ -162,7 +163,8 @@ MtmErrorCode EscapeTechnion_add_escaper(char* email,
     return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTechnion){
+MtmErrorCode EscapeTechnion_remove_escaper(char* email,
+                                                EscapeTechnion *EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
     Escaper escaper = findEscaper(email,EscapeTechnion);
@@ -305,35 +307,45 @@ static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order ord
 /**
 
  */
-MtmErrorCode technion_report_day(FILE* output, EscapeTechnion *EscapeTechnion){
-    List tmp1=listCreate(orderCopy,orderDestroy),
-                    tmp2=listCreate(orderCopy,orderDestroy);
-//  tmp1= listFilter((*EscapeTechnion)->orders, <#FilterListElement filterElement#>, <#ListFilterKey key#>)
-//  tmp2= listFilter((*EscapeTechnion)->orders, <#FilterListElement filterElement#>, <#ListFilterKey key#>)
-    listDestroy((*EscapeTechnion)->orders);
-    (*EscapeTechnion)->orders=tmp2;
-    Order order= listGetCurrent((*EscapeTechnion)->orders);
-    LIST_FOREACH(Order, Order_iterator, tmp1){
-        print_order(output,order,EscapeTechnion);
-        order=listGetNext((*EscapeTechnion)->orders);
+MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
+    List currentDayOrders = listFilter(EscapeTechnion->orders,
+                                    orderDayEqualFilter, EscapeTechnion->day);
+    List newOrdersList = listFilter(EscapeTechnion->orders,
+                                    orderDayNotEqualFilter, EscapeTechnion->day);
+    listDestroy((EscapeTechnion)->orders);
+    (EscapeTechnion)->orders=newOrdersList;
+    listSort(currentDayOrders, compareOrders);
+    LIST_FOREACH(Order, Order_iterator, currentDayOrders){
+        print_order(output,Order_iterator,EscapeTechnion);
     }
-    listDestroy(tmp1);
-    (*EscapeTechnion)->day++;
+    listDestroy(currentDayOrders);
+    (EscapeTechnion)->day++;
 }
 
 /**
 
  */
-static MtmErrorCode order_filter(){
-    return MTM_SUCCESS;
+static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
+    if (getOrderDay(order)==(int)day){
+        return true;
+    }
+    
+    return false;
 }
 
-
+static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
+    if (getOrderDay(order)!=(int)day){
+        return true;
+    }
+    return false;
+}
 
 /**
 
  */
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeTechnion){
+static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
     Escaper escaper = getEscaperOrder(order);
     Company company = getCompanyOrder(order);
     TechnionFaculty Faculty = getFacultyEscaper(escaper),
@@ -344,7 +356,7 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeT
     char *email = getEmailEscaper(escaper, escaperResult),
                     *companyEmail = getEmailCompany(company);
     int skill_level= getSkillLevel(escaper),id = getIdRoom(Room),
-                    time = getTimeOrder(order),
+                    time = getHourOrder(order),
                         difficulty=getDifficultyRoom(Room),
     num_ppl = getNumPOrder(order), tot_price= getPriceOrder(order);
     mtmPrintOrder(output,email,skill_level,Faculty,companyEmail,companyFaculty,
