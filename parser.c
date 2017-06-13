@@ -104,7 +104,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechn
     if (strcmp(buffer,"report")==0){
         fscanf(input, " %s", buffer);
         if (strcmp(buffer,"day")==0){
-            technion_report_day(EscapeTechnion);
+            technion_report_day(output, EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
             technion_report_best(EscapeTechnion);
         }

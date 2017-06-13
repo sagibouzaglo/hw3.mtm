@@ -45,7 +45,7 @@ int companyCompare(void* company1, void* company2);
 
 char* getEmailCompany(Company company);
 
-TechnionFaculty getFacultyOfCompuny(Company company);
+TechnionFaculty getFacultyOfCompany(Company company);
 
 Set getCompanyRooms(Company company);
 

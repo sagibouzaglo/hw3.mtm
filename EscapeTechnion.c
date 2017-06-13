@@ -20,6 +20,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechn
 static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion);
+static MtmErrorCode print_order(FILE *output,EscapeTechnion *EscapeTechnion);
 
 struct escapetechnion {
     int day;
@@ -229,15 +230,17 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,
     return MTM_SUCCESS;
 }
 
-MtmErrorCode technion_report_day(EscapeTechnion *EscapeTechnion){
+MtmErrorCode technion_report_day(FILE* output, EscapeTechnion *EscapeTechnion){
     List tmp1=listCreate(orderCopy,orderDestroy),
                     tmp2=listCreate(orderCopy,orderDestroy);
 //  tmp1= listFilter((*EscapeTechnion)->orders, <#FilterListElement filterElement#>, <#ListFilterKey key#>)
 //  tmp2= listFilter((*EscapeTechnion)->orders, <#FilterListElement filterElement#>, <#ListFilterKey key#>)
     listDestroy((*EscapeTechnion)->orders);
     (*EscapeTechnion)->orders=tmp2;
-//  LIST_FOREACH(<#type#>, <#iterator#>, tmp1);
-//      listDestroy(tmp1);
+LIST_FOREACH(Order, Order_iterator, tmp1){
+    print_order(output,EscapeTechnion);
+    }
+listDestroy(tmp1);
     (*EscapeTechnion)->day++;
 }
                                    
@@ -249,18 +252,24 @@ static MtmErrorCode order_filter(){
  
  */
 
-static MtmErrorCode order_iterator(EscapeTechnion *EscapeTechnion){
-    mtmPrintOrder(output,(*EscapeTechnion)->orders->escaper->*email,
-                        (*EscapeTechnion)->orders->escaper->skill,
-                        (*EscapeTechnion)->orders->escaper->Faculty,
-                        (*EscapeTechnion)->orders->comapny->*email,
-                        (*EscapeTechnion)->orders->comapny->Faculty,
-                        (*EscapeTechnion)->orders->room->id,
-                        (*EscapeTechnion)->orders->time,
-                        (*EscapeTechnion)->orders->room->difficulty,
-                        (*EscapeTechnion)->orders->num_ppl,
-                        (*EscapeTechnion)->orders->tot_price);
-    listGetNext(<#List list#>);
+static MtmErrorCode print_order(FILE *output,EscapeTechnion *EscapeTechnion){
+    Order order=listGetCurrent((*EscapeTechnion)->orders);
+    Escaper escaper = getEscaperOrder(order);
+    Company company = getCompanyOrder(order);
+    Room Room = getRoomIdOrder(order);
+    EscaperReturn *escaperResult;
+    char *email = getEmailEscaper(escaper, escaperResult),
+                    *companyEmail = getEmailCompany(company);
+    int skill_level= getSkillLevel(escaper),id = getIdRoom(Room),
+                    time = getTimeOrder(order),
+                        difficulty=getDifficultyRoom(Room),
+    num_ppl = getNumPOrder(order), tot_price= getPriceOrder(order);
+    TechnionFaculty Faculty = getFacultyEscaper(escaper),
+                    companyFaculty = getFacultyOfCompany(company);
+    
+    mtmPrintOrder(output,email,skill_level,Faculty,companyEmail,companyFaculty,
+                        id,time,difficulty,num_ppl,tot_price);
+    listGetNext((*EscapeTechnion)->orders);
 
     return MTM_SUCCESS;
 }

@@ -120,7 +120,7 @@ MtmErrorCode EscapeTechnion_best_faculty();
 /**
  
  */
-MtmErrorCode technion_report_day(EscapeTechnion *EscapeTechnion);
+MtmErrorCode technion_report_day(FILE* output,EscapeTechnion *EscapeTechnion);
 
 /**
  

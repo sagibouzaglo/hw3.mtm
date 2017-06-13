@@ -82,6 +82,14 @@ int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result){
     return strcmp(getEmailEscaper(order1->escaper,Result),getEmailEscaper(order1->escaper,Result));
 }
 
+int getPriceOrder(Order order){
+    if (!order) {
+        return NULL;
+    }
+    return order->tot_price;
+}
+
+
 int getTimeOrder(Order order) {
         if (!order) {
             return NULL;

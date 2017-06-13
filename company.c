@@ -87,7 +87,7 @@ char* getEmailCompany(Company company){
     return emailReturn;
 }
 
-TechnionFaculty getFacultyOfCompuny(Company company){
+TechnionFaculty getFacultyOfCompany(Company company){
     if(!company){
         return NULL;
     }
