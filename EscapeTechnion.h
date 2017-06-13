@@ -21,7 +21,7 @@ typedef struct escapetechnion* EscapeTechnion;
 /*
 
  */
-MtmErrorCode create_EscapeTechnion(EscapeTechnion EscapeTechnion);
+MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
 
 /*
 
@@ -107,8 +107,9 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion EscapeTech
 /*
 
  */
-MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
-                                      EscapeTechnion EscapeTechnion);
+MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty,
+                                            int id,char* time, int num_ppl,
+                                                EscapeTechnion EscapeTechnion);
 
 /**
  

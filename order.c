@@ -124,15 +124,16 @@ int getPriceOrder(Order order){
 }
 
 void putPriceOrder(Order order,int tot_p){
-
     order->tot_price=tot_p;
 }
+
 char* getTimeOrder(Order order) {
-        if (!order) {
-            return NULL;
-        }
-        return order->time;
+    if (!order) {
+        return NULL;
     }
+    return order->time;
+}
+
 int getHourOrder(Order order) {
     if (!order) {
         return NULL;
@@ -141,43 +142,41 @@ int getHourOrder(Order order) {
 }
 
 int getNumPOrder(Order order) {
-        if (!order) {
-            return NULL;
-        }
-        return order->num_ppl;
+    if (!order) {
+        return NULL;
     }
+    return order->num_ppl;
+}
+
 int getRoomIdOrder(Order order) {
-        if (!order) {
-            return NULL;
-        }
-        return order->room_id;
+    if (!order) {
+        return NULL;
     }
+    return order->room_id;
+}
+
 Escaper getEscaperOrder(Order order) {
-        if (!order) {
-            return NULL;
-        }
-        return order->escaper;
+    if (!order) {
+        return NULL;
     }
+    return order->escaper;
+}
+
 Company getCompanyOrder(Order order) {
-        if (!order) {
-            return NULL;
-        }
-        return order->company;
+    if (!order) {
+        return NULL;
     }
-int getDayOrder(Order order) {
+    return order->company;
+}
+
+int getDayOrder(Order order){
     if (!order) {
         return NULL;
     }
     return order->day;
 }
-int getHourOrder(Order order) {
-    if (!order) {
-        return NULL;
-    }
-    return order->hour;
-}
+
 static bool hourOrder (char* time, Order order){
-    assert(room && working_hour);
     for(int i=0;i<strlen(time);++i){
         if(*(time + i) == '-'){
             *(time+i)=NULL;
