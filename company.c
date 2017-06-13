@@ -43,7 +43,7 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
-    company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); //<---void* in room.c
+    company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); ///<-void* in room.c
     if(!company->rooms){
         *Result= COM_OUT_OF_MEMORY;
         return  NULL;
@@ -93,6 +93,7 @@ TechnionFaculty getFacultyOfCompany(Company company){
     }
     return company->Faculty;
 }
+
 Set getCompanyRooms(Company company){
     if(!company){
         return NULL;
