@@ -33,11 +33,11 @@ MtmErrorCode company_command(FILE* input,FILE* output,
             fscanf(input, " %s %d", email,&tmp);
             assert(*email && tmp);
             faculty=(TechnionFaculty)tmp;
-            technion_company_add(email,faculty,EscapeTechnion);
+            EscapeTechnion_add_company(email,EscapeTechnion,faculty);
         }else if (strcmp(buffer,"remove")==0){
             fscanf(input, " %s", email);
             assert(*email);
-            technion_company_remove(email,EscapeTechnion);
+            EscapeTechnion_remove_company(email,EscapeTechnion);
         }
     }
     return MTM_SUCCESS;
@@ -61,14 +61,14 @@ MtmErrorCode room_command(FILE* input,FILE* output,
                                                        working_hrs,&difficulty);
             assert(*email && id && price && num_ppl &&
                                         *working_hrs && difficulty);
-            technion_room_add(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion);
+            EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion);
         }else if (strcmp(buffer,"remove")==0){
             TechnionFaculty faculty;
             int tmp=0;
             fscanf(input, " %d %d", &tmp,&id);
             assert(tmp && id);
             faculty=(TechnionFaculty)tmp;
-            technion_room_remove(faculty,id,EscapeTechnion);
+            EscapeTechnion_remove_room(faculty,id,EscapeTechnion);
         }
     }
     return MTM_SUCCESS;
@@ -92,17 +92,17 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             fscanf(input, " %s %d %d", email,&tmp, &skill_level);
             assert(*email && tmp && skill_level);
             faculty=(TechnionFaculty)tmp;
-            technion_escaper_add(email,faculty,skill_level,EscapeTechnion);
+            EscapeTechnion_add_escaper(email,faculty,skill_level,EscapeTechnion);
         }else if (strcmp(buffer,"remove")==0){
             fscanf(input, " %s", email);
             assert(*email);
-            technion_escaper_remove(email,EscapeTechnion);
+            EscapeTechnion_remove_escaper(email,EscapeTechnion);
         }else if (strcmp(buffer,"order")==0){
             int id=0,time=0;
             fscanf(input, " %s %d %d %d %d", email,&tmp, &id, &time, &num_ppl);
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
-            technion_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion);
+            EscapeTechnion_add_order(email,faculty,id,time,num_ppl,EscapeTechnion);
         }else if (strcmp(buffer,"order")==0){
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
