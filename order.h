@@ -52,6 +52,8 @@ bool orderEqualsRoom(Order order1, Order order2);
 /** Returns true if both Escaper order and time are identical */
 int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result);
 
+int getPriceOrder(Order order);
+
 int getTimeOrder(Order order);
 
 int getNumPOrder(Order order);
