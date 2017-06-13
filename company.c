@@ -6,17 +6,11 @@
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
 
-
-#include "company.h"
-#include "order.h"
-#include "room.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-#include "set.h"
 #include <string.h>
+#include "company.h"
 
-static bool IfEmailValid(char* email);
+#define ERROR -1
+static bool IfCompanyEmailValid(char* email);
 
 struct company {
     char* email;
@@ -27,7 +21,7 @@ struct company {
 
 /** Allocates a new company */
 Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
-    if(!IfEmailValid(email)){
+    if(!IfCompanyEmailValid(email)){
         *Result= COM_NULL_PARAMETER;
         return NULL;
     }
@@ -69,10 +63,8 @@ void* companyCopy(void* company){
 /** Returns true if both email company are identical */
 int companyCompare(void* company1, void* company2) {
     if(!company1 || !company2){
-        NULL;
-        return NULL;
+        return ERROR;
     }
-    CompanyReturn Result;
     return strcmp(((Company)company1)->email,((Company)company2)->email);
 }
 char* getEmailCompany(Company company){
@@ -89,7 +81,7 @@ char* getEmailCompany(Company company){
 
 TechnionFaculty getFacultyOfCompany(Company company){
     if(!company){
-        return NULL;
+        return UNKNOWN;
     }
     return company->Faculty;
 }
@@ -101,7 +93,7 @@ Set getCompanyRooms(Company company){
     return company->rooms;
 }
 
-static bool IfEmailValid(char* email){
+static bool IfCompanyEmailValid(char* email){
     if(!email){
         return NULL;
     }

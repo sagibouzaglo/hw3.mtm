@@ -5,17 +5,17 @@
 //  Created by sagi bouzaglo on 27/05/2017.
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <string.h>
 
 #include "room.h"
 #include "company.h"
 #include "order.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
 #include "set.h"
-#include <string.h>
 #define HOURS_DAY 24
-
+#define ERROR -1
 static bool hourWorking (char* working_hour, Room room);
 
 struct room {
@@ -79,41 +79,41 @@ int roomCompare(void* room1, void* room2) {
 }
 int getIdRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->id;
 }
 
 int getPriceRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->price;
 }
 
 int getNumPplRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->num_ppl;
 }
 
 int getDifficultyRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->difficulty;
 }
 
 int getOpenHRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->open_hour;
 }
 int getCloseHRoom(Room room){
     if(!room){
-        return NULL;
+        return ERROR;
     }
     return room->close_hour;
 }
@@ -122,10 +122,10 @@ static bool hourWorking (char* working_hour, Room room){
     assert(room && working_hour);
     for(int i=0;i<strlen(working_hour);++i){
         if(*(working_hour + i) == '-'){
-            *(working_hour+i)=NULL;
-            room->open_hour=atol(working_hour);
+            working_hour[i]='\0';
+            room->open_hour=(int)atol(working_hour);
             ++i;
-            room->close_hour=atol(working_hour+i);
+            room->close_hour=(int)atol(working_hour+i);
             break;
         }
     }

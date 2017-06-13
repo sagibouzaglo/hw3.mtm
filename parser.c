@@ -20,7 +20,7 @@
  * check the type of "company" command and call the relevant function.
  */
 MtmErrorCode company_command(FILE* input,FILE* output,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     char buffer[MAX],email[MAX];
     fscanf(input, " %s", buffer);
     assert(buffer);
@@ -47,7 +47,7 @@ MtmErrorCode company_command(FILE* input,FILE* output,
  * check the type of "room" command and call the relevant function.
  */
 MtmErrorCode room_command(FILE* input,FILE* output,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     char buffer[MAX];
     int id=0;
     fscanf(input, " %s", buffer);
@@ -78,7 +78,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
  *   check the type of "escaper" command and call the relevant function.
  */
 MtmErrorCode escaper_command(FILE* input,FILE* output,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     char buffer[256],email[256];
     int tmp=0,num_ppl=0;
     TechnionFaculty faculty;
@@ -117,7 +117,7 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
  *   check the type of "report" command and call the relevant function.
  */
 MtmErrorCode report_command(FILE* input,FILE* output,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     char buffer[256];
     fscanf(input, " %s", buffer);
     assert(buffer);
@@ -136,7 +136,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,
  *   get the type of command and call for the relecant function
  */
 MtmErrorCode get_command(FILE* input,FILE* output,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     char buffer[256];
     fscanf(input, " %s", buffer);
     assert(buffer);

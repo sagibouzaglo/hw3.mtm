@@ -42,11 +42,11 @@ typedef struct room* Room;
  * roomCreate - Allocates a new room, and return the room type
  *
  *
- * @param id -
- * @param price-
- * @param num_ppl-
- * @param working_hour-
- * @param difficulty-
+ * @param id - room id.
+ * @param price - price for ordering the room.
+ * @param num_ppl - recommended number of people in room
+ * @param working_hour - room working hours
+ * @param difficulty - diffuculty of room.
  */
 
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return);
