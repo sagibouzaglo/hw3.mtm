@@ -25,6 +25,7 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTec
 static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion);
 static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result);
 
+
 struct escapetechnion {
     int day;
     Set company;
