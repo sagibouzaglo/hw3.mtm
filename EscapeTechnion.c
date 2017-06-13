@@ -193,8 +193,7 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     }
     OrderReturn Result;
     listInsertFirst((*EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
-                                                         ,company,id, Result));
-
+                                   ,findCompany(email,EscapeTechnion),id, &Result));
    return MTM_SUCCESS;
 }
 
@@ -263,12 +262,6 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,
             return MTM_RESERVATION_EXISTS;
         }
     }
-        LIST_FOREACH(Order, iterator_order, (*EscapeTechnion)->orders) {
-            if(roomCompare((Room)getRoomIdOrder(iterator_order),
-                           (Room)getIdRoom(room))){
-                return MTM_RESERVATION_EXISTS;
-            }
-        }
     return MTM_SUCCESS;
 }
 
