@@ -64,4 +64,9 @@ Escaper getEscaperOrder(Order order);
 
 Company getCompanyOrder(Order order);
 
+void putPriceOrder(Order order,int tot_p);
+
+int getDayOrder(Order order);
+
+int getHourOrder(Order order);
 #endif /* order_h */

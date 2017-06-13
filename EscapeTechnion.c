@@ -23,7 +23,7 @@ static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion);
 static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion);
-static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result);
+static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result);
 
 
 struct escapetechnion {
@@ -197,10 +197,19 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
     OrderReturn Result;
+    Room room = findRoom(id,faculty,EscapeTechnion);
+    if(!room){
+        return MTM_ID_DOES_NOT_EXIST;
+    }
 
+    Order order=orderCreate(time, escaper, num_ppl,
+                            findCompany(email,EscapeTechnion),id, &Result);
+    CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order,Result);
     listInsertFirst((*EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
                                    ,findCompany(email,EscapeTechnion),id, &Result));
-   return MTM_SUCCESS;
+    orderDestroy(order);
+
+    return MTM_SUCCESS;
 }
 
 static MtmErrorCode ifEmailAlreadyExists(char* email,
@@ -291,14 +300,14 @@ static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion){
     }
     return NULL;
 }
-static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
+static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result) {
     assert(escaper && profitFaculty && room && order);
     if (getFacultyOfCompany(getCompanyOrder(order)) ==
         getFacultyEscaper(getEscaperOrder(order))) {
-        order->tot_price = (int) (num_ppl * (getPriceRoom(room)) *
-                                  AFTER_DISCOUNT);
+        putPriceOrder(order,(int) (num_ppl * (getPriceRoom(room)) *
+                                  AFTER_DISCOUNT));
     } else {
-        order->tot_price = num_ppl * (getPriceRoom(room));
+        putPriceOrder(order,num_ppl * (getPriceRoom(room)));
     }
 }
 
@@ -350,4 +359,25 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeT
     mtmPrintOrder(output,email,skill_level,Faculty,companyEmail,companyFaculty,
                         id,time,difficulty,num_ppl,tot_price);
     return MTM_SUCCESS;
+}
+static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion *EscapeTechnion,int hour,int day){
+    LIST_FOREACH(Order,iteratorOrder,(*EscapeTechnion)->orders){
+        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
+                && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+            return false;
+        }
+        if(getOpenHRoom(findRoom(id,faculty,EscapeTechnion))<hour || getCloseHRoom(findRoom(id,faculty,EscapeTechnion))<hour){
+            return false;
+        }
+    }
+    return true;
+}
+static bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion *EscapeTechnion,int hour,int day){
+    LIST_FOREACH(Order,iteratorOrder,(*EscapeTechnion)->orders){
+        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
+           && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+            return false;
+        }
+    }
+    return true;
 }

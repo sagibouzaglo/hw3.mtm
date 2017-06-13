@@ -46,6 +46,9 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int
     }
     order->company=company;
     strcmp(time,order->time);
+    if(!hourOrder (time,order)){
+        return NULL;
+    }
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
@@ -95,6 +98,10 @@ int getPriceOrder(Order order){
     return order->tot_price;
 }
 
+void putPriceOrder(Order order,int tot_p){
+
+    order->tot_price=tot_p;
+}
 char* getTimeOrder(Order order) {
         if (!order) {
             return NULL;
@@ -125,7 +132,18 @@ Company getCompanyOrder(Order order) {
         }
         return order->company;
     }
-
+int getDayOrder(Order order) {
+    if (!order) {
+        return NULL;
+    }
+    return order->day;
+}
+int getHourOrder(Order order) {
+    if (!order) {
+        return NULL;
+    }
+    return order->hour;
+}
 static bool hourOrder (char* time, Order order){
     assert(room && working_hour);
     for(int i=0;i<strlen(time);++i){
