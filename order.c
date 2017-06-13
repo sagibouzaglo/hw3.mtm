@@ -89,7 +89,6 @@ int getPriceOrder(Order order){
     return order->tot_price;
 }
 
-
 int getTimeOrder(Order order) {
         if (!order) {
             return NULL;
