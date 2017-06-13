@@ -16,7 +16,7 @@
 #include "set.h"
 #include <string.h>
 
-static bool IfEmailValid(char* email);
+static bool IfCompanyEmailValid(char* email);
 
 struct company {
     char* email;
@@ -27,7 +27,7 @@ struct company {
 
 /** Allocates a new company */
 Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
-    if(!IfEmailValid(email)){
+    if(!IfCompanyEmailValid(email)){
         *Result= COM_NULL_PARAMETER;
         return NULL;
     }
@@ -101,7 +101,7 @@ Set getCompanyRooms(Company company){
     return company->rooms;
 }
 
-static bool IfEmailValid(char* email){
+static bool IfCompanyEmailValid(char* email){
     if(!email){
         return NULL;
     }

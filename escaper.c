@@ -17,6 +17,8 @@
                             return MTM_NULL_PARAMETER;\
                             };
 
+static bool IfEscaperEmailValid(char* email);
+
 struct escaper {
     char* email;
     TechnionFaculty Faculty;
@@ -27,7 +29,7 @@ struct escaper {
 /** Allocates a new escaper */
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
                                                     EscaperReturn* Result){
-    if(!IfEmailValid(email)){
+    if(!IfEscaperEmailValid(email)){
         *Result= Esc_INVALID_PARAMETER;
         return NULL;
     }
@@ -98,7 +100,7 @@ TechnionFaculty getFacultyEscaper(Escaper escaper){
     }
     return escaper->Faculty;
 }
-bool IfEmailValid(char* email) {
+static bool IfEscaperEmailValid(char* email) {
     if (!email) {
         return NULL;
     }
