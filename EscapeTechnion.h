@@ -89,7 +89,7 @@ MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
  MTM_ID_DOES_NOT_EXIST
  MTM_RESERVATION_EXISTS
  */
-MtmErrorCode EscapeTechnion_remove_room();
+MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id, EscapeTechnion *EscapeTechnion);
 
 /*
 
