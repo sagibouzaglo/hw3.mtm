@@ -28,6 +28,31 @@ struct order {
     int tot_price;
 };
 
+int compareOrders(void* order1,void* order2){
+    if (((Order)order1)->hour > ((Order)order2)->hour){
+        return 1;
+    } else if (((Order)order1)->hour < ((Order)order2)->hour){
+        return -1;
+    } else{
+        TechnionFaculty Faculty1 = getFacultyOfCompany(((Order)order1)->company);
+        TechnionFaculty Faculty2 = getFacultyOfCompany(((Order)order1)->company);
+        if (Faculty1 > Faculty2){
+            return 1;
+        }else if (Faculty1 < Faculty2){
+            return -1;
+        }else{
+            if (((Order)order1)->room_id >((Order)order2)->room_id){
+                return 1;
+            }else if (((Order)order1)->room_id < ((Order)order2)->room_id){
+                return -1;
+            }else{
+                return 0;
+            }
+        }
+    }
+    
+    
+}
 
 /** Allocates a new order */
 Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
@@ -108,6 +133,13 @@ char* getTimeOrder(Order order) {
         }
         return order->time;
     }
+int getHourOrder(Order order) {
+    if (!order) {
+        return NULL;
+    }
+    return order->hour;
+}
+
 int getNumPOrder(Order order) {
         if (!order) {
             return NULL;

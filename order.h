@@ -69,4 +69,8 @@ void putPriceOrder(Order order,int tot_p);
 int getDayOrder(Order order);
 
 int getHourOrder(Order order);
+
+int compareOrders(void* order1,void* order2);
+
+
 #endif /* order_h */

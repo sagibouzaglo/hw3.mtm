@@ -19,13 +19,15 @@
 #define MAX 256
 int main(int argc, const char * argv[]) {
     // setting input and output channels
+    EscapeTechnion *EscapeTechnion = NULL;
+    create_EscapeTechnion(EscapeTechnion);
     FILE *input = stdin;
     CHECK_NULL(input);
     FILE *output = stdout;
     CHECK_NULL(output);
     char buffer[MAX];
     MtmErrorCode error_code;
-    EscapeTechnion *EscapeTechnion;
+    
     if (argc <=5){
         switch (argc){
             case 1:
