@@ -18,8 +18,8 @@
                             };
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
-static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion *EscapeTechnion);
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion *EscapeTechnion);
+static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
+static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
 static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
@@ -264,9 +264,9 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,
 }
 
 static Room findRoom(int roomId,TechnionFaculty Faculty,
-                                                EscapeTechnion *EscapeTechnion){
-    SET_FOREACH(Company, company_iterator, (*EscapeTechnion)->company){
-        TechnionFaculty tmp=getFacultyOfCompuny(company_iterator);
+                                                EscapeTechnion EscapeTechnion){
+    SET_FOREACH(Company, company_iterator, EscapeTechnion->company){
+        TechnionFaculty tmp = getFacultyOfCompany(company_iterator);
         if (tmp == Faculty){
             Set rooms = getCompanyRooms(company_iterator);
             SET_FOREACH(Room, room_iterator,rooms ){
@@ -310,9 +310,11 @@ static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order ord
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     List currentDayOrders = listFilter(EscapeTechnion->orders,
-                                    orderDayEqualFilter, EscapeTechnion->day);
+                                                orderDayEqualFilter,
+                                                (void*)&EscapeTechnion->day);
     List newOrdersList = listFilter(EscapeTechnion->orders,
-                                    orderDayNotEqualFilter, EscapeTechnion->day);
+                                            orderDayNotEqualFilter,
+                                                (void*)&EscapeTechnion->day);
     listDestroy((EscapeTechnion)->orders);
     (EscapeTechnion)->orders=newOrdersList;
     listSort(currentDayOrders, compareOrders);
@@ -320,7 +322,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
         print_order(output,Order_iterator,EscapeTechnion);
     }
     listDestroy(currentDayOrders);
-    (EscapeTechnion)->day++;
+    EscapeTechnion->day++;
 }
 
 /**
@@ -347,18 +349,25 @@ static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     Escaper escaper = getEscaperOrder(order);
+    assert(escaper);
     Company company = getCompanyOrder(order);
+    assert(company);
     TechnionFaculty Faculty = getFacultyEscaper(escaper),
                 companyFaculty = getFacultyOfCompany(company);
     int roomId = getRoomIdOrder(order);
+    assert(roomId);
     Room Room = findRoom(roomId, companyFaculty,EscapeTechnion);
+    assert(Room);
     EscaperReturn *escaperResult;
     char *email = getEmailEscaper(escaper, escaperResult),
                     *companyEmail = getEmailCompany(company);
+    assert(*email && *companyEmail);
     int skill_level= getSkillLevel(escaper),id = getIdRoom(Room),
                     time = getHourOrder(order),
                         difficulty=getDifficultyRoom(Room),
-    num_ppl = getNumPOrder(order), tot_price= getPriceOrder(order);
+                                    num_ppl = getNumPOrder(order),
+                                            tot_price= getPriceOrder(order);
+    assert(skill_level && time && difficulty && num_ppl && tot_price);
     mtmPrintOrder(output,email,skill_level,Faculty,companyEmail,companyFaculty,
                         id,time,difficulty,num_ppl,tot_price);
     return MTM_SUCCESS;
