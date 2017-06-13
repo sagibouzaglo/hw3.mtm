@@ -338,7 +338,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
 
  */
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
-    if (getOrderDay(order)==(int)day){
+    if (getDayOrder(order)==(int)day){
         return true;
     }
     
@@ -346,7 +346,7 @@ static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
 }
 
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
-    if (getOrderDay(order)!=(int)day){
+    if (getDayOrder(order)!=(int)day){
         return true;
     }
     return false;
