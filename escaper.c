@@ -68,7 +68,7 @@ int escaperEquals(void* escaper1, void* escaper2) {
     if( !escaper1 || !escaper2){
         return NULL;
     }
-    EscaperReturn Result;
+
     return strcmp(((Escaper)escaper1)->email,((Escaper)escaper2)->email);
 }
 

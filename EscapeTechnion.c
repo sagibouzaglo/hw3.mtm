@@ -226,8 +226,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
     }
     EscaperReturn Result;
     LIST_FOREACH(Order,iterator_order,(EscapeTechnion)->orders){
-        char* emailCompany =
-                getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
+
         char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
         if (Result!=ORD_SUCCESS){
             return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY :

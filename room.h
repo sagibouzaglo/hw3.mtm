@@ -48,6 +48,7 @@ typedef struct room* Room;
  * @param working_hour-
  * @param difficulty-
  */
+
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return);
 
 void roomDestroy(void* room);
