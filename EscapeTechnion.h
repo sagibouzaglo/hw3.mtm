@@ -95,17 +95,20 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
 /*
 
  */
-MtmErrorCode EscapeTechnion_add_escaper();
+MtmErrorCode EscapeTechnion_add_escaper(char* email,
+                                        TechnionFaculty faculty,int skill_level,
+                                        EscapeTechnion *EscapeTechnion);
 
 /*
 
  */
-MtmErrorCode EscapeTechnion_remove_escaper();
+MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTechnion);
 
 /*
 
  */
-MtmErrorCode EscapeTechnion_add_order();
+MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
+                                      EscapeTechnion *EscapeTechnion);
 
 /*
 

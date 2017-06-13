@@ -28,7 +28,7 @@ struct escaper {
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
                                                     EscaperReturn* Result){
     if(!IfEmailValid(email)){
-        *Result= Esc_NULL_PARAMETER;
+        *Result= Esc_INVALID_PARAMETER;
         return NULL;
     }
     Escaper escaper = malloc(sizeof(*escaper));
