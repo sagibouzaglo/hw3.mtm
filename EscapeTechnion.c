@@ -301,11 +301,11 @@ static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion){
     return NULL;
 }
 static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result) {
-    assert(escaper && profitFaculty && room && order);
+    assert(room && order);
     if (getFacultyOfCompany(getCompanyOrder(order)) ==
-        getFacultyEscaper(getEscaperOrder(order))) {
+                                    getFacultyEscaper(getEscaperOrder(order))) {
         putPriceOrder(order,(int) (num_ppl * (getPriceRoom(room)) *
-                                  AFTER_DISCOUNT));
+                                                             AFTER_DISCOUNT));
     } else {
         putPriceOrder(order,num_ppl * (getPriceRoom(room)));
     }
