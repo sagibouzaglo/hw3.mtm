@@ -11,6 +11,7 @@
 #include "escaper.h"
 #include "EscapeTechnion.h"
 #include "company.h"
+#define AFTER_DISCOUNT 0.75
 
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
@@ -21,7 +22,7 @@ static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion);
 static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion);
-
+static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result);
 struct escapetechnion {
     int day;
     Set company;
@@ -182,7 +183,17 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTec
     return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_add_order(){
+MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
+                                       EscapeTechnion *EscapeTechnion){
+    CHECK_NULL(EscapeTechnion);
+    CHECK_NULL(email);
+    Escaper escaper = findEscaper(email,EscapeTechnion);
+    if(!escaper){
+        return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
+    }
+    OrderReturn Result;
+    listInsertFirst((*EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
+                                                         ,company,id, Result));
 
    return MTM_SUCCESS;
 }
@@ -227,11 +238,12 @@ static Company findCompany (char* email,EscapeTechnion *EscapeTechnion){
 
     SET_FOREACH(Company,iterator_comp,(*EscapeTechnion)->company){
         if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
-            return getEmailCompany((Company)iterator_comp);
+            return ((Company)iterator_comp);
             }
     }
     return NULL;
 }
+
 static MtmErrorCode ifReservionExistsInComp(Company company,
                                                 EscapeTechnion *EscapeTechnion){
     SET_FOREACH(Room,roomIterator,getCompanyRooms(company)) {
@@ -272,7 +284,16 @@ static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion){
     }
     return NULL;
 }
-
+static void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
+    assert(escaper && profitFaculty && room && order);
+    if (getFacultyOfCompuny(getCompanyOrder(order)) ==
+        getFacultyEscaper(getEscaperOrder(order))) {
+        order->tot_price = (int) (num_ppl * (getPriceRoom(room)) *
+                                  AFTER_DISCOUNT);
+    } else {
+        order->tot_price = num_ppl * (getPriceRoom(room));
+    }
+}
 MtmErrorCode technion_report_day(EscapeTechnion *EscapeTechnion){
     List tmp1=listCreate(orderCopy,orderDestroy),
                     tmp2=listCreate(orderCopy,orderDestroy);

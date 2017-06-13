@@ -15,7 +15,7 @@
 #include "room.h"
 #define AFTER_DISCOUNT 0.75
 
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result);
+
 
 struct order {
     int time;
@@ -112,16 +112,7 @@ Company getCompanyOrder(Order order) {
         }
         return order->company;
     }
-void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
-        assert(escaper && profitFaculty && room && order);
-        if (getFacultyOfCompuny(getCompanyOrder(order)) ==
-            getFacultyEscaper(getEscaperOrder(order))) {
-            order->tot_price = (int) (num_ppl * (getPriceRoom(room)) *
-                                      AFTER_DISCOUNT);
-        } else {
-            order->tot_price = num_ppl * (getPriceRoom(room));
-        }
-    }
+
 
 
 
