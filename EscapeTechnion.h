@@ -89,7 +89,8 @@ MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
  MTM_ID_DOES_NOT_EXIST
  MTM_RESERVATION_EXISTS
  */
-MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id, EscapeTechnion *EscapeTechnion);
+MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
+                                        EscapeTechnion *EscapeTechnion);
 
 /*
 
@@ -116,7 +117,16 @@ MtmErrorCode EscapeTechnion_day();
  */
 MtmErrorCode EscapeTechnion_best_faculty();
 
+/**
+ 
+ */
+MtmErrorCode technion_report_day(EscapeTechnion *EscapeTechnion);
 
-#endif /* system_h */
+/**
+ 
+ */
+MtmErrorCode technion_report_best(EscapeTechnion *EscapeTechnion);
+
+
 
 #endif /* EscapeTechnion_h */
