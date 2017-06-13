@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+#include "EscapeTechnion.h"
 #include "mtm_ex3.h"
 #include "parser.h"
 #define CHECK_NULL(ptr) if (ptr==NULL){\
@@ -15,41 +16,43 @@
 #define CHECK_FILE(ptr) if (ptr==NULL){\
                             return MTM_CANNOT_OPEN_FILE;\
                         };
-
+#define MAX 256
 int main(int argc, const char * argv[]) {
-        // setting input and output channels
-        FILE *input = stdin;
-        CHECK_NULL(input);
-        FILE *output = stdout;
-        CHECK_NULL(output);
-        FILE *error_channel = stderr;
-        CHECK_NULL(error_channel);
-        char buffer[256], buffer2[2];
-        Check check=OK;
-        MtmErrorCode error_code;
-        while (fscanf(input," %s",buffer) != EOF){
-            // check legal statment
-            if (strcmp(buffer,"mtm_escape")){
-                    fscanf(input, " %s", buffer2);
-                    if (strcmp("-i",buffer2)==0){
-                        check = INPUT;
-                    }else if (strcmp("-o",buffer2)==0){
-                        check = OUTPUT;
-                    }else{
-                        check = FAILED;
-                    }
-                    error_code = set_input_output(input,output,check);
-                    if (error_code != MTM_SUCCESS){
-                        return error_code;
+    // setting input and output channels
+    FILE *input = stdin;
+    CHECK_NULL(input);
+    FILE *output = stdout;
+    CHECK_NULL(output);
+    char buffer[MAX];
+    MtmErrorCode error_code;
+    EscapeTechnion *EscapeTechnion;
+    if (argc <=5){
+        switch (argc){
+            case 1:
+                break;
+            case 2:
+            case 4:
+                mtmPrintErrorMessage(stderr,MTM_INVALID_COMMAND_LINE_PARAMETERS);
+                break;
+            case 3:
+            case 5:
+                if (strcmp(argv[2],"-i")==0){
+                    input = fopen(argv[3],"r");
+                    CHECK_FILE(input);
+                }else if (strcmp(argv[2],"-o")==0){
+                    output = fopen(argv[3],"w");
+                    CHECK_FILE(output);
                 }
-            }else{
-                error_code = get_command(input,output);
-                if (error_code != MTM_SUCCESS){
-                    mtmPrintErrorMessage(error_channel,error_code);
-                    error_code = MTM_SUCCESS;
-                }
-            }
+                
+                break;
         }
-        close_channels(input,output);
-        return check;
+    }
+       while (fscanf(input," %s",buffer) != EOF){
+        error_code = get_command(input,output,EscapeTechnion);
+        if (error_code != MTM_SUCCESS){
+            mtmPrintErrorMessage(stderr, error_code);
+        }
+    }
+    close_channels(input,output);
+    return 0;
 }

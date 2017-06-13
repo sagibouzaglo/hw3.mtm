@@ -22,7 +22,7 @@ struct order {
     Escaper escaper;
     int num_ppl;
     int room_id;
-    Company compeny;
+    Company company;
     int tot_price;
 };
 
@@ -38,7 +38,7 @@ Order orderCreate(int time, Escaper escaper, int num_ppl, Company company, int r
         *Result= ORD_OUT_OF_MEMORY;
         return NULL;
     }
-    order->compeny=company;
+    order->company=company;
     order->time = time;
     order->escaper=escaper;
     order->num_ppl = num_ppl;
@@ -62,7 +62,7 @@ void*  orderCopy(void* order){
     assert(order);
     OrderReturn Result;
     return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
-                       ((Order)order)->compeny ,((Order)order)->room_id ,&Result);
+                       ((Order)order)->company ,((Order)order)->room_id ,&Result);
 }
 
 /**
@@ -110,7 +110,7 @@ Company getCompanyOrder(Order order) {
         if (!order) {
             return NULL;
         }
-        return order->compeny;
+        return order->company;
     }
 void CalculatePrice(Room room ,int* profitFaculty, int num_ppl, Order order,OrderReturn Result) {
         assert(escaper && profitFaculty && room && order);
