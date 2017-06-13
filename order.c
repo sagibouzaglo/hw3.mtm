@@ -170,14 +170,8 @@ int getDayOrder(Order order) {
     }
     return order->day;
 }
-int getHourOrder(Order order) {
-    if (!order) {
-        return NULL;
-    }
-    return order->hour;
-}
+
 static bool hourOrder (char* time, Order order){
-    assert(room && working_hour);
     for(int i=0;i<strlen(time);++i){
         if(*(time + i) == '-'){
             *(time+i)=NULL;

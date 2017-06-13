@@ -119,7 +119,7 @@ int getCloseHRoom(Room room){
 }
 
 static bool hourWorking (char* working_hour, Room room){
-    assert(room & working_hour);
+    assert(room && working_hour);
     for(int i=0;i<strlen(working_hour);++i){
         if(*(working_hour + i) == '-'){
             *(working_hour+i)=NULL;

@@ -20,11 +20,11 @@ static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
 static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion *EscapeTechnion);
-static Company findCompany (char* email,EscapeTechnion *EscapeTechnion);
-static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion *EscapeTechnion);
-static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion *EscapeTechnion);
-static Escaper findEscaper(char* email ,EscapeTechnion *EscapeTechnion);
+static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechnion);
+static Company findCompany (char* email,EscapeTechnion EscapeTechnion);
+static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
+static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion EscapeTechnion);
+static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
 static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result);
 
 
@@ -54,15 +54,15 @@ MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion){
     return MTM_SUCCESS;
 }
 
-MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion){
+MtmErrorCode destroy_EscapeTechnion(EscapeTechnion EscapeTechnion){
    CHECK_NULL(EscapeTechnion);
-   free((*EscapeTechnion)->profit);
-   free(*EscapeTechnion);
+   free((EscapeTechnion)->profit);
+   free(EscapeTechnion);
    return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_add_company(char* email,
-                                        EscapeTechnion *EscapeTechnion,
+                                        EscapeTechnion EscapeTechnion,
                                                     TechnionFaculty faculty){
     if(!email || !EscapeTechnion){
         return MTM_NULL_PARAMETER;
@@ -84,7 +84,7 @@ MtmErrorCode EscapeTechnion_add_company(char* email,
 }
 
 MtmErrorCode EscapeTechnion_remove_company(char* email,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
     Company company = findCompany(email,EscapeTechnion);
@@ -94,14 +94,14 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,
     if(ifReservionExistsInComp(company,EscapeTechnion)!=MTM_SUCCESS){
         return MTM_RESERVATION_EXISTS;
     }
-    setRemove((*EscapeTechnion)->company,company);
+    setRemove((EscapeTechnion)->company,company);
     companyDestroy(company);
     return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
                                      char* working_hour, int difficulty,
-                                     EscapeTechnion *EscapeTechnion){
+                                     EscapeTechnion EscapeTechnion){
 if(!email || !EscapeTechnion || !working_hour){
     return MTM_NULL_PARAMETER;
 }
@@ -125,11 +125,11 @@ if(!email || !EscapeTechnion || !working_hour){
 }
 
 MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     if(faculty>UNKNOWN){
         return MTM_INVALID_PARAMETER;
     }
-    SET_FOREACH(Company,compIterator,(*EscapeTechnion)->company){
+    SET_FOREACH(Company,compIterator,(EscapeTechnion)->company){
         if(faculty ==(getFacultyOfCompany(compIterator))){
             SET_FOREACH(Room,roomIterator,getCompanyRooms(compIterator)){
                 if(id==getIdRoom(roomIterator)){
@@ -148,7 +148,7 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
 
 MtmErrorCode EscapeTechnion_add_escaper(char* email,
                                         TechnionFaculty faculty,int skill_level,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
 
     if(ifEmailAlreadyExists(email,EscapeTechnion)==MTM_EMAIL_ALREADY_EXISTS){
         return MTM_EMAIL_ALREADY_EXISTS;
@@ -158,13 +158,13 @@ MtmErrorCode EscapeTechnion_add_escaper(char* email,
     if(Result!=Esc_SUCCESS){
         return (Result==Esc_INVALID_PARAMETER? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
     }
-    setAdd((*EscapeTechnion)->escaper,escaper);
+    setAdd((EscapeTechnion)->escaper,escaper);
     escaperDestroy(escaper);
     return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_remove_escaper(char* email,
-                                                EscapeTechnion *EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
     Escaper escaper = findEscaper(email,EscapeTechnion);
@@ -172,14 +172,14 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
     EscaperReturn Result;
-    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+    LIST_FOREACH(Order,iterator_order,(EscapeTechnion)->orders){
         char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
         if (Result!=Esc_SUCCESS){
             return NULL;
         }
         if(strcmp(email,emailEscaper)==0){
             orderDestroy(iterator_order);
-            listRemoveCurrent((*EscapeTechnion)->orders);
+            listRemoveCurrent((EscapeTechnion)->orders);
 
         }
     }
@@ -207,7 +207,7 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     Order order=orderCreate(time, escaper, num_ppl,
                             findCompany(email,EscapeTechnion),id, &Result);
     CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order,Result);
-    listInsertFirst((*EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
+    listInsertFirst((EscapeTechnion)->orders,orderCreate(time, escaper, num_ppl
                                    ,findCompany(email,EscapeTechnion),id, &Result));
     orderDestroy(order);
 
@@ -225,7 +225,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
         }
     }
     EscaperReturn Result;
-    LIST_FOREACH(Order,iterator_order,(*EscapeTechnion)->orders){
+    LIST_FOREACH(Order,iterator_order,(EscapeTechnion)->orders){
         char* emailCompany =
                 getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
         char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
