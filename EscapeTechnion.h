@@ -21,12 +21,12 @@ typedef struct escapetechnion* EscapeTechnion;
 /*
 
  */
-MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
+MtmErrorCode create_EscapeTechnion(EscapeTechnion EscapeTechnion);
 
 /*
 
  */
-MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion);
+MtmErrorCode destroy_EscapeTechnion(EscapeTechnion EscapeTechnion);
 
 /*
     Recieve 2 arguments:
@@ -39,7 +39,7 @@ MtmErrorCode destroy_EscapeTechnion(EscapeTechnion *EscapeTechnion);
     MTM_INVALID_PARAMETER
     MTM_EMAIL_ALREADY_EXISTS
  */
-MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechnion, TechnionFaculty faculty);
+MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion EscapeTechnion, TechnionFaculty faculty);
 
 /*
     Recieve 1 argument:
@@ -55,7 +55,7 @@ MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion *EscapeTechni
     MTM_COMPANY_EMAIL_DOES_NOT_EXIST
     MTM_RESERVATION_EXISTS
  */
-MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion *EscapeTechnion);
+MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion EscapeTechnion);
 
 /*
  Recieve 6 arguments:
@@ -75,7 +75,7 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion *EscapeTec
  */
 MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
                                      char* working_hour, int difficulty,
-                                     EscapeTechnion *EscapeTechnion);
+                                     EscapeTechnion EscapeTechnion);
 
 /*
  Recieve 2 argument:
@@ -90,25 +90,25 @@ MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
  MTM_RESERVATION_EXISTS
  */
 MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
-                                        EscapeTechnion *EscapeTechnion);
+                                        EscapeTechnion EscapeTechnion);
 
 /*
 
  */
 MtmErrorCode EscapeTechnion_add_escaper(char* email,
                                         TechnionFaculty faculty,int skill_level,
-                                        EscapeTechnion *EscapeTechnion);
+                                        EscapeTechnion EscapeTechnion);
 
 /*
 
  */
-MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTechnion);
+MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion EscapeTechnion);
 
 /*
 
  */
 MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
-                                      EscapeTechnion *EscapeTechnion);
+                                      EscapeTechnion EscapeTechnion);
 
 /**
  
@@ -118,7 +118,7 @@ MtmErrorCode technion_report_day(FILE* output,EscapeTechnion EscapeTechnion);
 /**
  
  */
-MtmErrorCode technion_report_best(EscapeTechnion *EscapeTechnion);
+MtmErrorCode technion_report_best(EscapeTechnion EscapeTechnion);
 
 
 
