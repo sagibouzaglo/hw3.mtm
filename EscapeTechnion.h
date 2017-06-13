@@ -110,16 +110,6 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion *EscapeTec
 MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,int time, int num_ppl,
                                       EscapeTechnion *EscapeTechnion);
 
-/*
-
- */
-MtmErrorCode EscapeTechnion_day();
-
-/*
-
- */
-MtmErrorCode EscapeTechnion_best_faculty();
-
 /**
  
  */
