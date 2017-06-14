@@ -379,6 +379,7 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTe
                         id,time,difficulty,num_ppl,tot_price);
     return MTM_SUCCESS;
 }
+
 static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
