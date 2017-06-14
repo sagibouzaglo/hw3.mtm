@@ -65,7 +65,7 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
         return NULL;
     }
     order->company=company1;
-    strcmp(time,order->time);
+    strcpy(time,order->time);
     if(!hourOrder (time,order)){
         return NULL;
     }
@@ -174,7 +174,7 @@ int getDayOrder(Order order){
 static bool hourOrder (char* time, Order order){
     for(int i=0;i<strlen(time);++i){
         if(*(time + i) == '-'){
-            *(time+i)=NULL;
+            *(time+i) = 0;
             order->day=atol(time);
             ++i;
             order->hour=atol(time+i);

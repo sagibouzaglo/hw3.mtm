@@ -16,7 +16,7 @@
 #include <assert.h>
 #include "mtm_ex3.h"
 #include "escaper.h"
-
+#include "room.h"
 
 typedef enum {
     ORD_OUT_OF_MEMORY, // You should exit program after this error

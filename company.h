@@ -8,18 +8,13 @@
 #include <assert.h>
 
 //#include "order.h"
-//#include "room.h"
+#include "room.h"
 #include "set.h"
-
+#include "mtm_ex3.h"
 
 typedef enum {
     COM_OUT_OF_MEMORY, // You should exit program after this error
-    COM_INVALID_COMMAND_LINE_PARAMETERS, // You should exit program after this error
-    COM_CANNOT_OPEN_FILE, // You should exit program after this error
     COM_NULL_PARAMETER,
-    COM_INVALID_PARAMETER,
-    COM_EMAIL_ALREADY_EXISTS,
-    COM_COMPANY_EMAIL_DOES_NOT_EXIST,
     COM_SUCCESS,
 } CompanyReturn;
 

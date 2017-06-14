@@ -84,7 +84,7 @@ int getSkillLevel(Escaper escaper){
 
 TechnionFaculty getFacultyEscaper(Escaper escaper){
     if(!escaper){
-        return ERROR;
+        return UNKNOWN;
     }
     return escaper->Faculty;
 }

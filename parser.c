@@ -79,7 +79,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
  */
 MtmErrorCode escaper_command(FILE* input,FILE* output,
                                                 EscapeTechnion EscapeTechnion){
-    char buffer[256],email[256];
+    char buffer[256],email[256],time[5];
     int tmp=0,num_ppl=0;
     TechnionFaculty faculty;
     fscanf(input, " %s", buffer);
@@ -98,15 +98,16 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             assert(*email);
             EscapeTechnion_remove_escaper(email,EscapeTechnion);
         }else if (strcmp(buffer,"order")==0){
-            int id=0,time=0;
-            fscanf(input, " %s %d %d %d %d", email,&tmp, &id, &time, &num_ppl);
+            int id=0;
+
+            fscanf(input, " %s %d %d %s %d", email,&tmp, &id, time, &num_ppl);
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
             EscapeTechnion_add_order(email,faculty,id,time,num_ppl,EscapeTechnion);
         }else if (strcmp(buffer,"order")==0){
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
-            technion_escaper_order(email,num_ppl,EscapeTechnion);
+            technion_report_day(output,EscapeTechnion);
         }
     }
     return MTM_SUCCESS;
