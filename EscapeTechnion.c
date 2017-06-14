@@ -262,7 +262,7 @@ static MtmErrorCode ifReservionExistsInComp(Company company,
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
                                                 EscapeTechnion EscapeTechnion){
     LIST_FOREACH(Order, iterator_order, (EscapeTechnion)->orders) {
-        if(findRoom(getRoomIdOrder(iterator_order),faculty,EscapeTechnion),room))){
+        if(findRoom(getRoomIdOrder(iterator_order),faculty,EscapeTechnion),room){
             return MTM_RESERVATION_EXISTS;
         }
     }

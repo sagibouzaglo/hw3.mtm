@@ -291,7 +291,6 @@ ListResult listRemoveCurrent(List list);
 *
 * void sortInts(List listOfInts) {
 *   int key = 0;
-*   listSort(listOfInts, closerTo, &key);
 * }
 * @endcode
 *
