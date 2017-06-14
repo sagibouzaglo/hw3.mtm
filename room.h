@@ -1,21 +1,23 @@
-//
-//  room.h
-//  hw3
-//
-//  Created by sagi bouzaglo on 27/05/2017.
-//  Copyright © 2017 sagi bouzaglo. All rights reserved.
-//
+/*
+  room.h
+  hw3
 
-#ifndef room_h
-#define room_h
+  Created by sagi bouzaglo on 27/05/2017.
+  Copyright © 2017 sagi bouzaglo. All rights reserved.*/
 
-#include "company.h"
-#include "order.h"
+#ifndef ROOM_H
+#define ROOM_H
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "set.h"
 #include <string.h>
+
+#include "set.h"
+#include "company.h"
+#include "order.h"
+
+typedef struct room* Room;
 
 typedef enum {
     ROOM_OUT_OF_MEMORY, // You should exit program after this error
@@ -35,7 +37,7 @@ typedef enum {
     ROOM_SUCCESS,
 } RoomReturn;
 
-typedef struct room* Room;
+
 
 
 /**
@@ -48,6 +50,7 @@ typedef struct room* Room;
  * @param working_hour - room working hours
  * @param difficulty - diffuculty of room.
  */
+
 Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return);
 
 void roomDestroy(void* room);

@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-
 #include "room.h"
 #include "order.h"
 #include "set.h"

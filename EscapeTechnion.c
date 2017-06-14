@@ -23,7 +23,7 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTe
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechnion);
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifReservionExistsInRoom(Room room ,EscapeTechnion EscapeTechnion);
+static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
 static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result);
 
@@ -133,7 +133,7 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
         if(faculty ==(getFacultyOfCompany(compIterator))){
             SET_FOREACH(Room,roomIterator,getCompanyRooms(compIterator)){
                 if(id==getIdRoom(roomIterator)){
-                    if(ifReservionExistsInRoom(roomIterator ,EscapeTechnion) != MTM_SUCCESS){
+                    if(ifReservionExistsInRoom(roomIterator ,faculty,EscapeTechnion) != MTM_SUCCESS){
                         return MTM_RESERVATION_EXISTS;
                     }
                     setRemove(getCompanyRooms(compIterator),roomIterator);
@@ -259,11 +259,10 @@ static MtmErrorCode ifReservionExistsInComp(Company company,
     }
     return MTM_SUCCESS;
 }
-static MtmErrorCode ifReservionExistsInRoom(Room room ,
+static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
                                                 EscapeTechnion EscapeTechnion){
-
     LIST_FOREACH(Order, iterator_order, (EscapeTechnion)->orders) {
-        if(roomCompare((Room)getRoomIdOrder(iterator_order),(Room)getIdRoom(room))){
+        if(findRoom(getRoomIdOrder(iterator_order),faculty,EscapeTechnion),room))){
             return MTM_RESERVATION_EXISTS;
         }
     }
