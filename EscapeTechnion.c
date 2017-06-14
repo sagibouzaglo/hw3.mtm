@@ -5,17 +5,14 @@
 //  Created by sagi bouzaglo on 28/05/2017.
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
-#include "company.h"
-#include "room.h"
-#include "order.h"
-#include "escaper.h"
-#include "EscapeTechnion.h"
-#include "company.h"
-#define AFTER_DISCOUNT 0.75
 
+
+#define AFTER_DISCOUNT 0.75
+#include "EscapeTechnion.h"
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
 static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
@@ -25,8 +22,9 @@ static Company findCompany (char* email,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
-static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result);
-
+static void CalculatePrice(Room room , int num_ppl, Order order);
+static  bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
+static  bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
 
 struct escapetechnion {
     int day;
@@ -203,12 +201,19 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     if(!room){
         return MTM_ID_DOES_NOT_EXIST;
     }
-
     Order order=orderCreate(time, escaper, num_ppl,
                             findCompany(email,EscapeTechnion),id, &Result);
-    CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order,Result);
-    listInsertFirst(EscapeTechnion->orders,orderCreate(time, escaper, num_ppl
-                                   ,findCompany(email,EscapeTechnion),id, &Result));
+    if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),getDayOrder(order))){
+        orderDestroy(order);
+        return MTM_CLIENT_IN_ROOM;
+    }
+    if(isRoomAvalable(faculty,id,EscapeTechnion,getHourOrder(order),getDayOrder(order))){
+        orderDestroy(order);
+        return MTM_ROOM_NOT_AVAILABLE;
+    }
+
+    CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order);
+    listInsertFirst(EscapeTechnion->orders,order);
     orderDestroy(order);
 
     return MTM_SUCCESS;
@@ -227,8 +232,8 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
     EscaperReturn Result;
     LIST_FOREACH(Order,iterator_order,EscapeTechnion->orders){
         char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order),&Result);
-        if (Result!=ORD_SUCCESS){
-            return (Result==ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY :
+        if (Result!=Esc_SUCCESS){
+            return (Result==Esc_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY :
                                                             MTM_NULL_PARAMETER);
         }
         if(strcmp(email,emailEscaper)==0){
@@ -299,7 +304,7 @@ static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion){
     }
     return NULL;
 }
-static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Result) {
+static void CalculatePrice(Room room , int num_ppl, Order order) {
     assert( room && order);
     if (getFacultyOfCompany(getCompanyOrder(order)) ==
                                     getFacultyEscaper(getEscaperOrder(order))) {
@@ -315,6 +320,7 @@ static void CalculatePrice(Room room , int num_ppl, Order order,OrderReturn Resu
  */
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
+
     List currentDayOrders = listFilter(EscapeTechnion->orders,
                                                 orderDayEqualFilter,
                                                 (void*)&EscapeTechnion->day);
@@ -329,21 +335,22 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     }
     listDestroy(currentDayOrders);
     EscapeTechnion->day++;
+    return MTM_SUCCESS;
 }
 
 /**
 
  */
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder(order)==(int)day){
+    if (getDayOrder(order) == *(int*)day){
         return true;
     }
-    
+
     return false;
 }
 
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder(order)!=(int)day){
+    if (getDayOrder(order)!=*(int*)day){
         return true;
     }
     return false;
@@ -364,9 +371,9 @@ static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTe
     assert(roomId);
     Room Room = findRoom(roomId, companyFaculty,EscapeTechnion);
     assert(Room);
-    EscaperReturn *escaperResult;
-    char *email = getEmailEscaper(escaper, escaperResult),
-                    *companyEmail = getEmailCompany(company);
+    EscaperReturn escaperResult;
+    char *email = getEmailEscaper(escaper,&escaperResult);
+    char* companyEmail = getEmailCompany(company);
     assert(*email && *companyEmail);
     int skill_level= getSkillLevel(escaper),id = getIdRoom(Room),
                     time = getHourOrder(order),

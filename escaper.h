@@ -9,29 +9,20 @@
 #ifndef escaper_h
 #define escaper_h
 
-#include "company.h"
-#include "order.h"
-#include "escaper.h"
+//#include "company.h"
+//#include "order.h"
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
-
 #include <stdio.h>
+#include "mtm_ex3.h"
 
 typedef enum {
     Esc_OUT_OF_MEMORY, // You should exit program after this error
     Esc_NULL_PARAMETER,
     Esc_INVALID_PARAMETER,
-    Esc_EMAIL_ALREADY_EXISTS,
-    Esc_COMPANY_EMAIL_DOES_NOT_EXIST,
-    Esc_CLIENT_EMAIL_DOES_NOT_EXIST,
-    Esc_ID_ALREADY_EXIST,
-    Esc_ID_DOES_NOT_EXIST,
-    Esc_CLIENT_IN_ROOM,
-    Esc_ROOM_NOT_AVAILABLE,
-    Esc_RESERVATION_EXISTS,
-    Esc_NO_ROOMS_AVAILABLE,
     Esc_SUCCESS,
 } EscaperReturn;
 

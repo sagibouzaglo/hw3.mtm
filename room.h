@@ -15,7 +15,7 @@
 
 #include "set.h"
 #include "company.h"
-#include "order.h"
+//#include "order.h"
 
 typedef struct room* Room;
 
@@ -73,4 +73,4 @@ int getCloseHRoom(Room room);
 
 
 
-#endif /* room_h */
+#endif /* ROOM_H */

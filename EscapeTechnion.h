@@ -9,12 +9,15 @@
 #ifndef EscapeTechnion_h
 #define EscapeTechnion_h
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "mtm_ex3.h"
 #include "set.h"
 #include "list.h"
-#include <stdlib.h>
-
+#include "company.h"
+#include "room.h"
+#include "order.h"
+#include "escaper.h"
 
 typedef struct escapetechnion* EscapeTechnion;
 

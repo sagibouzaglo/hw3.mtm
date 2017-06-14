@@ -7,12 +7,7 @@
 //
 
 #include "order.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-#include "company.h"
-#include "escaper.h"
-#include "room.h"
+
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
 
@@ -55,8 +50,8 @@ int compareOrders(void* order1,void* order2){
 }
 
 /** Allocates a new order */
-Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int room_id,OrderReturn* Result){
-    if (!escaper || !company) {
+Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, int room_id,OrderReturn* Result){
+    if (!escaper || !company1) {
         *Result= ORD_NULL_PARAMETER;
         return NULL;
     }
@@ -69,8 +64,8 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company, int
     if(!order->time){
         return NULL;
     }
-    order->company=company;
-    strcmp(time,order->time);
+    order->company=company1;
+    strcpy(time,order->time);
     if(!hourOrder (time,order)){
         return NULL;
     }
@@ -179,7 +174,7 @@ int getDayOrder(Order order){
 static bool hourOrder (char* time, Order order){
     for(int i=0;i<strlen(time);++i){
         if(*(time + i) == '-'){
-            *(time+i)=NULL;
+            *(time+i) = 0;
             order->day=atol(time);
             ++i;
             order->hour=atol(time+i);
