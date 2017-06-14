@@ -1,17 +1,5 @@
-//
-//  escaper.c
-//  hw3
-//
-//  Created by sagi bouzaglo on 28/05/2017.
-//  Copyright © 2017 sagi bouzaglo. All rights reserved.
-//
-#include "company.h"
-#include "order.h"
+
 #include "escaper.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-#include <string.h>
 
 #define CHECK_NULL(ptr) if (!ptr){\
                             return MTM_NULL_PARAMETER;\

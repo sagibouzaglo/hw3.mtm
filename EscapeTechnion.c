@@ -5,12 +5,8 @@
 //  Created by sagi bouzaglo on 28/05/2017.
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
-#include "company.h"
-#include "room.h"
-#include "order.h"
-#include "escaper.h"
+
 #include "EscapeTechnion.h"
-#include "company.h"
 #define AFTER_DISCOUNT 0.75
 
 #define CHECK_NULL(ptr) if (ptr==NULL){\

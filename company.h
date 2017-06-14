@@ -1,21 +1,14 @@
-//
-//  company.h
-//  hw3
-//
-//  Created by sagi bouzaglo on 27/05/2017.
-//  Copyright © 2017 sagi bouzaglo. All rights reserved.
-//
-
-#ifndef company_h
-#define company_h
+#ifndef COMPANY_H
+#define COMPANY_H
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "room.h"
-#include "order.h"
+
+//#include "order.h"
+//#include "room.h"
 #include "set.h"
 
 
@@ -30,7 +23,7 @@ typedef enum {
     COM_SUCCESS,
 } CompanyReturn;
 
-typedef struct company* Company;
+typedef struct company_t* Company;
 
 
 /** Allocates a new company */
@@ -51,5 +44,5 @@ TechnionFaculty getFacultyOfCompany(Company company);
 
 Set getCompanyRooms(Company company);
 
-#endif /* company_h */
+#endif /* COMPANY_H */
 

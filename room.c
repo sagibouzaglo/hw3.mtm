@@ -5,15 +5,9 @@
 //  Created by sagi bouzaglo on 27/05/2017.
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-#include <string.h>
+
 
 #include "room.h"
-#include "company.h"
-#include "order.h"
-#include "set.h"
 #define HOURS_DAY 24
 #define ERROR -1
 static bool hourWorking (char* working_hour, Room room);

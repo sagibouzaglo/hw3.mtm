@@ -73,4 +73,4 @@ int getCloseHRoom(Room room);
 
 
 
-#endif /* room_h */
+#endif /* ROOM_H */

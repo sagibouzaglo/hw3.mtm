@@ -14,7 +14,10 @@
 #include "set.h"
 #include "list.h"
 #include <stdlib.h>
-
+#include "company.h"
+#include "room.h"
+#include "order.h"
+#include "escaper.h"
 
 typedef struct escapetechnion* EscapeTechnion;
 
