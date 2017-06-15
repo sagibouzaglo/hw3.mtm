@@ -55,10 +55,8 @@ void* companyCopy(void* company){
 }
 /** Returns true if both email company are identical */
 int companyCompare(void* company1, void* company2) {
-    if(!company1 || !company2){
-        return ERROR;
-    }
-    return strcmp(((Company)company1)->email,((Company)company2)->email);
+    assert(company1 && company2);
+    return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
 }
 char* getEmailCompany(Company company){
     if(!company){

@@ -122,8 +122,8 @@ MtmErrorCode technion_report_day(FILE* output,EscapeTechnion EscapeTechnion);
 /**
  
  */
-MtmErrorCode technion_report_best(EscapeTechnion EscapeTechnion);
+MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion);
 
-
+MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
 
 #endif /* EscapeTechnion_h */
