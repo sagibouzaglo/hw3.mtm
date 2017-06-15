@@ -54,7 +54,7 @@ void* companyCopy(void* company){
     return companyCreate(((Company)company)->email,((Company)company)->Faculty,&Result);
 }
 /** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2) {
+int companyCompare(void* company1, void* company2){
     assert(company1 && company2);
     return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
 }
