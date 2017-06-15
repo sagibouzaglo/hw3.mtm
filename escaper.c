@@ -6,7 +6,7 @@
                             };
 
 #define ERROR -1
-static bool IfEscaperEmailValid(char* email);
+
 
 struct escaper {
     char* email;
@@ -88,7 +88,7 @@ TechnionFaculty getFacultyEscaper(Escaper escaper){
     }
     return escaper->Faculty;
 }
-static bool IfEscaperEmailValid(char* email) {
+bool IfEscaperEmailValid(char* email) {
     if (!email) {
         return NULL;
     }
