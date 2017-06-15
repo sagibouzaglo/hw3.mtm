@@ -21,20 +21,9 @@ typedef struct room* Room;
 
 typedef enum {
     ROOM_OUT_OF_MEMORY, // You should exit program after this error
-    ROOM_INVALID_COMMAND_LINE_PARAMETERS, // You should exit program after this error
-    ROOM_CANNOT_OPEN_FILE, // You should exit program after this error
-    ROOM_NULL_PARAMETER,
-    ROOM_INVALID_PARAMETER,
-    ROOM_EMAIL_ALREADY_EXISTS,
-    ROOM_COMPANY_EMAIL_DOES_NOT_EXIST,
-    ROOM_CLIENT_EMAIL_DOES_NOT_EXIST,
-    ROOM_ID_ALREADY_EXIST,
-    ROOM_ID_DOES_NOT_EXIST,
-    ROOM_CLIENT_IN_ROOM,
-    ROOM_ROOM_NOT_AVAILABLE,
-    ROOM_RESERVATION_EXISTS,
-    ROOM_NO_ROOMS_AVAILABLE,
     ROOM_SUCCESS,
+    ROOM_INVALID_PARAMETER,
+
 } RoomReturn;
 
 
@@ -55,7 +44,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
 
 void roomDestroy(void* room);
 
-void* roomCopy(void* room);
+SetElement roomCopy(void* room);
 
 int roomCompare(void* room1, void* room2);
 

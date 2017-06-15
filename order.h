@@ -17,6 +17,7 @@
 #include "mtm_ex3.h"
 #include "escaper.h"
 #include "room.h"
+#include "list.h"
 
 typedef enum {
     ORD_OUT_OF_MEMORY, // You should exit program after this error
@@ -46,13 +47,13 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
 void orderDestroy(void* order);
 
 /** Allocates a new date which is a copy of the argument */
-void*  orderCopy(void* order);
+ListElement orderCopy(void* order);
 
 /** Returns true if both room orders and time are identical */
 bool orderEqualsRoom(Order order1, Order order2);
 
 /** Returns true if both Escaper order and time are identical */
-int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result);
+int orderEqualsEscaper(Order order1, Order order2);
 
 int getPriceOrder(Order order);
 

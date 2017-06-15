@@ -30,6 +30,7 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
+
     company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); ///<-void* in room.c
     if(!company->rooms){
         *Result= COM_OUT_OF_MEMORY;
@@ -46,14 +47,14 @@ void companyDestroy(void* company){
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company){
+SetElement companyCopy(void* company){
     if (!company) {
         return NULL;
     }
     CompanyReturn Result;
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty,&Result);
+    return companyCreate(getEmailCompany((Company)company),getFacultyOfCompany((Company)company),&Result);
 }
-/** Returns true if both email company are identical */
+/** Returns 0 if both email company are identical */
 int companyCompare(void* company1, void* company2){
     assert(company1 && company2);
     return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));

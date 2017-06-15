@@ -40,7 +40,7 @@ void* escaperCopy(void* escaper);
 /** Returns true if both email escaper are identical */
 int escaperEquals(void* escaper1, void* escaper2);
 
-char* getEmailEscaper(Escaper escaper,EscaperReturn* Result);
+char* getEmailEscaper(Escaper escaper);
 
 int getSkillLevel(Escaper escaper);
 

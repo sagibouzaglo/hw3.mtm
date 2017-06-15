@@ -62,14 +62,14 @@ int escaperEquals(void* escaper1, void* escaper2) {
     return strcmp(((Escaper)escaper1)->email,((Escaper)escaper2)->email);
 }
 
-char* getEmailEscaper(Escaper escaper,EscaperReturn* Result){
+char* getEmailEscaper(Escaper escaper){
     if(!escaper){
-        *Result= Esc_NULL_PARAMETER;
+
         return NULL;
     }
     char* emailReturn = malloc(sizeof(strlen(escaper->email)+1));
     if(!emailReturn){
-        *Result= Esc_OUT_OF_MEMORY;
+
         return NULL;
     }
     strcpy(escaper->email,emailReturn);
