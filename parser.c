@@ -128,7 +128,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,
         if (strcmp(buffer,"day")==0){
             technion_report_day(output, EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
-            MtmErrorCode buff=technion_report_best(EscapeTechnion);
+            MtmErrorCode buff= print_order (EscapeTechnion);
             if(buff!=MTM_SUCCESS){
                 return buff;
             }
