@@ -29,7 +29,7 @@ int main(int argc, const char * argv[]) {
     MtmErrorCode error_code;
     
     if (argc <=5){
-        switch (argc){
+        switch(argc){
             case 1:
                 break;
             case 2:

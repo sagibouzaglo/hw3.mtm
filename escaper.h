@@ -46,5 +46,6 @@ int getSkillLevel(Escaper escaper);
 
 TechnionFaculty getFacultyEscaper(Escaper escaper);
 
-bool IfEmailValid(char* email);
+bool IfEscaperEmailValid(char* email);
+
 #endif /* escaper_h */

@@ -189,7 +189,7 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
                                        EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
-    if(!IfEmailValid(email)){
+    if ( IfEscaperEmailValid(email)==false){
         return MTM_INVALID_PARAMETER;
     }
     Escaper escaper = findEscaper(email,EscapeTechnion);
