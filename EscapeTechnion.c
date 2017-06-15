@@ -6,6 +6,9 @@
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
 
+#define FIRST 0
+#define SECOND 1
+#define THIRD 2
 #define THREE_BEST_FACULTIES 3
 #define AFTER_DISCOUNT 0.75
 #include "EscapeTechnion.h"
@@ -393,10 +396,27 @@ MtmErrorCode technion_report_best(EscapeTechnion EscapeTechnion){
     if(!bestFaculty){
         return MTM_OUT_OF_MEMORY;
     }
-
-    for(int i=0; i<(int)UNKNOWN;++i){
-        
+    for(int i=0; i<THREE_BEST_FACULTIES;++i) {
+      *(bestFaculty+i)=i;
     }
+    for(int i=0; i<(int)UNKNOWN;++i){
+        if(*(EscapeTechnion->profit+i)>*(EscapeTechnion->profit+bestFaculty[FIRST])) {
+            bestFaculty[THIRD]=bestFaculty[SECOND];
+            bestFaculty[SECOND]=bestFaculty[FIRST];
+            bestFaculty[FIRST]=i;
+            continue;
+        }
+        if(*(EscapeTechnion->profit+i)>*(EscapeTechnion->profit+bestFaculty[SECOND])) {
+            bestFaculty[THIRD]=bestFaculty[SECOND];
+            bestFaculty[SECOND]=i;
+            continue;
+        }
+        if(*(EscapeTechnion->profit+i)>*(EscapeTechnion->profit+bestFaculty[THIRD])) {
+            bestFaculty[THIRD]=i;
+            continue;
+        }
+    }
+    
 }
 static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
