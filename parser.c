@@ -25,21 +25,17 @@ MtmErrorCode company_command(FILE* input,FILE* output,
     char buffer[MAX],email[MAX];
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if(strcmp(buffer,"company")==0){
-        fscanf(input, " %s", buffer);
-        assert(buffer);
-        if (strcmp(buffer,"add")==0){
-            TechnionFaculty faculty;
-            int tmp=0;
-            fscanf(input, " %s %d", email,&tmp);
-            assert(*email && tmp);
-            faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_add_company(email,EscapeTechnion,faculty);
-        }else if (strcmp(buffer,"remove")==0){
-            fscanf(input, " %s", email);
-            assert(*email);
-            EscapeTechnion_remove_company(email,EscapeTechnion);
-        }
+    if (strcmp(buffer,"add")==0){
+        TechnionFaculty faculty;
+        int tmp=0;
+        fscanf(input, " %s %d", email,&tmp);
+        assert(*email && tmp);
+        faculty=(TechnionFaculty)tmp;
+        EscapeTechnion_add_company(email,EscapeTechnion,faculty);
+    }else if (strcmp(buffer,"remove")==0){
+        fscanf(input, " %s", email);
+        assert(*email);
+        EscapeTechnion_remove_company(email,EscapeTechnion);
     }
     return MTM_SUCCESS;
 }
@@ -53,24 +49,21 @@ MtmErrorCode room_command(FILE* input,FILE* output,
     int id=0;
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if (strcmp(buffer,"room")==0){
-        fscanf(input, " %s", buffer);
-        if (strcmp(buffer,"add")==0){
-            char email[256],working_hrs[5];
-            int price=0,num_ppl=0,difficulty=0;
-            fscanf(input, " %s %d %d %d %s %d", email,&id,&price,&num_ppl,
+    if (strcmp(buffer,"add")==0){
+        char email[256],working_hrs[5];
+        int price=0,num_ppl=0,difficulty=0;
+        fscanf(input, " %s %d %d %d %s %d", email,&id,&price,&num_ppl,
                                                        working_hrs,&difficulty);
-            assert(*email && id && price && num_ppl &&
+        assert(*email && id && price && num_ppl &&
                                         *working_hrs && difficulty);
-            EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion);
-        }else if (strcmp(buffer,"remove")==0){
-            TechnionFaculty faculty;
-            int tmp=0;
-            fscanf(input, " %d %d", &tmp,&id);
-            assert(tmp && id);
-            faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_remove_room(faculty,id,EscapeTechnion);
-        }
+        EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion);
+    }else if (strcmp(buffer,"remove")==0){
+        TechnionFaculty faculty;
+        int tmp=0;
+        fscanf(input, " %d %d", &tmp,&id);
+        assert(tmp && id);
+        faculty=(TechnionFaculty)tmp;
+        EscapeTechnion_remove_room(faculty,id,EscapeTechnion);
     }
     return MTM_SUCCESS;
 }
@@ -123,16 +116,12 @@ MtmErrorCode report_command(FILE* input,FILE* output,
     char buffer[256];
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if (strcmp(buffer,"report")==0){
-        fscanf(input, " %s", buffer);
-        assert(buffer);
-        if (strcmp(buffer,"day")==0){
-            technion_report_day(output, EscapeTechnion);
-        }else if (strcmp(buffer,"best")==0){
-            MtmErrorCode buff= technion_report_best(output,EscapeTechnion);
-            if(buff!=MTM_SUCCESS){
-                return buff;
-            }
+    if (strcmp(buffer,"day")==0){
+        technion_report_day(output, EscapeTechnion);
+    }else if (strcmp(buffer,"best")==0){
+        MtmErrorCode buff= technion_report_best(output,EscapeTechnion);
+        if(buff!=MTM_SUCCESS){
+            return buff;
         }
     }
     return MTM_SUCCESS;
