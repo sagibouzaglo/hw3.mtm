@@ -98,7 +98,7 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,
         return MTM_RESERVATION_EXISTS;
     }
     setRemove(EscapeTechnion->companies,company);
-    companyDestroy(company);
+
     return MTM_SUCCESS;
 }
 
@@ -150,7 +150,7 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
                         return MTM_RESERVATION_EXISTS;
                     }
                     setRemove(getCompanyRooms(compIterator),roomIterator);
-                    roomDestroy(roomIterator);
+
                     return MTM_SUCCESS;
                 }
             }
