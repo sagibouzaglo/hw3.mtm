@@ -42,7 +42,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     if(!room->working_h){
         return NULL;
     }
-    strcpy(working_hour,room->working_h);
+    strcpy(room->working_h ,working_hour);
 
     if(!hourWorking(working_hour,room)){
         *Return=ROOM_INVALID_PARAMETER;

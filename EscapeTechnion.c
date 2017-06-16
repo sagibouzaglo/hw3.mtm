@@ -15,7 +15,7 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
-
+//static Set getSetCompEscT(EscapeTechnion EscapeTechnion1);
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
 static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
@@ -72,8 +72,10 @@ MtmErrorCode EscapeTechnion_add_company(char* email,
     if(cheak_email!=MTM_SUCCESS){
         return cheak_email;
     }
-    CompanyReturn Result;
-    companyCreate(email,faculty,&Result);
+    CompanyReturn Result=COM_SUCCESS;
+
+    setAdd (EscapeTechnion->companies,companyCreate(email,faculty,&Result));
+
     if(Result==COM_OUT_OF_MEMORY){
         return MTM_OUT_OF_MEMORY;
     }
@@ -115,7 +117,7 @@ if(!email || !EscapeTechnion || !working_hour){
             return MTM_ID_ALREADY_EXIST;
         }
     }
-    RoomReturn Return;
+    RoomReturn Return=ROOM_SUCCESS;
     Room room = roomCreate(id,price,num_ppl,working_hour,difficulty,&Return);
     if(Return!=ROOM_SUCCESS){
         return (Return == ROOM_INVALID_PARAMETER ? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
@@ -125,12 +127,22 @@ if(!email || !EscapeTechnion || !working_hour){
     return MTM_SUCCESS;
 }
 
+//static Set getSetCompEscT(EscapeTechnion EscapeTechnion1){
+    //if(!EscapeTechnion1){
+ //       return NULL;
+ //   }
+  //  return EscapeTechnion1->companies;
+//}
+
 MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
                                                 EscapeTechnion EscapeTechnion){
     if(faculty>UNKNOWN){
         return MTM_INVALID_PARAMETER;
     }
-    SET_FOREACH(Company,compIterator,EscapeTechnion->companies){
+    int e=setGetSize(EscapeTechnion->escaper);
+     e=setGetSize(EscapeTechnion->companies);
+    printf("size of set companies: %d \n",e);
+    SET_FOREACH(Company , compIterator ,EscapeTechnion->companies){
         if(faculty ==(getFacultyOfCompany(compIterator))){
             SET_FOREACH(Room,roomIterator,getCompanyRooms(compIterator)){
                 if(id==getIdRoom(roomIterator)){
@@ -159,7 +171,7 @@ MtmErrorCode EscapeTechnion_add_escaper(char* email,
     if(Result!=Esc_SUCCESS){
         return (Result==Esc_INVALID_PARAMETER? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
     }
-    (EscapeTechnion)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
+    //(EscapeTechnion)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
     setAdd(EscapeTechnion->escaper,escaper);
     escaperDestroy(escaper);
     return MTM_SUCCESS;
@@ -200,7 +212,7 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     if(!escaper){
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
-    OrderReturn Result;
+    OrderReturn Result=ORD_SUCCESS;
     Room room = findRoom(id,faculty,EscapeTechnion);
     if(!room){
         return MTM_ID_DOES_NOT_EXIST;
@@ -217,7 +229,7 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     }
 
     CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order);
-    listInsertFirst(EscapeTechnion->orders,order);
+    listInsertAfterCurrent(EscapeTechnion->orders,order);
     orderDestroy(order);
 
     return MTM_SUCCESS;
@@ -256,8 +268,14 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
 }
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
 
+    int e=setGetSize(EscapeTechnion->companies);
+    printf("size of set companies: %d \n",e);
+    Company ccop = setGetFirst(EscapeTechnion->companies);
+    printf("size of set companies: %s \n",getEmailCompany(ccop));
+    for(Company iterator_comp = setGetFirst(EscapeTechnion->companies) ;iterator_comp
+                            ;iterator_comp = setGetNext(EscapeTechnion->companies)){
 
-    SET_FOREACH(SetElement ,iterator_comp,(EscapeTechnion)->companies){
+    //SET_FOREACH(Company , iterator_comp,(EscapeTechnion)->companies){
         if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
             return ((Company)iterator_comp);
             }
@@ -305,13 +323,13 @@ static Room findRoom(int roomId,TechnionFaculty Faculty,
 
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion){
 
-    LIST_FOREACH(Order,iterator_order,(EscapeTechnion)->orders){
-        char* emailEscaper = getEmailEscaper(getEscaperOrder((Order)iterator_order));
+    SET_FOREACH(Escaper ,iterator_escaper ,EscapeTechnion->escaper){
+        char* emailEscaper = getEmailEscaper(iterator_escaper);
         if (!emailEscaper){
             return NULL;
         }
         if(strcmp(email,emailEscaper)==0){
-            return getEscaperOrder((Order)iterator_order);
+            return iterator_escaper;
         }
     }
     return NULL;
@@ -342,7 +360,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     listDestroy((EscapeTechnion)->orders);
     (EscapeTechnion)->orders=newOrdersList;
     listSort(currentDayOrders, compareOrders);
-    LIST_FOREACH(Order, Order_iterator, currentDayOrders){
+    LIST_FOREACH(ListElement , Order_iterator, currentDayOrders){
         print_order(output,Order_iterator,EscapeTechnion);
     }
     listDestroy(currentDayOrders);

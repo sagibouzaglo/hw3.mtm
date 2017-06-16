@@ -66,7 +66,7 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
         return NULL;
     }
     order->company=company1;
-    strcpy(time,order->time);
+    strcpy(order->time,time);
     if(!hourOrder (time,order)){
         return NULL;
     }
@@ -90,7 +90,7 @@ void orderDestroy(void* order){
  */
 ListElement  orderCopy(void* order){
     assert(order);
-    OrderReturn Result;
+    OrderReturn Result=ORD_SUCCESS;
     return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
                        ((Order)order)->company ,((Order)order)->room_id ,&Result);
 }
