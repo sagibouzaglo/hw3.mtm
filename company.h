@@ -22,13 +22,13 @@ typedef struct company_t* Company;
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
+SetElement companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
 
 /** Frees an existing company object */
 void companyDestroy(void* company);
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company);
+SetElement companyCopy(void* company);
 
 /** Returns true if both email company are identical */
 int companyCompare(void* company1, void* company2);

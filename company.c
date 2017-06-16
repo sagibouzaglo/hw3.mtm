@@ -13,7 +13,7 @@ struct company_t {
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
+SetElement companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
     if(!IfCompanyEmailValid(email)){
         *Result= COM_NULL_PARAMETER;
         return NULL;
@@ -30,6 +30,7 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
     }
     strcpy(company->email,email);
     company->Faculty=faculty;
+
     company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); ///<-void* in room.c
     if(!company->rooms){
         *Result= COM_OUT_OF_MEMORY;
@@ -39,22 +40,22 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
 }
 
 /** Frees an existing company object */
-void companyDestroy(void* company){
+void companyDestroy(SetElement company){
     setDestroy(((Company)company)->rooms);
     free(((Company)company)->email);
     free(company);
 }
 
 /** Allocates a new company which is a copy of the argument */
-void* companyCopy(void* company){
+SetElement companyCopy(SetElement company){
     if (!company) {
         return NULL;
     }
     CompanyReturn Result;
-    return companyCreate(((Company)company)->email,((Company)company)->Faculty,&Result);
+    return companyCreate(getEmailCompany((Company)company),getFacultyOfCompany((Company)company),&Result);
 }
-/** Returns true if both email company are identical */
-int companyCompare(void* company1, void* company2){
+/** Returns 0 if both email company are identical */
+int companyCompare(SetElement company1, SetElement company2){
     assert(company1 && company2);
     return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
 }

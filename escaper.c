@@ -1,5 +1,6 @@
 
 #include "escaper.h"
+#include "set.h"
 
 #define CHECK_NULL(ptr) if (!ptr){\
                             return MTM_NULL_PARAMETER;\
@@ -45,31 +46,27 @@ void escaperDestroy(void* escaper){
 }
 
 /** Allocates a new escaper which is a copy of the argument */
-void* escaperCopy(void* escaper){
+SetElement escaperCopy(void* escaper){
     if (!escaper) {
         return NULL;
     }
-    EscaperReturn Result;
+    EscaperReturn Result=Esc_SUCCESS;
     return escaperCreate(((Escaper)escaper)->email,((Escaper)escaper)->Faculty,
                          ((Escaper)escaper)->skill_level, &Result);
 }
 
 /** Returns true if both email escaper are identical */
 int escaperEquals(void* escaper1, void* escaper2) {
-    if( !escaper1 || !escaper2){
-        return ERROR;
-    }
-    return strcmp(((Escaper)escaper1)->email,((Escaper)escaper2)->email);
+    assert(escaper1 && escaper2);
+    return strcmp(getEmailEscaper((Escaper)escaper1),getEmailEscaper((Escaper)escaper2));
 }
 
-char* getEmailEscaper(Escaper escaper,EscaperReturn* Result){
+char* getEmailEscaper(Escaper escaper){
     if(!escaper){
-        *Result= Esc_NULL_PARAMETER;
         return NULL;
     }
     char* emailReturn = malloc(sizeof(strlen(escaper->email)+1));
     if(!emailReturn){
-        *Result= Esc_OUT_OF_MEMORY;
         return NULL;
     }
     strcpy(escaper->email,emailReturn);

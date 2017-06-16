@@ -18,8 +18,10 @@
 #define MAX 256
 int main(int argc, char* argv[]) {
     // setting input and output channels
-    EscapeTechnion EscapeTechnion = NULL;
-    create_EscapeTechnion(&EscapeTechnion);
+    EscapeTechnion EscapeTechnion1 = malloc(sizeof(EscapeTechnion1));
+
+    create_EscapeTechnion(&EscapeTechnion1);
+
     FILE *input = stdin;
     CHECK_NULL(input);
     FILE *output = stdout;
@@ -81,8 +83,10 @@ int main(int argc, char* argv[]) {
             mtmPrintErrorMessage(stderr,MTM_INVALID_COMMAND_LINE_PARAMETERS);
             return 0;
     }
-    get_command(input, output, &EscapeTechnion);
+    get_command(input, output, EscapeTechnion1);
+
 
     close_channels(input, output);
+
     return 0;
 }

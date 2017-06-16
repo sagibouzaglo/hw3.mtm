@@ -59,7 +59,7 @@ void roomDestroy(void* room){
 }
 
 /** Allocates a new room which is a copy of the argument */
-void* roomCopy(void* room){
+SetElement roomCopy(void* room){
     if (!room) {
         return NULL;
     }

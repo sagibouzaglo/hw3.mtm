@@ -7,6 +7,7 @@
 //
 
 #include "order.h"
+#include "list.h"
 
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
@@ -87,7 +88,7 @@ void orderDestroy(void* order){
     NULL - order is null
     
  */
-void*  orderCopy(void* order){
+ListElement  orderCopy(void* order){
     assert(order);
     OrderReturn Result;
     return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
@@ -106,9 +107,9 @@ bool orderEqualsRoom(Order order1, Order order2) {
 /** 
     Returns true if both Escaper order and time are identical
  */
-int orderEqualsEscaper(Order order1, Order order2 ,EscaperReturn* Result){
+int orderEqualsEscaper(Order order1, Order order2 ){
     assert(order1 && order2);
-    return strcmp(getEmailEscaper(order1->escaper,Result),getEmailEscaper(order1->escaper,Result));
+    return strcmp(getEmailEscaper(order1->escaper),getEmailEscaper(order1->escaper));
 }
 
 int getPriceOrder(Order order){
