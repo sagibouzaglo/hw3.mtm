@@ -51,11 +51,13 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     *Return=ROOM_SUCCESS;
     return room;
 }
-
+char* getWorkigHRoom(Room room){
+    return room->working_h;
+}
 /** Frees an existing room object */
 void roomDestroy(void* room){
-    free(((Room)room)->working_h);
-    free(room);
+    free(getWorkigHRoom((Room)room));
+    free((Room)room);
 }
 
 /** Allocates a new room which is a copy of the argument */

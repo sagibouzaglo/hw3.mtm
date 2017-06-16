@@ -99,14 +99,14 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             fscanf(input, " %s %d %d %s %d", email,&tmp, &id, time, &num_ppl);
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
-            /*Before creating the order we need to add the function escaper recommend!*/
+
             EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
             technion_report_day(output,EscapeTechnion);
         }
-
+    /*Before creating the order we need to add the function escaper recommend!*/
     return MTM_SUCCESS;
 }
 
