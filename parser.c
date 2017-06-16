@@ -94,6 +94,7 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             assert(*email && tmp && skill_level);
             faculty=(TechnionFaculty)tmp;
             EscapeTechnion_add_escaper(email,faculty,skill_level,EscapeTechnion);
+
         }else if (strcmp(buffer,"remove")==0){
             fscanf(input, " %s", email);
             assert(*email);
@@ -149,12 +150,16 @@ void get_command(FILE* input,FILE* output,
         if (buffer[0] == '#') {
             fscanf(input, "*[^\n]\n");
         } else if (strcmp(buffer, "company") == 0) {
+            printf("company_command\n");
             error_code = company_command(input, output, EscapeTechnion);
         } else if (strcmp(buffer, "room") == 0) {
+            printf("room_command\n");
             error_code =  room_command(input, output, EscapeTechnion);
         } else if (strcmp(buffer, "escaper") == 0) {
+            printf("escaper_command\n");
             error_code = escaper_command(input, output, EscapeTechnion);
         } else if (strcmp(buffer, "report") == 0) {
+            printf("report_command\n");
             error_code = report_command(input, output, EscapeTechnion);
         }
         if (error_code != MTM_SUCCESS) {

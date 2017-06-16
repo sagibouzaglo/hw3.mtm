@@ -31,29 +31,28 @@ static  bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion Escape
 
 struct escapetechnion {
     int day;
-    Set company;
+    Set companies;
     Set escaper;
     List orders;
     int* profit;
 };
 
-MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion1){
-    *EscapeTechnion1 = malloc(sizeof(*EscapeTechnion1));
+EscapeTechnion create_EscapeTechnion(EscapeTechnion* EscapeTechnion1){
+    *EscapeTechnion1 = malloc(sizeof(EscapeTechnion));
     if(!*EscapeTechnion1){
-      return MTM_OUT_OF_MEMORY;
+      return NULL;
     }
 
-    (*EscapeTechnion1)->company = setCreate(companyCopy,companyDestroy,companyCompare);
-
+    (*EscapeTechnion1)->companies = setCreate(companyCopy,companyDestroy,companyCompare);
     (*EscapeTechnion1)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
     (*EscapeTechnion1)->orders = listCreate(orderCopy,orderDestroy);
     (*EscapeTechnion1)->profit = malloc(sizeof((int)UNKNOWN));
     if (!(*EscapeTechnion1)->profit){
-         return MTM_OUT_OF_MEMORY;
+         return NULL;
     }
     (*EscapeTechnion1)->day=0;
 
-    return MTM_SUCCESS;
+    return (*EscapeTechnion1);
 }
 
 MtmErrorCode destroy_EscapeTechnion(EscapeTechnion EscapeTechnion){
@@ -96,7 +95,7 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,
     if(ifReservionExistsInComp(company,EscapeTechnion)!=MTM_SUCCESS){
         return MTM_RESERVATION_EXISTS;
     }
-    setRemove(EscapeTechnion->company,company);
+    setRemove(EscapeTechnion->companies,company);
     companyDestroy(company);
     return MTM_SUCCESS;
 }
@@ -131,7 +130,7 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
     if(faculty>UNKNOWN){
         return MTM_INVALID_PARAMETER;
     }
-    SET_FOREACH(Company,compIterator,EscapeTechnion->company){
+    SET_FOREACH(Company,compIterator,EscapeTechnion->companies){
         if(faculty ==(getFacultyOfCompany(compIterator))){
             SET_FOREACH(Room,roomIterator,getCompanyRooms(compIterator)){
                 if(id==getIdRoom(roomIterator)){
@@ -151,15 +150,16 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
 MtmErrorCode EscapeTechnion_add_escaper(char* email,
                                         TechnionFaculty faculty,int skill_level,
                                                 EscapeTechnion EscapeTechnion){
-    EscapeTechnion->company=setCreate(companyCopy,companyDestroy,companyCompare);
+
     if(ifEmailAlreadyExists(email,EscapeTechnion)==MTM_EMAIL_ALREADY_EXISTS){
         return MTM_EMAIL_ALREADY_EXISTS;
     }
-    EscaperReturn Result;
+    EscaperReturn Result=Esc_SUCCESS;
     Escaper escaper = escaperCreate(email, faculty ,skill_level,&Result);
     if(Result!=Esc_SUCCESS){
         return (Result==Esc_INVALID_PARAMETER? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
     }
+    (EscapeTechnion)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
     setAdd(EscapeTechnion->escaper,escaper);
     escaperDestroy(escaper);
     return MTM_SUCCESS;
@@ -228,15 +228,15 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
     CHECK_NULL(email);
     CHECK_NULL(EscapeTechnion);
 
-    if (setGetSize(EscapeTechnion->company)) {
-        SET_FOREACH(Company, iterator_comp, (EscapeTechnion)->company) {
+    if (setGetSize(EscapeTechnion->companies)) {
+        SET_FOREACH(Company, iterator_comp, (EscapeTechnion)->companies) {
             printf("got in\n");
             if (strcmp(email, getEmailCompany((Company) iterator_comp)) == 0) {
                 return MTM_EMAIL_ALREADY_EXISTS;
             }
         }
 
-        if (setGetSize(EscapeTechnion->company)) {
+        if (setGetSize(EscapeTechnion->companies)) {
             LIST_FOREACH(Order, iterator_order, EscapeTechnion->orders) {
                 char *emailEscaper = getEmailEscaper(
                         getEscaperOrder((Order) iterator_order));
@@ -257,7 +257,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
 
 
-    SET_FOREACH(Company,iterator_comp,(EscapeTechnion)->company){
+    SET_FOREACH(Company,iterator_comp,(EscapeTechnion)->companies){
         if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
             return ((Company)iterator_comp);
             }
@@ -288,7 +288,7 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
 
 static Room findRoom(int roomId,TechnionFaculty Faculty,
                                                 EscapeTechnion EscapeTechnion){
-    SET_FOREACH(Company, company_iterator, EscapeTechnion->company){
+    SET_FOREACH(Company, company_iterator, EscapeTechnion->companies){
         TechnionFaculty tmp = getFacultyOfCompany(company_iterator);
         if (tmp == Faculty){
             Set rooms = getCompanyRooms(company_iterator);

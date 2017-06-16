@@ -19,10 +19,10 @@
 #include <stdio.h>
 
 
-MtmErrorCode get_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechnion);
-MtmErrorCode company_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechnion);
-MtmErrorCode room_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechnion);
-MtmErrorCode escaper_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechnion);
-MtmErrorCode report_command(FILE* input,FILE* output,EscapeTechnion *EscapeTechnion);
+MtmErrorCode get_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion);
+MtmErrorCode company_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion);
+MtmErrorCode room_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion);
+MtmErrorCode escaper_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion);
+MtmErrorCode report_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion);
 MtmErrorCode close_channels(FILE* input, FILE* output);
 #endif /* parser_h */

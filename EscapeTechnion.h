@@ -24,7 +24,7 @@ typedef struct escapetechnion* EscapeTechnion;
 /*
 
  */
-MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
+EscapeTechnion create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
 
 /*
 

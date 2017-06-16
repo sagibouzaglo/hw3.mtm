@@ -13,7 +13,7 @@ struct company_t {
 
 
 /** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
+SetElement companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
     if(!IfCompanyEmailValid(email)){
         *Result= COM_NULL_PARAMETER;
         return NULL;
@@ -40,14 +40,14 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
 }
 
 /** Frees an existing company object */
-void companyDestroy(void* company){
+void companyDestroy(SetElement company){
     setDestroy(((Company)company)->rooms);
     free(((Company)company)->email);
     free(company);
 }
 
 /** Allocates a new company which is a copy of the argument */
-SetElement companyCopy(void* company){
+SetElement companyCopy(SetElement company){
     if (!company) {
         return NULL;
     }
@@ -55,7 +55,7 @@ SetElement companyCopy(void* company){
     return companyCreate(getEmailCompany((Company)company),getFacultyOfCompany((Company)company),&Result);
 }
 /** Returns 0 if both email company are identical */
-int companyCompare(void* company1, void* company2){
+int companyCompare(SetElement company1, SetElement company2){
     assert(company1 && company2);
     return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
 }
