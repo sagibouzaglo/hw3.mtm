@@ -257,7 +257,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
 
 
-    SET_FOREACH(Company,iterator_comp,(EscapeTechnion)->companies){
+    SET_FOREACH(SetElement ,iterator_comp,(EscapeTechnion)->companies){
         if(strcmp(email,getEmailCompany((Company)iterator_comp))==0){
             return ((Company)iterator_comp);
             }

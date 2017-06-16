@@ -25,9 +25,7 @@ MtmErrorCode company_command(FILE* input,FILE* output,
     char buffer[MAX],email[MAX];
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if(strcmp(buffer,"company")==0){
-        fscanf(input, " %s", buffer);
-        assert(buffer);
+
         if (strcmp(buffer,"add")==0){
             TechnionFaculty faculty;
             int tmp=0;
@@ -40,7 +38,7 @@ MtmErrorCode company_command(FILE* input,FILE* output,
             assert(*email);
             EscapeTechnion_remove_company(email,EscapeTechnion);
         }
-    }
+
     return MTM_SUCCESS;
 }
 
@@ -53,8 +51,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
     int id=0;
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if (strcmp(buffer,"room")==0){
-        fscanf(input, " %s", buffer);
+
         if (strcmp(buffer,"add")==0){
             char email[256],working_hrs[5];
             int price=0,num_ppl=0,difficulty=0;
@@ -71,7 +68,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
             faculty=(TechnionFaculty)tmp;
             EscapeTechnion_remove_room(faculty,id,EscapeTechnion);
         }
-    }
+
     return MTM_SUCCESS;
 }
 
@@ -85,9 +82,7 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
     TechnionFaculty faculty;
     fscanf(input, " %s", buffer);
     assert(buffer);
-    //if (strcmp(buffer,"escaper")==0){
-       // fscanf(input, " %s", buffer);
-       // assert(buffer);
+
         if (strcmp(buffer,"add")==0){
             int skill_level=1;
             fscanf(input, " %s %d %d", email,&tmp, &skill_level);
@@ -124,9 +119,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,
     char buffer[256];
     fscanf(input, " %s", buffer);
     assert(buffer);
-    if (strcmp(buffer,"report")==0){
-        fscanf(input, " %s", buffer);
-        assert(buffer);
+
         if (strcmp(buffer,"day")==0){
             technion_report_day(output, EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
@@ -135,7 +128,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,
                 return buff;
             }
         }
-    }
+
     return MTM_SUCCESS;
 }
 /** 

@@ -63,12 +63,10 @@ int escaperEquals(void* escaper1, void* escaper2) {
 
 char* getEmailEscaper(Escaper escaper){
     if(!escaper){
-
         return NULL;
     }
     char* emailReturn = malloc(sizeof(strlen(escaper->email)+1));
     if(!emailReturn){
-
         return NULL;
     }
     strcpy(escaper->email,emailReturn);
