@@ -200,7 +200,7 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,
     return MTM_SUCCESS;
 }
 
-MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int id,
+MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty faculty, int id,
                                       char* time, int num_ppl,
                                        EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
@@ -212,13 +212,14 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
     if(!escaper){
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
+
     OrderReturn Result=ORD_SUCCESS;
     Room room = findRoom(id,faculty,EscapeTechnion);
     if(!room){
         return MTM_ID_DOES_NOT_EXIST;
     }
     Order order=orderCreate(time, escaper, num_ppl,
-                            findCompany(email,EscapeTechnion),id, &Result);
+                            findCompany(findEmailCompany(id,faculty,EscapeTechnion),EscapeTechnion),id, &Result);
     if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),getDayOrder(order))){
         orderDestroy(order);
         return MTM_CLIENT_IN_ROOM;
@@ -234,7 +235,27 @@ MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty, int i
 
     return MTM_SUCCESS;
 }
+static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion){
+    SET_FOREACH(Company, company_iterator, EscapeTechnion->companies){
+        TechnionFaculty faculty_iterator = getFacultyOfCompany(company_iterator);
+        if (faculty_iterator == faculty){
+            SET_FOREACH(Room, room_iterator,getCompanyRooms(company_iterator) ){
 
+                if(id_room == getIdRoom(room_iterator)){
+                    char* emailReturn = malloc(sizeof(strlen(getEmailCompany(company_iterator)+1)));
+                    if(!emailReturn){
+                        return NULL;
+                    }
+                    strcpy(emailReturn,getEmailCompany(company_iterator));
+                    return emailReturn;
+
+                }
+            }
+        }
+    }
+    return NULL;
+}
+}
 static MtmErrorCode ifEmailAlreadyExists(char* email,
                                                 EscapeTechnion EscapeTechnion) {
     CHECK_NULL(email);

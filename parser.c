@@ -100,7 +100,7 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
             /*Before creating the order we need to add the function escaper recommend!*/
-            EscapeTechnion_add_order(email,faculty,id,time,num_ppl,EscapeTechnion);
+            EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
