@@ -38,7 +38,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     room->price=price;
     room->num_ppl=num_ppl;
     room->difficulty=difficulty;
-    room->working_h=malloc(sizeof(strlen(working_hour)+1));
+    room->working_h = malloc(sizeof(char)*(strlen(working_hour)+1));
     if(!room->working_h){
         return NULL;
     }
@@ -52,23 +52,23 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     return room;
 }
 char* getWorkigHRoom(Room room){
-    return room->working_h;
+    assert(room);
+    char* workH = malloc(sizeof(char)*(strlen(room->working_h)+1));
+    if(!workH) return NULL;
+    strcpy(workH,room->working_h);
+    return workH;
 }
 /** Frees an existing room object */
 void roomDestroy(void* room){
-    if(room){
-        free(getWorkigHRoom((Room)room));
-        free((Room)room);
-    }
-
+    if(!room) return;
+    free(((Room)room)->working_h);
+    free(room);
 }
 
 /** Allocates a new room which is a copy of the argument */
 SetElement roomCopy(void* room){
-    if (!room) {
-        return NULL;
-    }
-    RoomReturn Return;
+    assert(room);
+    RoomReturn Return=ROOM_SUCCESS;
     return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty,&Return);
 }
 /** Returns true if both ids rooms are identical */
