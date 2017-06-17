@@ -172,15 +172,16 @@ ListResult listSort(List list, CompareListElements compareElement){
     NULL_CHECK(compareElement, LIST_NULL_ARGUMENT);
     List sortedList = listCreate(list->copyElement, list->freeElement);
     LIST_FOREACH(ListElement, current, list){
-        LIST_FOREACH(ListElement, sorted_current, sortedList){
-            if (compareElement(current,sorted_current)>0){
-                
-            }else if (compareElement(current,sorted_current)<0){
-                
-            }else{
-                listInsertAfterCurrent(sortedList, current);
+        if(compareElement(listGetCurrent(sortedList), current)>0){
+            LIST_FOREACH(ListElement, sorted_current, sortedList){
+                if (compareElement(current,sorted_current)<0){
+                    listInsertBeforeCurrent(sortedList, current);
+                }else if (compareElement(current,sorted_current)==0){
+                    listInsertAfterCurrent(sortedList, current);
+                }
             }
         }
+        
     }
     listClear(list);
     return LIST_SUCCESS;
