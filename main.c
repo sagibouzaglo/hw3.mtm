@@ -18,7 +18,7 @@
 #define MAX 256
 int main(int argc, char* argv[]) {
     // setting input and output channels
-    EscapeTechnion EscapeTechnion1 = malloc(sizeof(EscapeTechnion1));
+    EscapeTechnion EscapeTechnion1 = NULL;
 
     create_EscapeTechnion(&EscapeTechnion1);
 

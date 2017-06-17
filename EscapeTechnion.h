@@ -110,7 +110,7 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion EscapeTech
 /*
 
  */
-MtmErrorCode EscapeTechnion_add_order(char* email,TechnionFaculty faculty,
+MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty faculty,
                                             int id,char* time, int num_ppl,
                                                 EscapeTechnion EscapeTechnion);
 
@@ -125,5 +125,7 @@ MtmErrorCode technion_report_day(FILE* output,EscapeTechnion EscapeTechnion);
 MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion);
 
 MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
+
+MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, EscapeTechnion escapeTechnion);
 
 #endif /* EscapeTechnion_h */

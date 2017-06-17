@@ -22,7 +22,7 @@ typedef struct company_t* Company;
 
 
 /** Allocates a new company */
-SetElement companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
+Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
 
 /** Frees an existing company object */
 void companyDestroy(void* company);

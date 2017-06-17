@@ -42,7 +42,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     if(!room->working_h){
         return NULL;
     }
-    strcpy(working_hour,room->working_h);
+    strcpy(room->working_h ,working_hour);
 
     if(!hourWorking(working_hour,room)){
         *Return=ROOM_INVALID_PARAMETER;
@@ -51,11 +51,16 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     *Return=ROOM_SUCCESS;
     return room;
 }
-
+char* getWorkigHRoom(Room room){
+    return room->working_h;
+}
 /** Frees an existing room object */
 void roomDestroy(void* room){
-    free(((Room)room)->working_h);
-    free(room);
+    if(room){
+        free(getWorkigHRoom((Room)room));
+        free((Room)room);
+    }
+
 }
 
 /** Allocates a new room which is a copy of the argument */

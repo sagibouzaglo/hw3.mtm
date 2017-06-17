@@ -69,7 +69,7 @@ char* getEmailEscaper(Escaper escaper){
     if(!emailReturn){
         return NULL;
     }
-    strcpy(escaper->email,emailReturn);
+    strcpy(emailReturn,escaper->email);
     return emailReturn;
 }
 int getSkillLevel(Escaper escaper){

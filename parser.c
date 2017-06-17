@@ -25,7 +25,6 @@ MtmErrorCode company_command(FILE* input,FILE* output,
     char buffer[MAX],email[MAX];
     fscanf(input, " %s", buffer);
     assert(buffer);
-
         if (strcmp(buffer,"add")==0){
             TechnionFaculty faculty;
             int tmp=0;
@@ -100,13 +99,18 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             fscanf(input, " %s %d %d %s %d", email,&tmp, &id, time, &num_ppl);
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_add_order(email,faculty,id,time,num_ppl,EscapeTechnion);
+
+            EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion);
         }else if (strcmp(buffer,"best")==0){
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
             technion_report_day(output,EscapeTechnion);
+        }else if (strcmp(buffer,"recommend")==0){
+            fscanf(input, " %s %d", email, &num_ppl);
+            assert(*email && num_ppl);
+            EscapeTechnion_add_escaper_recommend(email,num_ppl,EscapeTechnion);
         }
-
+    /*Before creating the order we need to add the function escaper recommend!*/
     return MTM_SUCCESS;
 }
 
