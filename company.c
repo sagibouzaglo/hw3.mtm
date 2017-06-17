@@ -23,8 +23,9 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
         *Result= COM_OUT_OF_MEMORY;
         return NULL;
     }
-    company->email=malloc((sizeof(char)*strlen(email))+1);
+    company->email=malloc(sizeof(char)*(strlen(email)+1));
     if (!company->email) {
+        companyDestroy(company);
         *Result= COM_OUT_OF_MEMORY;
         return NULL;
     }
@@ -33,8 +34,9 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
 
     company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); ///<-void* in room.c
     if(!company->rooms){
+        companyDestroy(company);
         *Result= COM_OUT_OF_MEMORY;
-        return  NULL;
+        return NULL;
     }
     return company;
 }
@@ -63,10 +65,10 @@ int companyCompare(void* company1, void* company2){
     return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
 }
 char* getEmailCompany(Company company){
-    if(!company){
-        return NULL;
-    }
-    char* emailReturn = malloc(sizeof(strlen(company->email)+1));
+    assert(company);
+
+    assert(company->email);
+    char* emailReturn = malloc(sizeof(char)*(strlen(company->email)+1));
     if(!emailReturn){
         return NULL;
     }
@@ -75,16 +77,13 @@ char* getEmailCompany(Company company){
 }
 
 TechnionFaculty getFacultyOfCompany(Company company){
-    if(!company){
-        return UNKNOWN;
-    }
+    assert(company);
+
     return company->Faculty;
 }
 
 Set getCompanyRooms(Company company){
-    if(!company){
-        return NULL;
-    }
+    assert(company);
     return company->rooms;
 }
 

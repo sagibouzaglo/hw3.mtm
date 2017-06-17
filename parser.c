@@ -21,7 +21,7 @@
  * check the type of "company" command and call the relevant function.
  */
 MtmErrorCode company_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion1){
     char buffer[MAX],email[MAX];
     fscanf(input, " %s", buffer);
     assert(buffer);
@@ -31,11 +31,11 @@ MtmErrorCode company_command(FILE* input,FILE* output,
             fscanf(input, " %s %d", email,&tmp);
             assert(*email && tmp);
             faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_add_company(email,EscapeTechnion,faculty);
+            EscapeTechnion_add_company(email,EscapeTechnion1,faculty);
         }else if (strcmp(buffer,"remove")==0){
             fscanf(input, " %s", email);
             assert(*email);
-            EscapeTechnion_remove_company(email,EscapeTechnion);
+            EscapeTechnion_remove_company(email,EscapeTechnion1);
         }
 
     return MTM_SUCCESS;
@@ -45,7 +45,7 @@ MtmErrorCode company_command(FILE* input,FILE* output,
  * check the type of "room" command and call the relevant function.
  */
 MtmErrorCode room_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion1){
     char buffer[MAX];
     int id=0;
     fscanf(input, " %s", buffer);
@@ -58,14 +58,14 @@ MtmErrorCode room_command(FILE* input,FILE* output,
                                                        working_hrs,&difficulty);
         assert(*email && id && price && num_ppl &&
                                         *working_hrs && difficulty);
-            EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion);
+            EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion1);
         }else if (strcmp(buffer,"remove")==0){
             TechnionFaculty faculty;
             int tmp=0;
             fscanf(input, " %d %d", &tmp,&id);
             assert(tmp && id);
             faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_remove_room(faculty,id,EscapeTechnion);
+            EscapeTechnion_remove_room(faculty,id,EscapeTechnion1);
         }
 
     return MTM_SUCCESS;
@@ -75,7 +75,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
  *   check the type of "escaper" command and call the relevant function.
  */
 MtmErrorCode escaper_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion1){
     char buffer[256],email[256],time[5];
     int tmp=0,num_ppl=0;
     TechnionFaculty faculty;
@@ -83,34 +83,30 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
     assert(buffer);
 
         if (strcmp(buffer,"add")==0){
+
             int skill_level=1;
             fscanf(input, " %s %d %d", email,&tmp, &skill_level);
             assert(*email && tmp && skill_level);
             faculty=(TechnionFaculty)tmp;
-            EscapeTechnion_add_escaper(email,faculty,skill_level,EscapeTechnion);
-
+            EscapeTechnion_add_escaper(email,faculty,skill_level,EscapeTechnion1);
         }else if (strcmp(buffer,"remove")==0){
             fscanf(input, " %s", email);
             assert(*email);
-            EscapeTechnion_remove_escaper(email,EscapeTechnion);
+            EscapeTechnion_remove_escaper(email,EscapeTechnion1);
         }else if (strcmp(buffer,"order")==0){
             int id=0;
 
             fscanf(input, " %s %d %d %s %d", email,&tmp, &id, time, &num_ppl);
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
-
-            EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion);
-        }else if (strcmp(buffer,"best")==0){
-            fscanf(input, " %s %d", email, &num_ppl);
-             assert(*email && num_ppl);
-            technion_report_day(output,EscapeTechnion);
+            MtmErrorCode err = EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion1);
+            if(err != MTM_SUCCESS) printf("ERRRRROROROROROROR\n");
         }else if (strcmp(buffer,"recommend")==0){
             fscanf(input, " %s %d", email, &num_ppl);
             assert(*email && num_ppl);
-            EscapeTechnion_add_escaper_recommend(email,num_ppl,EscapeTechnion);
+            MtmErrorCode err = EscapeTechnion_add_escaper_recommend(email,num_ppl,EscapeTechnion1);
+            if(err != MTM_SUCCESS) printf("ERRRRROROROROROROR\n");
         }
-    /*Before creating the order we need to add the function escaper recommend!*/
     return MTM_SUCCESS;
 }
 
@@ -119,15 +115,16 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
  *   check the type of "report" command and call the relevant function.
  */
 MtmErrorCode report_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion1){
+
     char buffer[256];
     fscanf(input, " %s", buffer);
     assert(buffer);
 
         if (strcmp(buffer,"day")==0){
-            technion_report_day(output, EscapeTechnion);
+            technion_report_day(output, EscapeTechnion1);
         }else if (strcmp(buffer,"best")==0){
-            MtmErrorCode buff= technion_report_best(output,EscapeTechnion);
+            MtmErrorCode buff= technion_report_best(output,EscapeTechnion1);
             if(buff!=MTM_SUCCESS){
                 return buff;
             }
@@ -139,25 +136,21 @@ MtmErrorCode report_command(FILE* input,FILE* output,
  *   get the type of command and call for the relecant function
  */
 void get_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion){
+                                                EscapeTechnion EscapeTechnion1){
     MtmErrorCode error_code=MTM_SUCCESS;
     char buffer[256];
     while (fscanf(input," %s",buffer) != EOF) {
         assert(buffer);
         if (buffer[0] == '#') {
-            fscanf(input, "*[^\n]\n");
+            fscanf(input, "%*[^\n]\n");
         } else if (strcmp(buffer, "company") == 0) {
-            printf("company_command\n");
-            error_code = company_command(input, output, EscapeTechnion);
+            error_code = company_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "room") == 0) {
-            printf("room_command\n");
-            error_code =  room_command(input, output, EscapeTechnion);
+            error_code =  room_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "escaper") == 0) {
-            printf("escaper_command\n");
-            error_code = escaper_command(input, output, EscapeTechnion);
+            error_code = escaper_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "report") == 0) {
-            printf("report_command\n");
-            error_code = report_command(input, output, EscapeTechnion);
+            error_code = report_command(input, output, EscapeTechnion1);
         }
         if (error_code != MTM_SUCCESS) {
             mtmPrintErrorMessage(stderr, error_code);
