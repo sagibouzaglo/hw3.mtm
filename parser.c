@@ -56,7 +56,7 @@ MtmErrorCode room_command(FILE* input,FILE* output,
             int price=0,num_ppl=0,difficulty=0;
             fscanf(input, " %s %d %d %d %s %d", email,&id,&price,&num_ppl,
                                                        working_hrs,&difficulty);
-            assert(*email && id && price && num_ppl &&
+        assert(*email && id && price && num_ppl &&
                                         *working_hrs && difficulty);
             EscapeTechnion_add_room(email,id,price,num_ppl,working_hrs,difficulty,EscapeTechnion1);
         }else if (strcmp(buffer,"remove")==0){
