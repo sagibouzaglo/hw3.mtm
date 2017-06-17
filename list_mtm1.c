@@ -11,11 +11,11 @@
 #include <stdlib.h>
 
 #define NULL_CHECK(ptr,ret) if (ptr == NULL){\
-                                    return ret;\
-                                }
+return ret;\
+}
 
 typedef struct node{
-    ListElement listElement;
+    ListElement Element;
     struct node* next;
 } *Node;
 
@@ -34,42 +34,24 @@ List listCreate(CopyListElement copyElement, FreeListElement freeElement){
     }
     List list =malloc(sizeof(*list));
     NULL_CHECK(list, NULL);
-    Node node= malloc(sizeof(*node));
-    if (node==NULL){
-        freeElement(list);
-        return NULL;
-    }
-    
     list->copyElement = copyElement;
     list->freeElement = freeElement;
-    list->head = list->tail = list->iterator = node;
+    list->head = list->tail = list->iterator = NULL;
     list->size=0;
     return list;
 }
 
 List listCopy(List list){
-    int first=0;
-    List newList = malloc(sizeof(*newList));
+    NULL_CHECK(list, NULL);
+    List newList = listCreate( list->copyElement, list->freeElement);
     NULL_CHECK(newList, NULL);
-    newList->copyElement=list->copyElement;
-    newList->freeElement=list->freeElement;
     Node tmpIterator = list->iterator;
-    list->iterator=listGetFirst(list);
-    LIST_FOREACH(Node, iterator, list){
-        Node node = malloc(sizeof(*node));
-        if (node == NULL){
+    LIST_FOREACH(ListElement, current, list){
+        if (listInsertLast(newList,current) != LIST_SUCCESS){
             listDestroy(newList);
             return NULL;
         }
-        if (first==0){
-            ++first;
-            list->head=node;
-        }
-        node=list->copyElement(list->iterator);
-        newList->iterator=node;
-        list->size++;
     }
-    newList->tail=newList->iterator;
     list->iterator=tmpIterator;
     return newList;
 }
@@ -81,27 +63,33 @@ int listGetSize(List list){
 
 ListElement listGetFirst(List list){
     NULL_CHECK(list, NULL);
+    NULL_CHECK(list->head, NULL);
     list->iterator=list->head;
-    return list->head;
+    return list->iterator->Element;
 }
 
 ListElement listGetNext(List list){
     NULL_CHECK(list, NULL);
+    NULL_CHECK(list->iterator, NULL);
+    NULL_CHECK(list->iterator->next, NULL);
     list->iterator=list->iterator->next;
-    return list->iterator;
+    return list->iterator->Element;
 }
 
 ListElement listGetCurrent(List list){
     NULL_CHECK(list, NULL);
     NULL_CHECK(list->iterator, NULL);
-    return list->iterator;
+    return list->iterator->Element;
 }
 
 ListResult listInsertFirst(List list, ListElement element){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
-    node=list->copyElement(element);
+    if (list->tail == NULL){
+        list->tail=node;
+    }
+    node->Element=list->copyElement(element);
     node->next=list->head;
     list->head=node;
     list->size++;
@@ -112,8 +100,14 @@ ListResult listInsertLast(List list, ListElement element){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
-    node=list->copyElement(element);
+    node->Element=list->copyElement(element);
+    if (list->tail == NULL){
+        list->head=node;
+    }else{
+        list->tail->next = node;
+    }
     list->tail=node;
+    node->next=NULL;
     list->size++;
     return LIST_SUCCESS;
 }
@@ -124,16 +118,26 @@ ListResult listInsertBeforeCurrent(List list, ListElement element){
     Node tmp = list->iterator;
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
-    LIST_FOREACH(Node, iterator, list){
-        if (list->iterator == tmp){
-            node=list->copyElement(element);
-            node->next=list->iterator->next;
-            list->iterator->next=node;
-            list->size++;
-            return LIST_SUCCESS;
+    node->Element=list->copyElement(element);
+    list->size++;
+    if (tmp == list->head){
+        list->head = node;
+        node->next=tmp;
+        return LIST_SUCCESS;
+    } else {
+        LIST_FOREACH(ListElement, current, list){
+            if (list->iterator->next == tmp){
+                node->next=tmp;
+                list->iterator->next=node;
+                list->iterator=tmp;
+                return LIST_SUCCESS;
+            }
         }
     }
-    return LIST_SUCCESS;
+    list->size--;
+    list->freeElement(node->Element);
+    free(node);
+    return LIST_INVALID_CURRENT;
 }
 
 ListResult listInsertAfterCurrent(List list, ListElement element){
@@ -141,7 +145,7 @@ ListResult listInsertAfterCurrent(List list, ListElement element){
     NULL_CHECK(list->iterator, LIST_INVALID_CURRENT);
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
-    node = list->copyElement(element);
+    node->Element = list->copyElement(element);
     node->next=list->iterator->next;
     list->iterator->next=node;
     list->size++;
@@ -152,10 +156,10 @@ ListResult listRemoveCurrent(List list){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     NULL_CHECK(list->iterator, LIST_INVALID_CURRENT);
     Node tmp = list->iterator;
-    LIST_FOREACH(Node, iterator, list){
+    LIST_FOREACH(ListElement, current, list){
         if (list->iterator->next == tmp){
-            list->iterator = tmp->next;
-            list->freeElement(tmp);
+            list->iterator->next = tmp->next;
+            list->freeElement(tmp->Element);
             list->size--;
             return LIST_SUCCESS;
         }
@@ -163,72 +167,52 @@ ListResult listRemoveCurrent(List list){
     return LIST_SUCCESS;
 }
 
-/**
- * Sorts the list according to the given function.
- *
- * For example, the following code will sort a list of integers according to
- * their distance from 0.
- * @code
- * int closerTo(ListElement num1, ListElement num2, ListSortKey value) {
- *   int distance1 = abs(*(int*)num1 - *(int*)value);
- *   int distance2 = abs(*(int*)num2 - *(int*)value);
- *   return distance1 - distance2;
- * }
- *
- * void sortInts(List listOfInts) {
- *   int key = 0;
- *   listSort(listOfInts, closerTo, &key);
- * }
- * @endcode
- *
- * @param list the target list to sort
- * @param compareElement A comparison function as defined in the type
- * CompareListElements. This function should return an integer indicating the
- * relation between two elements in the list
- *
- * @return
- * LIST_OUT_OF_MEMORY if a memory allocation failed, the list will be intact
- * in this case.
- */
 ListResult listSort(List list, CompareListElements compareElement){
-     NULL_CHECK(list, LIST_NULL_ARGUMENT);
-     NULL_CHECK(compareElement, LIST_NULL_ARGUMENT);
-    
+    NULL_CHECK(list, LIST_NULL_ARGUMENT);
+    NULL_CHECK(compareElement, LIST_NULL_ARGUMENT);
+    List sortedList = listCreate(list->copyElement, list->freeElement);
+    LIST_FOREACH(ListElement, current, list){
+        LIST_FOREACH(ListElement, sorted_current, sortedList){
+            if (compareElement(current,sorted_current)>0){
+                
+            }else if (compareElement(current,sorted_current)<0){
+                
+            }else{
+                listInsertAfterCurrent(sortedList, current);
+            }
+        }
+    }
+    listClear(list);
     return LIST_SUCCESS;
 }
 
 List listFilter(List list, FilterListElement filterElement, ListFilterKey key){
-    List newList = malloc(sizeof(*newList));
-    int first=0;
+    NULL_CHECK(list, NULL);
+    List newList = listCreate( list->copyElement, list->freeElement);
     NULL_CHECK(newList, NULL);
-    newList->copyElement=list->copyElement;
-    newList->freeElement=list->freeElement;
     Node tmpIterator = list->iterator;
-    list->iterator=listGetFirst(list);
-    LIST_FOREACH(Node, iterator, list){
-        if (filterElement(list->iterator,key)){
-            Node node = malloc(sizeof(*node));
-            if (first==0){
-                ++first;
-                list->head=node;
+    LIST_FOREACH(ListElement, current, list){
+        if (filterElement(current,key)){
+            if (listInsertLast(newList,current) != LIST_SUCCESS){
+                listDestroy(newList);
+                return NULL;
             }
-            NULL_CHECK(node, NULL);
-            node=list->copyElement(list->iterator);
-            list->size++;
         }
     }
-    list->tail=list->iterator;
     list->iterator=tmpIterator;
+    
     return newList;
 }
 
 
 ListResult listClear(List list){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
-    list->iterator=listGetFirst(list);
-    LIST_FOREACH(Node, iterator, list){
-        list->freeElement(list->iterator);
+    LIST_FOREACH(ListElement, current, list){
+        list->freeElement(current);
+        free(list->iterator);
     }
+    list->head=list->tail=list->iterator=NULL;
+    list->size=0;
     return LIST_SUCCESS;
 }
 
