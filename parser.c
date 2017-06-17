@@ -141,21 +141,15 @@ void get_command(FILE* input,FILE* output,
     char buffer[256];
     while (fscanf(input," %s",buffer) != EOF) {
         assert(buffer);
-        PRINTALLPROFIT(EscapeTechnion1);
-        printf("---- BUFFER : %s ----\n",buffer);
         if (buffer[0] == '#') {
             fscanf(input, "%*[^\n]\n");
         } else if (strcmp(buffer, "company") == 0) {
-            printf("company_command\n");
             error_code = company_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "room") == 0) {
-            printf("room_command\n");
             error_code =  room_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "escaper") == 0) {
-            printf("escaper_command\n");
             error_code = escaper_command(input, output, EscapeTechnion1);
         } else if (strcmp(buffer, "report") == 0) {
-            printf("report_command\n");
             error_code = report_command(input, output, EscapeTechnion1);
         }
         if (error_code != MTM_SUCCESS) {

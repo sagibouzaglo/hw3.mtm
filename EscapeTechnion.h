@@ -127,5 +127,4 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion);
 MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
 
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, EscapeTechnion escapeTechnion);
-void PRINTALLPROFIT(EscapeTechnion EscapeTechnion1);
 #endif /* EscapeTechnion_h */

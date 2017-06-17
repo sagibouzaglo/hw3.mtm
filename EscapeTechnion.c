@@ -42,12 +42,6 @@ struct escapetechnion {
 };
 
 
-void PRINTALLPROFIT(EscapeTechnion EscapeTechnion1) {
-    for(int i=0;i<UNKNOWN;++i){
-        printf("Faculty %d profit: %d\n",i,((EscapeTechnion1)->profit)[i]);
-    }
-}
-
 MtmErrorCode create_EscapeTechnion(EscapeTechnion* EscapeTechnion1){
     *EscapeTechnion1 = malloc(sizeof(*(*EscapeTechnion1)));
     if(!*EscapeTechnion1){
@@ -101,13 +95,9 @@ MtmErrorCode EscapeTechnion_add_company(char* email,
         return cheak_email;
     }
     CompanyReturn Result=COM_SUCCESS;
-    printf("--->>>> %d\n",*(EscapeTechnion1->profit+2));
     Company  company1 = companyCreate(email,faculty,&Result);
-    printf("--->>>> %d\n",*(EscapeTechnion1->profit+2));
     setAdd (EscapeTechnion1->companies, (void*)company1);
-    printf("--->>>> %d\n",*(EscapeTechnion1->profit+2));
     companyDestroy(company1);
-    printf("--->>>> %d\n",*(EscapeTechnion1->profit+2));
     if(Result==COM_OUT_OF_MEMORY){
         return MTM_OUT_OF_MEMORY;
     }
@@ -410,7 +400,6 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     assert(EscapeTechnion1);
 
     int currentDay = getDayEtechnion(EscapeTechnion1);
-    printf("currentDay %d\n",currentDay);
     List currentDayOrders = listFilter(EscapeTechnion1->orders,
                                        orderDayEqualFilter,
                                        &currentDay);
@@ -548,13 +537,14 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, Esca
             }
         }
     }
+    printf("GOT HERE\n");
     return EscapeTechnion_add_escaper_order(email,(TechnionFaculty)numFacultyMaxScore,
       getIdRoom(recommendRoom),closestTimeAvailableRoom(recommendRoom,
       (TechnionFaculty)numFacultyMaxScore,escapeTechnion)
             ,num_ppl,escapeTechnion);
 }
 static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion){
-    for(int day=0; day>=0 ;++day){
+    for(int day=escapeTechnion->day; day>=0 ;++day){
         for(int hour=getOpenHRoom(room);hour<getCloseHRoom(room);++hour){
            if(isRoomAvalable(faculty,getIdRoom(room),escapeTechnion,hour,day)){
                char* time=malloc(sizeof(char)*5);
