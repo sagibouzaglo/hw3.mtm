@@ -26,7 +26,6 @@ int main(int argc, char* argv[]) {
     CHECK_NULL(input);
     FILE *output = stdout;
     CHECK_NULL(output);
-    printf("112112\n");
     switch(argc){
         case 1:
             break;
@@ -50,9 +49,7 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
         case 5:
-            printf("case5 \n");
             if (strcmp(argv[1],"-i")==0 && strcmp(argv[3],"-o")==0){
-                printf("11\n");
                 input = fopen(argv[2],"r");
                 if(!input) {
                     mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);

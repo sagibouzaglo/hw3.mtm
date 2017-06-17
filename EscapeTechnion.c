@@ -15,6 +15,8 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion);
+static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
 static void InsertPriseToFaculty(TechnionFaculty faculty,int priseOrder,EscapeTechnion* escapeTechnion1);
 static int getDayEtechnion(EscapeTechnion EscTechnion);
 //static Set getSetCompEscT(EscapeTechnion EscapeTechnion1);
@@ -270,7 +272,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
 
     if (setGetSize(EscapeTechnion->companies)) {
         SET_FOREACH(Company, iterator_comp, (EscapeTechnion)->companies) {
-            printf("got in\n");
+
             if (strcmp(email, getEmailCompany((Company) iterator_comp)) == 0) {
                 return MTM_EMAIL_ALREADY_EXISTS;
             }
@@ -378,8 +380,6 @@ static void CalculatePrice(Room room , int num_ppl, Order order) {
  */
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
-    int aa = listGetSize(EscapeTechnion->orders);
-    printf("List size1 - %d \n",aa );
     int currentDay = getDayEtechnion(EscapeTechnion);
     List currentDayOrders = listFilter(EscapeTechnion->orders,
                                                 orderDayEqualFilter,
@@ -390,8 +390,6 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     listDestroy((EscapeTechnion)->orders);
     (EscapeTechnion)->orders=newOrdersList;
     listSort(currentDayOrders, compareOrders);
-     aa = listGetSize(currentDayOrders);
-    printf("List size - %d \n",aa );
     LIST_FOREACH(Order , Order_iterator, currentDayOrders){
         InsertPriseToFaculty(getFacultyOfCompany(getCompanyOrder(Order_iterator)),getPriceOrder(Order_iterator),&EscapeTechnion);
         print_order(output,Order_iterator,EscapeTechnion);
@@ -484,6 +482,66 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion){
     mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[THIRD],*(EscapeTechnion->profit+bestFaculty[THIRD]));
     return MTM_SUCCESS;
 }
+
+MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, EscapeTechnion escapeTechnion){
+    if(IfEscaperEmailValid(email)){
+        return MTM_INVALID_PARAMETER;
+    }
+    Escaper escaper = findEscaper(email,escapeTechnion);
+    if(!escaper){
+        return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
+    }
+    int maxScore=0;
+    int numFacultyMaxScore=0;
+    Room recommendRoom=NULL;
+    SET_FOREACH(Company,iterator_comp,escapeTechnion->companies){
+        SET_FOREACH(Room,roomCompIterator,getCompanyRooms(iterator_comp)){
+            int Comparison_index=CalculationOfRecommendation(roomCompIterator,escaper,num_ppl);
+            if(Comparison_index>maxScore){
+                maxScore=Comparison_index;
+                numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
+                recommendRoom=roomCompIterator;
+                continue;
+            } else if(Comparison_index==maxScore){
+                int distansFaculty = (abs(getFacultyOfCompany(iterator_comp)-getFacultyEscaper(escaper))-
+                abs(numFacultyMaxScore-getFacultyEscaper(escaper)));
+                if(distansFaculty>0) continue;
+                else if (distansFaculty<0 || (distansFaculty==0 && getFacultyOfCompany(iterator_comp)<numFacultyMaxScore)){
+                    maxScore=Comparison_index;
+                    numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
+                    recommendRoom=roomCompIterator;
+                }
+            }
+        }
+    }
+    return EscapeTechnion_add_escaper_order(email,(TechnionFaculty)numFacultyMaxScore,
+      getIdRoom(recommendRoom),closestTimeAvailableRoom(recommendRoom,
+      (TechnionFaculty)numFacultyMaxScore,escapeTechnion)
+            ,num_ppl,escapeTechnion);
+}
+static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion){
+    for(int day=0; day>=0 ;++day){
+        for(int hour=getOpenHRoom(room);hour<getCloseHRoom(room);++hour){
+           if(isRoomAvalable(faculty,getIdRoom(room),escapeTechnion,hour,day)){
+               char* time=malloc(sizeof(char)*5);
+               if(!time) return NULL;
+               sprintf(time, "%d-%d",day,hour);
+               return time;
+           }
+        }
+
+    }
+}
+static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
+    assert(room && escaper);
+    int arg1 = (getNumPplRoom(room)-num_ppl);
+    arg1 *= arg1;
+    int arg2 = (getDifficultyRoom(room)-getSkillLevel(escaper));
+    arg2 *= arg2;
+    return (arg1+arg2);
+}
+
+
 static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
