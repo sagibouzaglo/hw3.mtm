@@ -56,8 +56,11 @@ char* getWorkigHRoom(Room room){
 }
 /** Frees an existing room object */
 void roomDestroy(void* room){
-    free(getWorkigHRoom((Room)room));
-    free((Room)room);
+    if(room){
+        free(getWorkigHRoom((Room)room));
+        free((Room)room);
+    }
+
 }
 
 /** Allocates a new room which is a copy of the argument */

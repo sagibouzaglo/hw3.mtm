@@ -15,6 +15,8 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+static void InsertPriseToFaculty(TechnionFaculty faculty,int priseOrder,EscapeTechnion* escapeTechnion1);
+static int getDayEtechnion(EscapeTechnion EscTechnion);
 //static Set getSetCompEscT(EscapeTechnion EscapeTechnion1);
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
@@ -46,9 +48,14 @@ EscapeTechnion create_EscapeTechnion(EscapeTechnion* EscapeTechnion1){
     (*EscapeTechnion1)->companies = setCreate(companyCopy,companyDestroy,companyCompare);
     (*EscapeTechnion1)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
     (*EscapeTechnion1)->orders = listCreate(orderCopy,orderDestroy);
-    (*EscapeTechnion1)->profit = malloc(sizeof((int)UNKNOWN));
+    (*EscapeTechnion1)->profit = malloc(sizeof(int*)*UNKNOWN);
     if (!(*EscapeTechnion1)->profit){
          return NULL;
+    }
+    //((*EscapeTechnion1)->profit)[UNKNOWN]={0};
+   for(int i=0;i<(int)UNKNOWN;++i){
+       ((*EscapeTechnion1)->profit)[i]=0;
+       //*((*EscapeTechnion1)->profit+i)=0;
     }
     (*EscapeTechnion1)->day=0;
 
@@ -230,7 +237,7 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty facult
     }
 
     CalculatePrice(findRoom(id,faculty,EscapeTechnion),num_ppl,order);
-    listInsertAfterCurrent(EscapeTechnion->orders,order);
+    listInsertFirst(EscapeTechnion->orders,order);
     orderDestroy(order);
 
     return MTM_SUCCESS;
@@ -359,10 +366,10 @@ static void CalculatePrice(Room room , int num_ppl, Order order) {
     assert( room && order);
     if (getFacultyOfCompany(getCompanyOrder(order)) ==
                                     getFacultyEscaper(getEscaperOrder(order))) {
-        putPriceOrder(order,(int) (num_ppl * (getPriceRoom(room)) *
+        putPriceOrder(&order,(int) (num_ppl * (getPriceRoom(room)) *
                                                              AFTER_DISCOUNT));
     } else {
-        putPriceOrder(order,num_ppl * (getPriceRoom(room)));
+        putPriceOrder(&order,num_ppl * (getPriceRoom(room)));
     }
 }
 
@@ -371,17 +378,22 @@ static void CalculatePrice(Room room , int num_ppl, Order order) {
  */
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
-
+    int aa = listGetSize(EscapeTechnion->orders);
+    printf("List size1 - %d \n",aa );
+    int currentDay = getDayEtechnion(EscapeTechnion);
     List currentDayOrders = listFilter(EscapeTechnion->orders,
                                                 orderDayEqualFilter,
-                                                (void*)&EscapeTechnion->day);
+                                                &currentDay);
     List newOrdersList = listFilter(EscapeTechnion->orders,
                                             orderDayNotEqualFilter,
-                                                (void*)&EscapeTechnion->day);
+                                                &currentDay);
     listDestroy((EscapeTechnion)->orders);
     (EscapeTechnion)->orders=newOrdersList;
     listSort(currentDayOrders, compareOrders);
-    LIST_FOREACH(ListElement , Order_iterator, currentDayOrders){
+     aa = listGetSize(currentDayOrders);
+    printf("List size - %d \n",aa );
+    LIST_FOREACH(Order , Order_iterator, currentDayOrders){
+        InsertPriseToFaculty(getFacultyOfCompany(getCompanyOrder(Order_iterator)),getPriceOrder(Order_iterator),&EscapeTechnion);
         print_order(output,Order_iterator,EscapeTechnion);
     }
     listDestroy(currentDayOrders);
@@ -393,7 +405,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion){
 
  */
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder(order) == *(int*)day){
+    if (getDayOrder(order) == *((int*)day)){
         return true;
     }
 
@@ -401,12 +413,15 @@ static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
 }
 
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder(order)!=*(int*)day){
+    if (getDayOrder(order)!=*((int*)day)){
         return true;
     }
     return false;
 }
-
+static void InsertPriseToFaculty(TechnionFaculty faculty,int priseOrder,EscapeTechnion* escapeTechnion1){
+    int NumFaculty = (int)faculty;
+    ((*escapeTechnion1)->profit)[NumFaculty] += priseOrder;
+}
 /**
 
  */
@@ -489,4 +504,8 @@ static bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion EscapeT
         }
     }
     return false;
+}
+static int getDayEtechnion(EscapeTechnion EscTechnion){
+    assert(EscTechnion);
+    return EscTechnion->day;
 }

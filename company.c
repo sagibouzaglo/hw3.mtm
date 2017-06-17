@@ -41,7 +41,10 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
 
 /** Frees an existing company object */
 void companyDestroy(void* company){
-    setDestroy(((Company)company)->rooms);
+    if((((Company)company)->rooms)){
+        setDestroy(((Company)company)->rooms);
+    }
+
     free(((Company)company)->email);
     free(company);
 }

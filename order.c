@@ -12,6 +12,8 @@
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
 
+static int findAndgetPriceRoom(Company company,int roomId);
+static int CalculatePrice(int priseRoom , int num_ppl, Order order);
 static bool hourOrder (char* time, Order order);
 struct order {
     char* time;
@@ -56,7 +58,7 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
         *Result= ORD_NULL_PARAMETER;
         return NULL;
     }
-    Order order = malloc(sizeof(*order));
+    Order order = malloc(sizeof(order));
     if (!order) {
         *Result= ORD_OUT_OF_MEMORY;
         return NULL;
@@ -73,7 +75,7 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
-    order->tot_price=0;
+    order->tot_price=CalculatePrice(findAndgetPriceRoom(company1,room_id),num_ppl, order);
     return order;
 }
 
@@ -119,8 +121,8 @@ int getPriceOrder(Order order){
     return order->tot_price;
 }
 
-void putPriceOrder(Order order,int tot_p){
-    order->tot_price=tot_p;
+void putPriceOrder(Order* order,int tot_p){
+    (*order)->tot_price =tot_p;
 }
 
 char* getTimeOrder(Order order) {
@@ -189,5 +191,20 @@ static bool hourOrder (char* time, Order order){
     }
     return true;
 }
-
-
+static int CalculatePrice(int priseRoom , int num_ppl, Order order) {
+    assert( room && order);
+    if (getFacultyOfCompany(getCompanyOrder(order)) ==
+        getFacultyEscaper(getEscaperOrder(order))) {
+        return ((int)(num_ppl*priseRoom*AFTER_DISCOUNT));
+    } else {
+        return (num_ppl * priseRoom);
+    }
+}
+static int findAndgetPriceRoom(Company company,int roomId){
+    SET_FOREACH(Room ,roomOfCompany,getCompanyRooms(company)){
+        if(getIdRoom(roomOfCompany)==roomId){
+            return getPriceRoom(roomOfCompany);
+        }
+    }
+    return 0;
+}
