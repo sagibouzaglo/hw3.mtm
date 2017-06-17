@@ -200,7 +200,7 @@ SetResult setRemove(Set set, SetElement element);
 /**
 * setClear: Removes all elements from target set.
 * The elements are deallocated using the stored free function
-* @param set
+* @param Set
 * 	Target set to remove all element from
 * @return
 * 	SET_NULL_ARGUMENT - if a NULL pointer was sent.

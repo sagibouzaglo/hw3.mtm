@@ -11,6 +11,7 @@
 		2417BB321ED98CB5008B4326 /* order.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB301ED98CB5008B4326 /* order.c */; };
 		2417BB351ED98CC3008B4326 /* room.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB331ED98CC3008B4326 /* room.c */; };
 		2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB381ED98CFD008B4326 /* list_mtm1.c */; };
+		246BADFD1EF3DEC300493A9A /* libmtm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 246BADFC1EF3DEC200493A9A /* libmtm.a */; };
 		249A5E251EEEFC3800874F16 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 249A5E241EEEFC3800874F16 /* main.c */; };
 		24DA7C551EDB1C29004EE698 /* escaper.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C531EDB1C29004EE698 /* escaper.c */; };
 		24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */; };
@@ -42,6 +43,7 @@
 		24526EFF1ED1F2A3008271EF /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = SOURCE_ROOT; };
 		24526F001ED1F2A3008271EF /* mtm_ex3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mtm_ex3.h; sourceTree = SOURCE_ROOT; };
 		24526F011ED1F2A3008271EF /* set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = set.h; sourceTree = SOURCE_ROOT; };
+		246BADFC1EF3DEC200493A9A /* libmtm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmtm.a; path = ../../../libmtm/mac/libmtm.a; sourceTree = "<group>"; };
 		249A5E241EEEFC3800874F16 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = SOURCE_ROOT; };
 		24DA7C531EDB1C29004EE698 /* escaper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = escaper.c; sourceTree = SOURCE_ROOT; };
 		24DA7C541EDB1C29004EE698 /* escaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = escaper.h; sourceTree = SOURCE_ROOT; };
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				246BADFD1EF3DEC300493A9A /* libmtm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +95,7 @@
 				2417BB2C1ED98C69008B4326 /* company.c */,
 				2417BB2D1ED98C69008B4326 /* company.h */,
 				2417BB301ED98CB5008B4326 /* order.c */,
+				246BADFC1EF3DEC200493A9A /* libmtm.a */,
 				2417BB311ED98CB5008B4326 /* order.h */,
 				2417BB331ED98CC3008B4326 /* room.c */,
 				2417BB341ED98CC3008B4326 /* room.h */,
