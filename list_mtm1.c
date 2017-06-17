@@ -32,7 +32,6 @@ List listCreate(CopyListElement copyElement, FreeListElement freeElement){
     if ((!copyElement) || (!freeElement)){
         return NULL;
     }
-    
     List list =malloc(sizeof(*list));
     NULL_CHECK(list, NULL);
     Node node= malloc(sizeof(*node));
@@ -48,20 +47,8 @@ List listCreate(CopyListElement copyElement, FreeListElement freeElement){
     return list;
 }
 
-/**
- * Creates a copy of target list.
- *
- * The new copy will contain all the elements from the source list in the same
- * order and will use the same functions as the original list for copying and
- * freeing elements.
- *
- * @param list The target list to copy
- * @return
- * NULL if a NULL was sent or a memory allocation failed.
- * A List containing the same elements with same order as list otherwise.
- */
-
 List listCopy(List list){
+    int first=0;
     List newList = malloc(sizeof(*newList));
     NULL_CHECK(newList, NULL);
     newList->copyElement=list->copyElement;
@@ -70,7 +57,14 @@ List listCopy(List list){
     list->iterator=listGetFirst(list);
     LIST_FOREACH(Node, iterator, list){
         Node node = malloc(sizeof(*node));
-        NULL_CHECK(node, NULL);
+        if (node == NULL){
+            listDestroy(newList);
+            return NULL;
+        }
+        if (first==0){
+            ++first;
+            list->head=node;
+        }
         node=list->copyElement(list->iterator);
         newList->iterator=node;
         list->size++;
@@ -88,7 +82,7 @@ int listGetSize(List list){
 ListElement listGetFirst(List list){
     NULL_CHECK(list, NULL);
     list->iterator=list->head;
-    return list->iterator;
+    return list->head;
 }
 
 ListElement listGetNext(List list){
@@ -160,7 +154,7 @@ ListResult listRemoveCurrent(List list){
     Node tmp = list->iterator;
     LIST_FOREACH(Node, iterator, list){
         if (list->iterator->next == tmp){
-            list->iterator = tmp;
+            list->iterator = tmp->next;
             list->freeElement(tmp);
             list->size--;
             return LIST_SUCCESS;
@@ -205,6 +199,7 @@ ListResult listSort(List list, CompareListElements compareElement){
 
 List listFilter(List list, FilterListElement filterElement, ListFilterKey key){
     List newList = malloc(sizeof(*newList));
+    int first=0;
     NULL_CHECK(newList, NULL);
     newList->copyElement=list->copyElement;
     newList->freeElement=list->freeElement;
@@ -213,11 +208,16 @@ List listFilter(List list, FilterListElement filterElement, ListFilterKey key){
     LIST_FOREACH(Node, iterator, list){
         if (filterElement(list->iterator,key)){
             Node node = malloc(sizeof(*node));
+            if (first==0){
+                ++first;
+                list->head=node;
+            }
             NULL_CHECK(node, NULL);
             node=list->copyElement(list->iterator);
             list->size++;
         }
     }
+    list->tail=list->iterator;
     list->iterator=tmpIterator;
     return newList;
 }

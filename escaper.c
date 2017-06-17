@@ -2,9 +2,7 @@
 #include "escaper.h"
 #include "set.h"
 
-#define CHECK_NULL(ptr) if (!ptr){\
-                            return MTM_NULL_PARAMETER;\
-                            };
+
 
 #define ERROR -1
 
@@ -16,9 +14,12 @@ struct escaper {
 };
 
 
-/** Allocates a new escaper */
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
                                                     EscaperReturn* Result){
+    if(email==NULL){
+        *Result= Esc_NULL_PARAMETER;
+        return NULL;
+    }
     if(!IfEscaperEmailValid(email)){
         *Result= Esc_INVALID_PARAMETER;
         return NULL;
@@ -39,13 +40,11 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
     return escaper;
 }
 
-/** Frees an existing escaper object */
 void escaperDestroy(void* escaper){
     free(((Escaper)escaper)->email);
     free(escaper);
 }
 
-/** Allocates a new escaper which is a copy of the argument */
 SetElement escaperCopy(void* escaper){
     if (!escaper) {
         return NULL;
@@ -55,7 +54,6 @@ SetElement escaperCopy(void* escaper){
                          ((Escaper)escaper)->skill_level, &Result);
 }
 
-/** Returns true if both email escaper are identical */
 int escaperEquals(void* escaper1, void* escaper2) {
     assert(escaper1 && escaper2);
     return strcmp(getEmailEscaper((Escaper)escaper1),getEmailEscaper((Escaper)escaper2));
@@ -72,6 +70,7 @@ char* getEmailEscaper(Escaper escaper){
     strcpy(emailReturn,escaper->email);
     return emailReturn;
 }
+
 int getSkillLevel(Escaper escaper){
     if(!escaper){
         return ERROR;
@@ -85,6 +84,7 @@ TechnionFaculty getFacultyEscaper(Escaper escaper){
     }
     return escaper->Faculty;
 }
+
 bool IfEscaperEmailValid(char* email) {
     if (!email) {
         return NULL;
