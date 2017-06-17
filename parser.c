@@ -105,6 +105,10 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             fscanf(input, " %s %d", email, &num_ppl);
              assert(*email && num_ppl);
             technion_report_day(output,EscapeTechnion);
+        }else if (strcmp(buffer,"recommend")==0){
+            fscanf(input, " %s %d", email, &num_ppl);
+            assert(*email && num_ppl);
+            EscapeTechnion_add_escaper_recommend(email,num_ppl,EscapeTechnion);
         }
     /*Before creating the order we need to add the function escaper recommend!*/
     return MTM_SUCCESS;

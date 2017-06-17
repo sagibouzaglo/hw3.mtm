@@ -201,7 +201,7 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,
             return MTM_NULL_PARAMETER;
         }
         if(strcmp(email,emailEscaper)==0){
-            orderDestroy(iterator_order);
+
             listRemoveCurrent(EscapeTechnion->orders);
 
         }
@@ -484,7 +484,7 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion){
 }
 
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, EscapeTechnion escapeTechnion){
-    if(IfEscaperEmailValid(email)){
+    if(!IfEscaperEmailValid(email)){
         return MTM_INVALID_PARAMETER;
     }
     Escaper escaper = findEscaper(email,escapeTechnion);
@@ -531,6 +531,7 @@ static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTe
         }
 
     }
+    return NULL;
 }
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     assert(room && escaper);

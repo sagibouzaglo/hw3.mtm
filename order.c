@@ -81,7 +81,9 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
 
 /** Frees an existing order object */
 void orderDestroy(void* order){
-    free(order);
+    if((Order)order){
+        free(order);
+    }
 }
 
 /** 
@@ -111,7 +113,7 @@ bool orderEqualsRoom(Order order1, Order order2) {
  */
 int orderEqualsEscaper(Order order1, Order order2 ){
     assert(order1 && order2);
-    return strcmp(getEmailEscaper(order1->escaper),getEmailEscaper(order1->escaper));
+    return strcmp(getEmailEscaper(order1->escaper),getEmailEscaper(order2->escaper));
 }
 
 int getPriceOrder(Order order){
