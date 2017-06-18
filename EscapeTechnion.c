@@ -520,7 +520,7 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
 }
 
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
-                                                  EscapeTechnion escapeTechnion){
+                                                 EscapeTechnion escapeTechnion){
     if(!IfEscaperEmailValid(email)){
         return MTM_INVALID_PARAMETER;
     }
