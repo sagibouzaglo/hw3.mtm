@@ -78,7 +78,6 @@ char* getEmailCompany(Company company){
 
 TechnionFaculty getFacultyOfCompany(Company company){
     assert(company);
-
     return company->Faculty;
 }
 

@@ -21,8 +21,6 @@
 
 typedef enum {
     ORD_OUT_OF_MEMORY, // You should exit program after this error
-    ORD_INVALID_COMMAND_LINE_PARAMETERS, // You should exit program after this error
-    ORD_CANNOT_OPEN_FILE, // You should exit program after this error
     ORD_NULL_PARAMETER,
     ORD_INVALID_PARAMETER,
     ORD_EMAIL_ALREADY_EXISTS,
@@ -31,8 +29,6 @@ typedef enum {
     ORD_ID_ALREADY_EXIST,
     ORD_ID_DOES_NOT_EXIST,
     ORD_CLIENT_IN_ROOM,
-    ORD_ROOM_NOT_AVAILABLE,
-    ORD_RESERVATION_EXISTS,
     ORD_NO_ROOMS_AVAILABLE,
     ORD_SUCCESS,
 } OrderReturn;
