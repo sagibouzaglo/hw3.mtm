@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "217"
             endingLineNumber = "217"
-            landmarkName = "EscapeTechnion_add_escaper_order()"
+            landmarkName = "EscapeTechnion_remove_escaper()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "256"
             endingLineNumber = "256"
-            landmarkName = "findEmailCompany()"
+            landmarkName = "EscapeTechnion_add_escaper_order()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
