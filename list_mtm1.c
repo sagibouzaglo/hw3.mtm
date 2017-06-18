@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NULL_CHECK(ptr,ret) if (ptr == NULL){\
+#define NULL_CHECK(ptr,ret) if (!ptr){\
 return ret;\
 }
 
@@ -86,7 +86,7 @@ ListResult listInsertFirst(List list, ListElement element){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
-    if (list->tail == NULL){
+    if (!list->tail){
         list->tail=node;
     }
     node->Element=list->copyElement(element);
@@ -101,7 +101,7 @@ ListResult listInsertLast(List list, ListElement element){
     Node node = malloc(sizeof(*node));
     NULL_CHECK(node, LIST_OUT_OF_MEMORY);
     node->Element=list->copyElement(element);
-    if (list->tail == NULL){
+    if (!list->tail){
         list->head=node;
     }else{
         list->tail->next = node;
@@ -171,19 +171,30 @@ ListResult listSort(List list, CompareListElements compareElement){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     NULL_CHECK(compareElement, LIST_NULL_ARGUMENT);
     List sortedList = listCreate(list->copyElement, list->freeElement);
+    bool inserted=false;
     LIST_FOREACH(ListElement, current, list){
-        if(compareElement(listGetCurrent(sortedList), current)>0){
+        if (compareElement(current, list->head->Element)==0){
+            listInsertFirst(sortedList, current);
+        }else{
             LIST_FOREACH(ListElement, sorted_current, sortedList){
-                if (compareElement(current,sorted_current)<0){
-                    listInsertBeforeCurrent(sortedList, current);
-                }else if (compareElement(current,sorted_current)==0){
-                    listInsertAfterCurrent(sortedList, current);
+                if(compareElement(sorted_current,current)>=0){
+                    if (inserted == false){
+                        listInsertBeforeCurrent(sortedList, current);
+                        inserted=true;
+                    }
                 }
             }
+            if (!inserted){
+                listInsertLast(sortedList, current);
+            }
+            inserted=false;
         }
-        
     }
     listClear(list);
+    LIST_FOREACH(ListElement, current, sortedList){
+        listInsertLast(list, current);
+    }
+    listDestroy(sortedList);
     return LIST_SUCCESS;
 }
 
@@ -219,7 +230,7 @@ ListResult listClear(List list){
 
 
 void listDestroy(List list){
-    if(list==NULL){
+    if(!list){
         return;
     }
     listClear(list);
