@@ -36,14 +36,15 @@ typedef enum {
  * @param difficulty - diffuculty of room.
  *
  * @return result
- * ROOM_INVALID_PARAMETER - the new email.
+ * ROOM_INVALID_PARAMETER - one of the sent pointers is NULL.
  * ROOM_OUT_OF_MEMORY - allocation failed.
  * ROOM_SUCCESS - room created seccesfully.
  *
  * @return
  * pointer to the new room
  */
-Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return);
+Room roomCreate(int id, int price, int num_ppl, char* working_hour,
+                                            int difficulty,RoomReturn* Return);
 
 /**
  * free all allocated memory for the room
