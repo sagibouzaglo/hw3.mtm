@@ -573,8 +573,4 @@ static int getDayEtechnion(EscapeTechnion EscTechnion){
     assert(EscTechnion);
     return (EscTechnion->day);
 }
-MtmErrorCode CheckResultCompany(CompanyReturn Result){
-    if(Result!=COM_SUCCESS) {
-        return Result == COM_NULL_PARAMETER ?  MTM_NULL_PARAMETER : MTM_OUT_OF_MEMORY;
-    }
-}
+
