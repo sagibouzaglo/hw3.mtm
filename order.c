@@ -13,9 +13,10 @@
 #define HOURS_DAY 23
 
 static int findAndgetPriceRoom(Company company,int roomId);
-static int CalculatePrice(int priseRoom , int num_ppl, Order order);
-static bool hourOrder (char* time, Order order);
 
+static int CalculatePrice(int priseRoom , int num_ppl, Order order);
+
+static bool hourOrder (char* time, Order order);
 
 struct order {
     char* time;
@@ -28,10 +29,8 @@ struct order {
     int tot_price;
 };
 
-
-
-/** Allocates a new order */
-Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, int room_id,OrderReturn* Result){
+Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
+                                              int room_id,OrderReturn* Result){
 
     if (!escaper || !company1) {
         *Result= ORD_NULL_PARAMETER;
@@ -66,28 +65,23 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1, in
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
-    order->tot_price=CalculatePrice(findAndgetPriceRoom(company1,room_id),num_ppl, order);
+    order->tot_price=CalculatePrice(findAndgetPriceRoom(company1,room_id),
+                                                                num_ppl, order);
     return order;
 }
 
-/** Frees an existing order object */
 void orderDestroy(void* order){
     if(!order) return;
     free(((Order)order)->time);
     free(order);
 }
 
-/** 
-    Allocates a new order which is a copy of the argument
-    errors:
-    NULL - order is null
-    
- */
 ListElement orderCopy(void* order){
     assert(order);
     OrderReturn Result=ORD_SUCCESS;
-    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
-                       ((Order)order)->company ,((Order)order)->room_id ,&Result);
+    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,
+                            ((Order)order)->num_ppl,((Order)order)->company,
+                                            ((Order)order)->room_id ,&Result);
 }
 
 int compareOrders(void* order1,void* order2){
@@ -96,8 +90,8 @@ int compareOrders(void* order1,void* order2){
     } else if (((Order)order1)->hour < ((Order)order2)->hour){
         return -1;
     } else{
-        TechnionFaculty Faculty1 = getFacultyOfCompany(((Order)order1)->company);
-        TechnionFaculty Faculty2 = getFacultyOfCompany(((Order)order2)->company);
+        TechnionFaculty Faculty1= getFacultyOfCompany(((Order)order1)->company);
+        TechnionFaculty Faculty2= getFacultyOfCompany(((Order)order2)->company);
         if (Faculty1 > Faculty2){
             return 1;
         }else if (Faculty1 < Faculty2){
@@ -113,21 +107,17 @@ int compareOrders(void* order1,void* order2){
         }
     }
 }
-/**
-    Returns true if both room orders and time are identical
- */
+
 bool orderEqualsRoom(Order order1, Order order2) {
     assert(order1 && order2);
     return order1->time == order2->time &&
             order1->room_id == order2->room_id;
 }
 
-/** 
-    Returns true if both Escaper order and time are identical
- */
 int orderEqualsEscaper(Order order1, Order order2 ){
     assert(order1 && order2);
-    return strcmp(getEmailEscaper(order1->escaper),getEmailEscaper(order2->escaper));
+    return strcmp(getEmailEscaper(order1->escaper),
+                                getEmailEscaper(order2->escaper));
 }
 
 int getPriceOrder(Order order){
@@ -178,9 +168,9 @@ static bool hourOrder (char* time, Order order){
     for(int i=0;i<strlen(time);++i){
         if(*(time + i) == '-'){
             *(time+i) = 0;
-            order->day=atol(time);
+            order->day=(int)atol(time);
             ++i;
-            order->hour=atol(time+i);
+            order->hour=(int)atol(time+i);
             break;
         }
     }
@@ -191,6 +181,7 @@ static bool hourOrder (char* time, Order order){
     }
     return true;
 }
+
 static int CalculatePrice(int priseRoom , int num_ppl, Order order) {
     assert(order);
     Company company = getCompanyOrder(order);
