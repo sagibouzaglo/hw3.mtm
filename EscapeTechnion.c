@@ -528,7 +528,6 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     return (arg1+arg2);
 }
 
-
 static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
