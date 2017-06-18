@@ -63,12 +63,14 @@ MtmErrorCode create_EscapeTechnion(EscapeTechnion* EscapeTechnion1){
     if(!*EscapeTechnion1){
       return MTM_OUT_OF_MEMORY;
     }
-    (*EscapeTechnion1)->companies = setCreate(companyCopy,companyDestroy,companyCompare);
+    (*EscapeTechnion1)->companies = setCreate(companyCopy,
+                                                companyDestroy,companyCompare);
     if(!(*EscapeTechnion1)->companies) {
         destroy_EscapeTechnion(*EscapeTechnion1);
         return MTM_OUT_OF_MEMORY;
     }
-    (*EscapeTechnion1)->escaper = setCreate(escaperCopy,escaperDestroy,escaperEquals);
+    (*EscapeTechnion1)->escaper = setCreate(escaperCopy,
+                                                escaperDestroy,escaperEquals);
     if(!(*EscapeTechnion1)->escaper) {
         destroy_EscapeTechnion(*EscapeTechnion1);
         return MTM_OUT_OF_MEMORY;
@@ -90,14 +92,13 @@ MtmErrorCode create_EscapeTechnion(EscapeTechnion* EscapeTechnion1){
     return MTM_SUCCESS;
 }
 
-MtmErrorCode destroy_EscapeTechnion(EscapeTechnion EscapeTechnion){
+void destroy_EscapeTechnion(EscapeTechnion EscapeTechnion){
     assert(EscapeTechnion);
     setDestroy(EscapeTechnion->companies);
     setDestroy(EscapeTechnion->escaper);
     listDestroy(EscapeTechnion->orders);
     free(EscapeTechnion->profit);
     free(EscapeTechnion);
-    return MTM_SUCCESS;
 }
 
 MtmErrorCode EscapeTechnion_add_company(char* email,
@@ -264,11 +265,13 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
                                                : MTM_NULL_PARAMETER;
         } else return MTM_NO_ROOMS_AVAILABLE;
     }
-    if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),getDayOrder(order))){
+    if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),
+                                                    getDayOrder(order))){
         orderDestroy(order);
         return MTM_CLIENT_IN_ROOM;
     }
-    if(!isRoomAvalable(faculty,id,EscapeTechnion,getHourOrder(order),getDayOrder(order))){
+    if(!isRoomAvalable(faculty,id,EscapeTechnion,getHourOrder(order),
+                                                        getDayOrder(order))){
         orderDestroy(order);
         return MTM_ROOM_NOT_AVAILABLE;
     }
@@ -277,7 +280,8 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
     return MTM_SUCCESS;
 }
 
-static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion){
+static char* findEmailCompany(int id_room,TechnionFaculty faculty,
+                                                EscapeTechnion EscapeTechnion){
     assert(EscapeTechnion);
     Set companies = EscapeTechnion->companies;
     if(!companies)
@@ -285,7 +289,7 @@ static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion
     SET_FOREACH(Company, company_iterator, companies){
         Set rooms = getCompanyRooms(company_iterator);
         if(!rooms) return NULL;
-        TechnionFaculty faculty_iterator = getFacultyOfCompany(company_iterator);
+        TechnionFaculty faculty_iterator= getFacultyOfCompany(company_iterator);
         if (faculty_iterator == faculty){
             SET_FOREACH(Room, room_iterator, rooms){
                 if(id_room == getIdRoom(room_iterator)){
@@ -550,8 +554,8 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     arg2 *= arg2;
     return (arg1+arg2);
 }
-
-static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day){
+static bool isRoomAvalable(TechnionFaculty faculty,int id,
+                           EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
                 && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){

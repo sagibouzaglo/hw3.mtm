@@ -42,7 +42,8 @@ typedef struct escaper* Escaper;
  * Esc_INVALID_PARAMETER - if the sent parameters were invalid.
  * Esc_SUCCESS -  the eascaper added successfully.
  */
-Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,EscaperReturn* Result);
+Escaper escaperCreate(char* email, TechnionFaculty faculty ,
+                                        int skill_level,EscaperReturn* Result);
 
 /**
  * remove the sent escaper from the escapers set and deallocate 

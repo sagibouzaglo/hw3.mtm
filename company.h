@@ -36,7 +36,8 @@ typedef struct company_t* Company;
  * @return
  * pointer to the new company
  */
-Company companyCreate(char* email, TechnionFaculty faculty, CompanyReturn* Result);
+Company companyCreate(char* email, TechnionFaculty faculty,
+                                            CompanyReturn* Result);
 
 /**
  * free all allocated memory for the company
