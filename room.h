@@ -26,9 +26,6 @@ typedef enum {
 
 } RoomReturn;
 
-
-
-
 /**
  * roomCreate - Allocates a new room, and return the room type
  *

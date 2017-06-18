@@ -11,9 +11,20 @@
 #include "mtm_ex3.h"
 #include "parser.h"
 
-#define CHECK_NULL(ptr) if (ptr==NULL){\
+#define CHECK_NULL(ptr) if (!ptr){\
                             return MTM_NULL_PARAMETER;\
                         };
+#define CHECK_FILE(ptr,dest,err)\
+                                if (!ptr){\
+                                    mtmPrintErrorMessage(dest,err);\
+                                    return  0;\
+                                };
+#define CHECK_FILE_AND_CLOSE(ptr,close,dest,err)\
+                                            if (!ptr){\
+                                                mtmPrintErrorMessage(dest,err);\
+                                                fclose(close);\
+                                                return  0;\
+                                            };
 
 #define MAX 256
 int main(int argc, char* argv[]) {
@@ -32,17 +43,11 @@ int main(int argc, char* argv[]) {
         case 3:
             if (strcmp(argv[1],"-i")==0){
                 input = fopen(argv[2],"r");
-                if(!input) {
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE(input, stderr, MTM_CANNOT_OPEN_FILE);
                 break;
             }else if (strcmp(argv[1],"-o")==0){
                 output = fopen(argv[2],"w");
-                if(!output) {
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE(output, stderr, MTM_CANNOT_OPEN_FILE);
                 break;
             } else {
                 mtmPrintErrorMessage(stderr,MTM_INVALID_COMMAND_LINE_PARAMETERS);
@@ -51,29 +56,15 @@ int main(int argc, char* argv[]) {
         case 5:
             if (strcmp(argv[1],"-i")==0 && strcmp(argv[3],"-o")==0){
                 input = fopen(argv[2],"r");
-                if(!input) {
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE(input, stderr, MTM_CANNOT_OPEN_FILE);
                 output = fopen(argv[4],"w");
-                if(!output) {
-                    fclose(input);
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE_AND_CLOSE(output,input,stderr,MTM_CANNOT_OPEN_FILE);
                 break;
             } else if (strcmp(argv[1],"-o")==0 && strcmp(argv[3],"-i")==0){
                 input = fopen(argv[4],"r");
-                if(!input) {
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE(input, stderr, MTM_CANNOT_OPEN_FILE);
                 output = fopen(argv[2],"w");
-                if(!output) {
-                    fclose(input);
-                    mtmPrintErrorMessage(stderr,MTM_CANNOT_OPEN_FILE);
-                    return 0;
-                }
+                CHECK_FILE_AND_CLOSE(output,input,stderr,MTM_CANNOT_OPEN_FILE);
                 break;
             } else {
                 mtmPrintErrorMessage(stderr,MTM_INVALID_COMMAND_LINE_PARAMETERS);
