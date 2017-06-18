@@ -276,6 +276,7 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
     orderDestroy(order);
     return MTM_SUCCESS;
 }
+
 static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion){
     assert(EscapeTechnion);
     Set companies = EscapeTechnion->companies;
