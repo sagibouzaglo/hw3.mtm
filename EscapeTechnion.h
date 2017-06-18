@@ -28,7 +28,7 @@ typedef struct escapetechnion* EscapeTechnion;
  *
  * @return result
  * MTM_OUT_OF_MEMORY - allocation failed.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
 
@@ -50,7 +50,7 @@ void destroy_EscapeTechnion(EscapeTechnion EscapeTechnion);
  * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
  * MTM_OUT_OF_MEMORY - allocation failed.
  * MTM_EMAIL_ALREADY_EXISTS - company email already exist.
- * MTM_SUCCESS - company copied seccesfully.
+ * MTM_SUCCESS - company copied successfully.
  */
 MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion EscapeTechnion, TechnionFaculty faculty);
 
@@ -67,7 +67,7 @@ MtmErrorCode EscapeTechnion_add_company(char* email,EscapeTechnion EscapeTechnio
  * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
  * MTM_COMPANY_EMAIL_DOES_NOT_EXIST - the company mail doesn't exist.
  * MTM_RESERVATION_EXISTS - there is a reservation for the room.
- * MTM_SUCCESS - company removed seccesfully.
+ * MTM_SUCCESS - company removed successfully.
  */
 MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion EscapeTechnion);
 
@@ -86,7 +86,7 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,EscapeTechnion EscapeTech
  * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
  * MTM_COMPANY_EMAIL_DOES_NOT_EXIST - the  mail sent is NULL.
  * MTM_ID_ALREADY_EXIST - the sent id already exist.
- * MTM_SUCCESS - room added created seccesfully.
+ * MTM_SUCCESS - room added created successfully.
  */
 MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
                                      char* working_hour, int difficulty,
@@ -104,7 +104,7 @@ MtmErrorCode EscapeTechnion_add_room(char* email,int id, int price, int num_ppl,
  * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
  * MTM_ID_DOES_NOT_EXIST - the sent room id doesn't exist.
  * MTM_RESERVATION_EXISTS - there is a reservation for the room we want to remove.
- * MTM_SUCCESS -   room removed seccesfully.
+ * MTM_SUCCESS -   room removed successfully.
  */
 MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
                                         EscapeTechnion EscapeTechnion);
@@ -120,7 +120,7 @@ MtmErrorCode EscapeTechnion_remove_room(TechnionFaculty faculty, int id,
  * @return result
  * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
  * MTM_CLIENT_EMAIL_DOES_NOT_EXIST - the mail sent is already exist for other escaper.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode EscapeTechnion_add_escaper(char* email,
                                         TechnionFaculty faculty,int skill_level,
@@ -136,7 +136,7 @@ MtmErrorCode EscapeTechnion_add_escaper(char* email,
  * @return result
  * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
  * MTM_CLIENT_EMAIL_DOES_NOT_EXIST - the mail sent is already exist for other escaper.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion EscapeTechnion);
 
@@ -158,7 +158,7 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,EscapeTechnion EscapeTech
  * MTM_NO_ROOMS_AVAILABLE - there are no rooms available.
  * MTM_CLIENT_IN_ROOM - escaper have another order for the same day and hour.
  * MTM_ROOM_NOT_AVAILABLE - the asked room is unavailable.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty faculty,
                                               int id,char* time, int num_ppl,
@@ -174,7 +174,7 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty facult
  * @return result
  * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
  * MTM_OUT_OF_MEMORY - allocation failed.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode technion_report_day(FILE* output,EscapeTechnion EscapeTechnion);
 
@@ -187,7 +187,7 @@ MtmErrorCode technion_report_day(FILE* output,EscapeTechnion EscapeTechnion);
  * @return result
  * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
  * MTM_OUT_OF_MEMORY - allocation failed.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion);
 
@@ -202,7 +202,7 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion);
  * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
  * MTM_OUT_OF_MEMORY - allocation failed.
  * MTM_NO_ROOMS_AVAILABLE - no rooms available.
- * MTM_SUCCESS - EscapeTechnion system created seccesfully.
+ * MTM_SUCCESS - EscapeTechnion system created successfully.
  */
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl, EscapeTechnion escapeTechnion);
 

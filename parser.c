@@ -18,7 +18,19 @@
 #define MAX 256
 
 /**
- * check the type of "company" command and call the relevant function.
+ * get the company commend from the input and call the relevany function
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ * @param EscapeTechnion1 - a pointer to the system adt.
+ *
+ * @return result
+ * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_EMAIL_ALREADY_EXISTS - company email already exist.
+ * MTM_COMPANY_EMAIL_DOES_NOT_EXIST - the company mail doesn't exist.
+ * MTM_RESERVATION_EXISTS - there is a reservation for the room.
+ * MTM_SUCCESS - company commend finished successfully.
  */
 MtmErrorCode company_command(FILE* input,FILE* output,
                                                 EscapeTechnion EscapeTechnion1){
@@ -42,7 +54,19 @@ MtmErrorCode company_command(FILE* input,FILE* output,
 }
 
 /**
- * check the type of "room" command and call the relevant function.
+ * get the room commend from the input and call the relevany function
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ * @param EscapeTechnion1 - a pointer to the system adt.
+ *
+ * @return result
+ * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
+ * MTM_COMPANY_EMAIL_DOES_NOT_EXIST - the  mail sent is NULL.
+ * MTM_ID_ALREADY_EXIST - the sent id already exist.
+ * MTM_ID_DOES_NOT_EXIST - the sent room id doesn't exist.
+ * MTM_RESERVATION_EXISTS - there is a reservation for the room we want to remove.
+ * MTM_SUCCESS -   room commend finished successfully.
  */
 MtmErrorCode room_command(FILE* input,FILE* output,
                                                 EscapeTechnion EscapeTechnion1){
@@ -72,7 +96,22 @@ MtmErrorCode room_command(FILE* input,FILE* output,
 }
 
 /**
- *   check the type of "escaper" command and call the relevant function.
+ * get the escaper commend from the input and call the relevany function
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ * @param EscapeTechnion1 - a pointer to the system adt.
+ *
+ * @return result
+ * MTM_NULL_PARAMETER - one of the sent pointers is NULL.
+ * MTM_CLIENT_EMAIL_DOES_NOT_EXIST - the mail sent is already exist for other escaper.
+ * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
+ * MTM_ID_DOES_NOT_EXIST - the id sent doesn't match any room.
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_NO_ROOMS_AVAILABLE - there are no rooms available.
+ * MTM_CLIENT_IN_ROOM - escaper have another order for the same day and hour.
+ * MTM_ROOM_NOT_AVAILABLE - the asked room is unavailable.
+ * MTM_SUCCESS - escaper commend finished successfully.
  */
 MtmErrorCode escaper_command(FILE* input,FILE* output,
                                                 EscapeTechnion EscapeTechnion1){
@@ -111,8 +150,18 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
 }
 
 
-/** 
- *   check the type of "report" command and call the relevant function.
+/**
+ * get the report commend from the input and call the relevany function
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ * @param EscapeTechnion1 - a pointer to the system adt.
+ *
+ * @return result
+ * MTM_INVALID_PARAMETER - one of the sent pointers is NULL.
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_NO_ROOMS_AVAILABLE - no rooms available.
+ * MTM_SUCCESS - report commend finished successfully.
  */
 MtmErrorCode report_command(FILE* input,FILE* output,
                                                 EscapeTechnion EscapeTechnion1){
@@ -133,10 +182,14 @@ MtmErrorCode report_command(FILE* input,FILE* output,
     return MTM_SUCCESS;
 }
 /** 
- *   get the type of command and call for the relecant function
+ *  get the type of command and call the relevant function
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ * @param EscapeTechnion1 - a pointer to the system adt.
+ *
  */
-void get_command(FILE* input,FILE* output,
-                                                EscapeTechnion EscapeTechnion1){
+void get_command(FILE* input,FILE* output,EscapeTechnion EscapeTechnion1){
     MtmErrorCode error_code=MTM_SUCCESS;
     char buffer[256];
     while (fscanf(input," %s",buffer) != EOF) {
@@ -159,7 +212,13 @@ void get_command(FILE* input,FILE* output,
 }
 
 /**
- *  if input/output channels are files closes them
+ *  close the input and output channels
+ *
+ * @param input - input channel.
+ * @param output - output channel.
+ *
+ * @return result
+ * MTM_SUCCESS - channels closed successfully.
  */
 MtmErrorCode close_channels(FILE* input, FILE* output){
     if ((input != stdin)&&(input!=NULL)){
