@@ -47,6 +47,8 @@ static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
+static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
+
 
 struct escapetechnion {
     Set companies;
@@ -388,9 +390,7 @@ static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion){
     }
     return NULL;
 }
-/**
 
- */
 MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     assert(EscapeTechnion1);
     int currentDay = getDayEtechnion(EscapeTechnion1);
@@ -420,10 +420,9 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     EscapeTechnion1->day++;
     return MTM_SUCCESS;
 }
-/**
 
- */
-MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion1){
+
+static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion1){
     assert(EscapeTechnion1);
     Escaper escaper = getEscaperOrder(order);
     assert(escaper);
@@ -454,6 +453,7 @@ MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion1
                         id,time,difficulty,num_ppl,tot_price);
     return MTM_SUCCESS;
 }
+
 MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
     if(!EscapeTechnion1){
         return MTM_NULL_PARAMETER;
@@ -466,18 +466,21 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
       *(bestFaculty+i)=i;
     }
     for(int i=0; i<UNKNOWN;++i){
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit+bestFaculty[FIRST])) {
+        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
+                                                           bestFaculty[FIRST])){
             bestFaculty[THIRD]=bestFaculty[SECOND];
             bestFaculty[SECOND]=bestFaculty[FIRST];
             bestFaculty[FIRST]=i;
             continue;
         }
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit+bestFaculty[SECOND])) {
+        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
+                                                          bestFaculty[SECOND])){
             bestFaculty[THIRD]=bestFaculty[SECOND];
             bestFaculty[SECOND]=i;
             continue;
         }
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit+bestFaculty[THIRD])) {
+        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
+                                                           bestFaculty[THIRD])){
             bestFaculty[THIRD]=i;
             continue;
         }
@@ -487,13 +490,17 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
         totalRevenue += EscapeTechnion1->profit[i];
     }
     mtmPrintFacultiesHeader(output, UNKNOWN,EscapeTechnion1->day, totalRevenue);
-    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[FIRST],EscapeTechnion1->profit[bestFaculty[FIRST]]);
-    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[SECOND],EscapeTechnion1->profit[bestFaculty[SECOND]]);
-    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[THIRD],EscapeTechnion1->profit[bestFaculty[THIRD]]);
+    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[FIRST],
+                                   EscapeTechnion1->profit[bestFaculty[FIRST]]);
+    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[SECOND],
+                                  EscapeTechnion1->profit[bestFaculty[SECOND]]);
+    mtmPrintFaculty(output,(TechnionFaculty)bestFaculty[THIRD],
+                                   EscapeTechnion1->profit[bestFaculty[THIRD]]);
     mtmPrintFacultiesFooter(output);
     free(bestFaculty);
     return MTM_SUCCESS;
 }
+
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
                                                   EscapeTechnion escapeTechnion){
     if(!IfEscaperEmailValid(email)){
@@ -508,17 +515,24 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
     Room recommendRoom=NULL;
     SET_FOREACH(Company,iterator_comp,escapeTechnion->companies){
         SET_FOREACH(Room,roomCompIterator,getCompanyRooms(iterator_comp)){
-            int Comparison_index=CalculationOfRecommendation(roomCompIterator,escaper,num_ppl);
+            int Comparison_index=CalculationOfRecommendation(roomCompIterator,
+                                                               escaper,num_ppl);
             if(Comparison_index>maxScore){
                 maxScore=Comparison_index;
                 numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
                 recommendRoom=roomCompIterator;
                 continue;
             } else if(Comparison_index==maxScore){
-                int distansFaculty = (abs(getFacultyOfCompany(iterator_comp)-getFacultyEscaper(escaper))-
-                abs(numFacultyMaxScore-getFacultyEscaper(escaper)));
+                int distansFaculty =
+                        (abs(getFacultyOfCompany(iterator_comp)-
+                                        getFacultyEscaper(escaper))-
+                                            abs(numFacultyMaxScore-
+                                                getFacultyEscaper(escaper)));
                 if(distansFaculty>0) continue;
-                else if (distansFaculty<0 || (distansFaculty==0 && getFacultyOfCompany(iterator_comp)<numFacultyMaxScore)){
+                else if (distansFaculty<0 ||
+                            (distansFaculty==0 &&
+                                getFacultyOfCompany(iterator_comp)<
+                                                        numFacultyMaxScore)){
                     maxScore=Comparison_index;
                     numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
                     recommendRoom=roomCompIterator;
@@ -526,11 +540,13 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
             }
         }
     }
-    return EscapeTechnion_add_escaper_order(email,(TechnionFaculty)numFacultyMaxScore,
-      getIdRoom(recommendRoom),closestTimeAvailableRoom(recommendRoom,
-      (TechnionFaculty)numFacultyMaxScore,escapeTechnion)
-            ,num_ppl,escapeTechnion);
+    return EscapeTechnion_add_escaper_order(email,
+                (TechnionFaculty)numFacultyMaxScore,getIdRoom(recommendRoom),
+                    closestTimeAvailableRoom(recommendRoom,
+                        (TechnionFaculty)numFacultyMaxScore,escapeTechnion),
+                           num_ppl,escapeTechnion);
 }
+
 static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
                                       EscapeTechnion escapeTechnion){
     for(int day=escapeTechnion->day; day>=0 ;++day){
@@ -543,8 +559,9 @@ static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
            }
         }
     }
-return NULL;
+    return NULL;
 }
+
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     assert(room && escaper);
     int arg1 = (getNumPplRoom(room)-num_ppl);
@@ -570,6 +587,7 @@ static bool isRoomAvalable(TechnionFaculty faculty,int id,
     }
     return true;
 }
+
 static bool isClientInRoom(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,EscapeTechnion->orders){
@@ -580,20 +598,24 @@ static bool isClientInRoom(TechnionFaculty faculty,int id,
     }
     return false;
 }
+
 static int getDayEtechnion(EscapeTechnion EscTechnion){
     assert(EscTechnion);
     return (EscTechnion->day);
 }
+
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
     assert(order && day);
     return getDayOrder(order) == *((int*)day);
 }
+
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
     if (getDayOrder(order)!=*((int*)day)){
         return true;
     }
     return false;
 }
+
 static void InsertPriceToFaculty(TechnionFaculty faculty,int priceOrder,
                                             EscapeTechnion escapeTechnion1){
     ((escapeTechnion1)->profit)[faculty] += priceOrder;
