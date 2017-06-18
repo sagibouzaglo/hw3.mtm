@@ -10,6 +10,18 @@
 #include "room.h"
 #define HOURS_DAY 24
 #define ERROR -1
+
+/**
+ * transfer the working hours from a string into int and save it in
+ * room->open_hour and room->close_hour
+ *
+ * @param room - a pointer to a room.
+ * @param working_hour - string holds the open and closing hours.
+ *
+ * @return
+ * true - function succeed.
+ * false - function failed.
+ */
 static bool hourWorking (char* working_hour, Room room);
 
 struct room {
@@ -23,8 +35,8 @@ struct room {
 };
 
 
-/** Allocates a new room */
-Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficulty,RoomReturn* Return){
+Room roomCreate(int id, int price, int num_ppl, char* working_hour,
+                                            int difficulty,RoomReturn* Return){
     if(!working_hour){
         *Return=ROOM_INVALID_PARAMETER;
         return NULL;
@@ -51,6 +63,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour, int difficul
     *Return=ROOM_SUCCESS;
     return room;
 }
+
 char* getWorkigHRoom(Room room){
     assert(room);
     char* workH = malloc(sizeof(char)*(strlen(room->working_h)+1));
@@ -58,24 +71,26 @@ char* getWorkigHRoom(Room room){
     strcpy(workH,room->working_h);
     return workH;
 }
-/** Frees an existing room object */
+
 void roomDestroy(void* room){
     if(!room) return;
     free(((Room)room)->working_h);
     free(room);
 }
 
-/** Allocates a new room which is a copy of the argument */
 SetElement roomCopy(void* room){
     assert(room);
     RoomReturn Return=ROOM_SUCCESS;
-    return roomCreate(((Room)room)->id,((Room)room)->price,((Room)room)->num_ppl,((Room)room)->working_h,((Room)room)->difficulty,&Return);
+    return roomCreate(((Room)room)->id,((Room)room)->price,
+                            ((Room)room)->num_ppl,((Room)room)->working_h,
+                                            ((Room)room)->difficulty,&Return);
 }
-/** Returns true if both ids rooms are identical */
+
 int roomCompare(void* room1, void* room2) {
     assert(room1 && room2);
     return (((Room)room1)->id==((Room)room2)->id)? 0 : 1;
 }
+
 int getIdRoom(Room room){
     if(!room){
         return ERROR;
@@ -110,6 +125,7 @@ int getOpenHRoom(Room room){
     }
     return room->open_hour;
 }
+
 int getCloseHRoom(Room room){
     if(!room){
         return ERROR;
@@ -128,7 +144,9 @@ static bool hourWorking (char* working_hour, Room room){
             break;
         }
     }
-    if(room->open_hour>=room->close_hour || room->open_hour <0 || room->open_hour>HOURS_DAY ){
+    if(room->open_hour>=room->close_hour ||
+                            room->open_hour <0 ||
+                                    room->open_hour>HOURS_DAY ){
         room->close_hour=0;
         room->open_hour=0;
         return false;
