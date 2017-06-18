@@ -17,38 +17,56 @@
                             };
 #define ReturnSetResult(setRes) if(setRes!=SET_SUCCESS){\
                                     switch(SetReturn){\
-                                        case SET_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        case SET_NULL_ARGUMENT :  return MTM_INVALID_PARAMETER;\
-                                        case SET_ITEM_ALREADY_EXISTS:  return MTM_EMAIL_ALREADY_EXISTS;\
-                                        case SET_ITEM_DOES_NOT_EXIST :  return MTM_INVALID_PARAMETER;\
+                                        case SET_OUT_OF_MEMORY :\
+                                            return MTM_OUT_OF_MEMORY;\
+                                        case SET_NULL_ARGUMENT :\
+                                            return MTM_INVALID_PARAMETER;\
+                                        case SET_ITEM_ALREADY_EXISTS:\
+                                            return MTM_EMAIL_ALREADY_EXISTS;\
+                                        case SET_ITEM_DOES_NOT_EXIST :\
+                                            return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
 #define ReturnListResult(ListRes) if(ListRes!=LIST_SUCCESS){\
                                     switch(ListRes){\
-                                        case LIST_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        case LIST_NULL_ARGUMENT :  return MTM_NULL_PARAMETER;\
-                                        case LIST_INVALID_CURRENT :  return MTM_INVALID_PARAMETER;\
+                                        case LIST_OUT_OF_MEMORY :\
+                                            return MTM_OUT_OF_MEMORY;\
+                                        case LIST_NULL_ARGUMENT :\
+                                            return MTM_NULL_PARAMETER;\
+                                        case LIST_INVALID_CURRENT :\
+                                            return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
-static void InsertPriceToFaculty(TechnionFaculty faculty,int priceOrder,EscapeTechnion escapeTechnion1);
+
+
+static void InsertPriceToFaculty(TechnionFaculty faculty,
+                                 int priceOrder,EscapeTechnion escapeTechnion1);
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
 static int getDayEtechnion(EscapeTechnion EscTechnion);
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
-static bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
-static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
-static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion);
-static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
-static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
+static bool isClientInRoom(TechnionFaculty faculty,int id,
+                                EscapeTechnion EscapeTechnion,int hour,int day);
+static bool isRoomAvalable(TechnionFaculty faculty,int id,
+                                EscapeTechnion EscapeTechnion,int hour,int day);
+static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
+                                                EscapeTechnion escapeTechnion);
+static char* findEmailCompany(int id_room,TechnionFaculty faculty,
+                                                EscapeTechnion EscapeTechnion);
+static Room findRoom(int roomId,TechnionFaculty Faculty,
+                                        EscapeTechnion EscapeTechnion);
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion1);
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
-
+static MtmErrorCode ifEmailAlreadyExists(char* email,
+                                                EscapeTechnion EscapeTechnion);
+static MtmErrorCode ifReservionExistsInComp(Company company,
+                                                EscapeTechnion EscapeTechnion);
+static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
+                                                EscapeTechnion EscapeTechnion);
+static MtmErrorCode print_order(FILE *output,Order order,
+                                            EscapeTechnion EscapeTechnion);
 
 struct escapetechnion {
     Set companies;
