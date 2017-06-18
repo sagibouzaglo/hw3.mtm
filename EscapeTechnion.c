@@ -262,7 +262,7 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
     if(Result!=ORD_SUCCESS) {
         if (Result != ORD_NO_ROOMS_AVAILABLE) {
             return Result == ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY
-                                               : MTM_NULL_PARAMETER;
+                                                    : MTM_NULL_PARAMETER;
         } else return MTM_NO_ROOMS_AVAILABLE;
     }
     if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),
