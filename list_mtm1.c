@@ -216,7 +216,6 @@ List listFilter(List list, FilterListElement filterElement, ListFilterKey key){
     return newList;
 }
 
-
 ListResult listClear(List list){
     NULL_CHECK(list, LIST_NULL_ARGUMENT);
     LIST_FOREACH(ListElement, current, list){
@@ -227,7 +226,6 @@ ListResult listClear(List list){
     list->size=0;
     return LIST_SUCCESS;
 }
-
 
 void listDestroy(List list){
     if(!list){

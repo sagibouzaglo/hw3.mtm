@@ -225,6 +225,7 @@ static int CalculatePrice(int priseRoom , int num_ppl, Order order) {
         return (num_ppl * priseRoom);
     }
 }
+
 static int findAndgetPriceRoom(Company company,int roomId){
     assert(company);
     Set rooms = getCompanyRooms(company);

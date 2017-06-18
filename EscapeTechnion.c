@@ -56,7 +56,7 @@ static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
 static char* findEmailCompany(int id_room,TechnionFaculty faculty,
                                                 EscapeTechnion EscapeTechnion);
 static Room findRoom(int roomId,TechnionFaculty Faculty,
-                                        EscapeTechnion EscapeTechnion);
+                                            EscapeTechnion EscapeTechnion);
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion1);
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifEmailAlreadyExists(char* email,
