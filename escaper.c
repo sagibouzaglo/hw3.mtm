@@ -28,6 +28,7 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
     }
     escaper->email=malloc((sizeof(char)*strlen(email))+1);
     if (!escaper->email) {
+        escaperDestroy(escaper);
         *Result= Esc_OUT_OF_MEMORY;
         return NULL;
     }
