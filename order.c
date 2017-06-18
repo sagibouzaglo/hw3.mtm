@@ -13,9 +13,10 @@
 #define HOURS_DAY 23
 
 static int findAndgetPriceRoom(Company company,int roomId);
-static int CalculatePrice(int priseRoom , int num_ppl, Order order);
-static bool hourOrder (char* time, Order order);
 
+static int CalculatePrice(int priseRoom , int num_ppl, Order order);
+
+static bool hourOrder (char* time, Order order);
 
 struct order {
     char* time;
@@ -27,8 +28,6 @@ struct order {
     Company company;
     int tot_price;
 };
-
-
 
 Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
                                               int room_id,OrderReturn* Result){
@@ -66,7 +65,8 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
-    order->tot_price=CalculatePrice(findAndgetPriceRoom(company1,room_id),num_ppl, order);
+    order->tot_price=CalculatePrice(findAndgetPriceRoom(company1,room_id),
+                                                                num_ppl, order);
     return order;
 }
 
@@ -79,8 +79,9 @@ void orderDestroy(void* order){
 ListElement orderCopy(void* order){
     assert(order);
     OrderReturn Result=ORD_SUCCESS;
-    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,((Order)order)->num_ppl,
-                       ((Order)order)->company ,((Order)order)->room_id ,&Result);
+    return orderCreate(((Order)order)->time, ((Order)order)->escaper ,
+                            ((Order)order)->num_ppl,((Order)order)->company,
+                                            ((Order)order)->room_id ,&Result);
 }
 
 int compareOrders(void* order1,void* order2){
@@ -89,8 +90,8 @@ int compareOrders(void* order1,void* order2){
     } else if (((Order)order1)->hour < ((Order)order2)->hour){
         return -1;
     } else{
-        TechnionFaculty Faculty1 = getFacultyOfCompany(((Order)order1)->company);
-        TechnionFaculty Faculty2 = getFacultyOfCompany(((Order)order2)->company);
+        TechnionFaculty Faculty1= getFacultyOfCompany(((Order)order1)->company);
+        TechnionFaculty Faculty2= getFacultyOfCompany(((Order)order2)->company);
         if (Faculty1 > Faculty2){
             return 1;
         }else if (Faculty1 < Faculty2){
