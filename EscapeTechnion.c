@@ -591,8 +591,10 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
 static bool isRoomAvalable(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
-        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
-                && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty &&
+                                    getRoomIdOrder(iteratorOrder)==id &&
+                                        getHourOrder(iteratorOrder)==hour &&
+                                            getDayOrder(iteratorOrder)==day){
             return false;
         }
         Room room = findRoom(id,faculty,EscapeTechnion);
@@ -609,8 +611,10 @@ static bool isRoomAvalable(TechnionFaculty faculty,int id,
 static bool isClientInRoom(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,EscapeTechnion->orders){
-        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
-           && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty &&
+                                    getRoomIdOrder(iteratorOrder)==id &&
+                                        getHourOrder(iteratorOrder)==hour &&
+                                            getDayOrder(iteratorOrder)==day){
             return true;
         }
     }
