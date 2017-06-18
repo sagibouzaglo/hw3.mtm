@@ -17,18 +17,18 @@
                             };
 #define ReturnSetResult(setRes) if(setRes!=SET_SUCCESS){\
                                     switch(SetReturn){\
-                                        SET_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        SET_NULL_ARGUMENT :  return MTM_INVALID_PARAMETER;\
-                                        SET_ITEM_ALREADY_EXISTS:  return MTM_EMAIL_ALREADY_EXISTS;\
-                                        SET_ITEM_DOES_NOT_EXIST :  return MTM_INVALID_PARAMETER;\
+                                        case SET_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
+                                        case SET_NULL_ARGUMENT :  return MTM_INVALID_PARAMETER;\
+                                        case SET_ITEM_ALREADY_EXISTS:  return MTM_EMAIL_ALREADY_EXISTS;\
+                                        case SET_ITEM_DOES_NOT_EXIST :  return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
 #define ReturnListResult(ListRes) if(ListRes!=LIST_SUCCESS){\
                                     switch(ListRes){\
-                                        LIST_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        LIST_NULL_ARGUMENT :  return MTM_NULL_PARAMETER;\
-                                        LIST_INVALID_CURRENT :  return MTM_INVALID_PARAMETER;\
+                                        case LIST_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
+                                        case LIST_NULL_ARGUMENT :  return MTM_NULL_PARAMETER;\
+                                        case LIST_INVALID_CURRENT :  return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
@@ -278,7 +278,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     List currentDayOrders = listFilter(EscapeTechnion1->orders,
                                        orderDayEqualFilter,
                                        &currentDay);
-    if(!currentDay){
+    if(!currentDayOrders){
         return MTM_OUT_OF_MEMORY;
     }
     List newOrdersList = listFilter(EscapeTechnion1->orders,
@@ -442,7 +442,7 @@ static bool isRoomAvalable(TechnionFaculty faculty,int id,
             return false;
         }
         Room room = findRoom(id,faculty,EscapeTechnion);
-        if(room){
+        if(!room){
             return false;
         }
         if(getOpenHRoom(room)<hour ||  getCloseHRoom(room)<hour){
