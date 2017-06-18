@@ -248,6 +248,7 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,TechnionFaculty facult
     char* company_email = findEmailCompany(id,faculty,EscapeTechnion);
     Company company = findCompany(company_email,EscapeTechnion);
     free(company_email);
+    if(!company) return MTM_OUT_OF_MEMORY;
     Order order = orderCreate(time, escaper, num_ppl,
                             company,id, &Result);
     if(Result!=ORD_SUCCESS) {
