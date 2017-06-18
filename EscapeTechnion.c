@@ -295,9 +295,12 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
     CHECK_NULL(EscapeTechnion);
     if (setGetSize(EscapeTechnion->companies)) {
         SET_FOREACH(Company, iterator_comp, (EscapeTechnion)->companies) {
-            if (strcmp(email, getEmailCompany((Company) iterator_comp)) == 0) {
+            char* emailComp = getEmailCompany((Company) iterator_comp);
+            if (strcmp(email, emailComp) == 0) {
+                free(emailComp);
                 return MTM_EMAIL_ALREADY_EXISTS;
             }
+            free(emailComp);
         }
         if (setGetSize(EscapeTechnion->companies)) {
             LIST_FOREACH(Order, iterator_order, EscapeTechnion->orders) {
@@ -307,6 +310,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
                     return  MTM_OUT_OF_MEMORY ;
                 }
                 if (strcmp(email, emailEscaper) == 0) {
+                    free(emailEscaper);
                     return MTM_EMAIL_ALREADY_EXISTS;
                 }
             }
@@ -317,11 +321,14 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
 }
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
     Set companies = (EscapeTechnion)->companies;
-    if(!companies)        return NULL;
+    if(!companies)return NULL;
     SET_FOREACH(Company , iterator_comp,companies){
-        if(strcmp(email,getEmailCompany(iterator_comp))==0){
+        char* emailCompany = getEmailCompany(iterator_comp);
+        if(strcmp(email,emailCompany)==0){
+            free(emailCompany);
             return (iterator_comp);
-            }
+        }
+        free(emailCompany);
     }
     return NULL;
 }
@@ -350,8 +357,8 @@ static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
 static Room findRoom(int roomId,TechnionFaculty Faculty,
                                                 EscapeTechnion EscapeTechnion){
     SET_FOREACH(Company, company_iterator, EscapeTechnion->companies){
-        TechnionFaculty tmp = getFacultyOfCompany(company_iterator);
-        if (tmp == Faculty){
+        TechnionFaculty FacultyComp = getFacultyOfCompany(company_iterator);
+        if (FacultyComp == Faculty){
             Set rooms = getCompanyRooms(company_iterator);
             SET_FOREACH(Room, room_iterator,rooms ){
                 int id = getIdRoom(room_iterator);
@@ -387,12 +394,18 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     List currentDayOrders = listFilter(EscapeTechnion1->orders,
                                        orderDayEqualFilter,
                                        &currentDay);
+    if(!currentDay){
+        return MTM_OUT_OF_MEMORY;
+    }
     List newOrdersList = listFilter(EscapeTechnion1->orders,
                                     orderDayNotEqualFilter,
                                     &currentDay);
+    if(!newOrdersList){
+        return MTM_OUT_OF_MEMORY;
+    }
     listDestroy(EscapeTechnion1->orders);
     EscapeTechnion1->orders=newOrdersList;
-    listSort(currentDayOrders, compareOrders);
+    ReturnListResult(listSort(currentDayOrders, compareOrders));
     mtmPrintDayHeader(output, currentDay,listGetSize(currentDayOrders));
     LIST_FOREACH(Order , Order_iterator, currentDayOrders){
         InsertPriceToFaculty(getFacultyOfCompany(getCompanyOrder(Order_iterator))
