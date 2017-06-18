@@ -6,7 +6,6 @@
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
 
-
 #include "room.h"
 #define HOURS_DAY 24
 #define ERROR -1

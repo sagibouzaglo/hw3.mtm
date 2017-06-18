@@ -2,17 +2,13 @@
 #include "escaper.h"
 #include "set.h"
 
-
-
 #define ERROR -1
-
 
 struct escaper {
     char* email;
     TechnionFaculty Faculty;
     int skill_level;
 };
-
 
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
                                                     EscaperReturn* Result){
