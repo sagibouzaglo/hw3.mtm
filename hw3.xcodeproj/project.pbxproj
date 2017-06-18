@@ -12,6 +12,10 @@
 		2417BB351ED98CC3008B4326 /* room.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB331ED98CC3008B4326 /* room.c */; };
 		2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2417BB381ED98CFD008B4326 /* list_mtm1.c */; };
 		246BAE191EF693D200493A9A /* list_example_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 246BAE171EF693D200493A9A /* list_example_test.c */; };
+		246BAE1C1EF6961B00493A9A /* escaper_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 246BAE1A1EF6961B00493A9A /* escaper_test.c */; };
+		246BAE1F1EF6963C00493A9A /* room_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 246BAE1D1EF6963C00493A9A /* room_test.c */; };
+		246BAE221EF6965A00493A9A /* order_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 246BAE201EF6965A00493A9A /* order_test.c */; };
+		246BAE251EF696A700493A9A /* company_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 246BAE231EF696A700493A9A /* company_test.c */; };
 		249A5E251EEEFC3800874F16 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 249A5E241EEEFC3800874F16 /* main.c */; };
 		24DA7C551EDB1C29004EE698 /* escaper.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C531EDB1C29004EE698 /* escaper.c */; };
 		24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */ = {isa = PBXBuildFile; fileRef = 24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */; };
@@ -45,6 +49,10 @@
 		24526F011ED1F2A3008271EF /* set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = set.h; sourceTree = SOURCE_ROOT; };
 		246BAE171EF693D200493A9A /* list_example_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = list_example_test.c; path = ../../tests/list_mtm/list_example_test.c; sourceTree = "<group>"; };
 		246BAE181EF693D200493A9A /* test_utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_utilities.h; path = ../../tests/list_mtm/test_utilities.h; sourceTree = "<group>"; };
+		246BAE1A1EF6961B00493A9A /* escaper_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = escaper_test.c; sourceTree = SOURCE_ROOT; };
+		246BAE1D1EF6963C00493A9A /* room_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = room_test.c; sourceTree = SOURCE_ROOT; };
+		246BAE201EF6965A00493A9A /* order_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = order_test.c; sourceTree = SOURCE_ROOT; };
+		246BAE231EF696A700493A9A /* company_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = company_test.c; sourceTree = SOURCE_ROOT; };
 		249A5E241EEEFC3800874F16 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = SOURCE_ROOT; };
 		24DA7C531EDB1C29004EE698 /* escaper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = escaper.c; sourceTree = SOURCE_ROOT; };
 		24DA7C541EDB1C29004EE698 /* escaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = escaper.h; sourceTree = SOURCE_ROOT; };
@@ -92,12 +100,16 @@
 				24526F001ED1F2A3008271EF /* mtm_ex3.h */,
 				24DA7C561EDB1DC0004EE698 /* EscapeTechnion.c */,
 				24DA7C571EDB1DC0004EE698 /* EscapeTechnion.h */,
+				246BAE231EF696A700493A9A /* company_test.c */,
 				2417BB2C1ED98C69008B4326 /* company.c */,
 				2417BB2D1ED98C69008B4326 /* company.h */,
+				246BAE201EF6965A00493A9A /* order_test.c */,
 				2417BB301ED98CB5008B4326 /* order.c */,
 				2417BB311ED98CB5008B4326 /* order.h */,
+				246BAE1D1EF6963C00493A9A /* room_test.c */,
 				2417BB331ED98CC3008B4326 /* room.c */,
 				2417BB341ED98CC3008B4326 /* room.h */,
+				246BAE1A1EF6961B00493A9A /* escaper_test.c */,
 				24DA7C531EDB1C29004EE698 /* escaper.c */,
 				24DA7C541EDB1C29004EE698 /* escaper.h */,
 				246BAE171EF693D200493A9A /* list_example_test.c */,
@@ -164,13 +176,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				2417BB391ED98CFD008B4326 /* list_mtm1.c in Sources */,
+				246BAE1C1EF6961B00493A9A /* escaper_test.c in Sources */,
 				2417BB351ED98CC3008B4326 /* room.c in Sources */,
 				24DA7C581EDB1DC0004EE698 /* EscapeTechnion.c in Sources */,
+				246BAE221EF6965A00493A9A /* order_test.c in Sources */,
+				246BAE251EF696A700493A9A /* company_test.c in Sources */,
 				2417BB321ED98CB5008B4326 /* order.c in Sources */,
 				24DA7C5E1EE98F73004EE698 /* parser.c in Sources */,
 				249A5E251EEEFC3800874F16 /* main.c in Sources */,
 				24DA7C551EDB1C29004EE698 /* escaper.c in Sources */,
 				246BAE191EF693D200493A9A /* list_example_test.c in Sources */,
+				246BAE1F1EF6963C00493A9A /* room_test.c in Sources */,
 				2417BB2E1ED98C69008B4326 /* company.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
