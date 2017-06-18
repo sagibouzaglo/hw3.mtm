@@ -33,7 +33,6 @@ static int findAndgetPriceRoom(Company company,int roomId);
  * @return
  * the calculated price of the order.
  */
-
 static int CalculatePrice(int priseRoom , int num_ppl, Order order);
 
 /**
@@ -47,7 +46,6 @@ static int CalculatePrice(int priseRoom , int num_ppl, Order order);
  * true - function succeeded.
  * false - function failed.
  */
-
 static bool hourOrder (char* time, Order order);
 
 struct order {

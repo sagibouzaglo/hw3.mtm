@@ -4,6 +4,15 @@
 
 #define ERROR -1
 
+/**
+ * check if the sent email is valid
+ *
+ * @param email - the company email.
+ *
+ * @return
+ * true - email is valid.
+ * false - email is invalid.
+ */
 static bool IfCompanyEmailValid(char* email);
 
 struct company_t {
