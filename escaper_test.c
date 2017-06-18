@@ -6,13 +6,11 @@
 //  Copyright © 2017 sagi bouzaglo. All rights reserved.
 //
 
+//#include "list_mtm/test_utilities.h"
+//#include "../Room.h"
 #include "test_utilities.h"
 #include "escaper.h"
-#include <stdio.h>
-#include <assert.h>
-#include <stdbool.h>
 #include <string.h>
-#include <stdlib.h>
 
 static bool testEscaperCreate() {
     EscaperReturn Result=Esc_SUCCESS;
@@ -21,12 +19,6 @@ static bool testEscaperCreate() {
     ASSERT_TEST(escaperCreate("test", UNKNOWN, 0,&Result) == NULL);
     ASSERT_TEST(Result==Esc_INVALID_PARAMETER);
     return true;
-}
-
-int escaperEquals(void* escaper1, void* escaper2) {
-    assert(escaper1 && escaper2);
-    return strcmp(getEmailEscaper((Escaper)escaper1),
-                  getEmailEscaper((Escaper)escaper2));
 }
 
 static bool testEscaperCopy() {

@@ -64,6 +64,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour,
 
 char* getWorkigHRoom(Room room){
     assert(room);
+    assert(room->working_h);
     char* workH = malloc(sizeof(char)*(strlen(room->working_h)+1));
     if(!workH) return NULL;
     strcpy(workH,room->working_h);
