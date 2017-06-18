@@ -9,7 +9,6 @@
 #ifndef order_h
 #define order_h
 
-//#include "company.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

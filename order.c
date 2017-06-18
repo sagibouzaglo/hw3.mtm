@@ -12,9 +12,41 @@
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
 
+/**
+ * find the room ordered and return his price
+ *
+ * @param company - room id.
+ * @param roomId - price for ordering the room.
+ *
+ * @return
+ * the price of the ordered room
+ */
 static int findAndgetPriceRoom(Company company,int roomId);
 
+/**
+ * check if the need to be a discount and return the relevant price
+ *
+ * @param priseRoom - the price of the ordered room.
+ * @param num_ppl - number of people ordering the room.
+ * @param order - a pointer to the order.
+ *
+ * @return
+ * the calculated price of the order.
+ */
+
 static int CalculatePrice(int priseRoom , int num_ppl, Order order);
+
+/**
+ * transfer the order hours from a string into int and save it in
+ * order->day and order->hour.
+ *
+ * @param time - a string holds the order hours.
+ * @param order - a pointer to the order.
+ *
+ * @return
+ * true - function succeeded.
+ * false - function failed.
+ */
 
 static bool hourOrder (char* time, Order order);
 
@@ -206,6 +238,5 @@ static int findAndgetPriceRoom(Company company,int roomId){
             return getPriceRoom(roomOfCompany);
         }
     }
-
     return 0;
 }
