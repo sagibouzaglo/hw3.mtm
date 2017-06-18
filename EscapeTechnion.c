@@ -15,6 +15,7 @@
 #define CHECK_NULL(ptr) if (ptr==NULL){\
                             return MTM_NULL_PARAMETER;\
                             };
+
 static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion);
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
 static void InsertPriceToFaculty(TechnionFaculty faculty,int priceOrder,EscapeTechnion escapeTechnion1);
@@ -94,14 +95,11 @@ MtmErrorCode EscapeTechnion_add_company(char* email,
     }
     CompanyReturn Result=COM_SUCCESS;
     Company  company1 = companyCreate(email,faculty,&Result);
+    if(Result!=COM_SUCCESS) {
+        return Result == COM_NULL_PARAMETER ?  MTM_NULL_PARAMETER : MTM_OUT_OF_MEMORY;
+    }
     setAdd (EscapeTechnion1->companies, (void*)company1);
     companyDestroy(company1);
-    if(Result==COM_OUT_OF_MEMORY){
-        return MTM_OUT_OF_MEMORY;
-    }
-    if(Result==COM_NULL_PARAMETER){
-        return MTM_NULL_PARAMETER;
-    }
 
     return MTM_SUCCESS;
 }
@@ -118,7 +116,6 @@ MtmErrorCode EscapeTechnion_remove_company(char* email,
         return MTM_RESERVATION_EXISTS;
     }
     setRemove(EscapeTechnion->companies,company);
-
     return MTM_SUCCESS;
 }
 
@@ -132,21 +129,21 @@ if(!email || !EscapeTechnion || !working_hour){
     if(company==NULL){
         return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
     }
-    SET_FOREACH(Room,roomIterator,getCompanyRooms(company)){
+    Set roomsCompany = getCompanyRooms(company);
+    if(roomsCompany==NULL) {
+        return MTM_COMPANY_EMAIL_DOES_NOT_EXIST;
+    }
+        SET_FOREACH(Room,roomIterator,roomsCompany){
         if(id==getIdRoom(roomIterator)){
             return MTM_ID_ALREADY_EXIST;
         }
     }
     RoomReturn Return=ROOM_SUCCESS;
-
     Room room = roomCreate(id,price,num_ppl,working_hour,difficulty,&Return);
     if(Return!=ROOM_SUCCESS){
-
         return (Return == ROOM_INVALID_PARAMETER ? MTM_INVALID_PARAMETER : MTM_OUT_OF_MEMORY);
     }
-
     setAdd(getCompanyRooms(company),room);
-
     roomDestroy(room);
     return MTM_SUCCESS;
 }
@@ -557,4 +554,9 @@ static bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion EscapeT
 static int getDayEtechnion(EscapeTechnion EscTechnion){
     assert(EscTechnion);
     return (EscTechnion->day);
+}
+MtmErrorCode CheckResultCompany(CompanyReturn Result){
+    if(Result!=COM_SUCCESS) {
+        return Result == COM_NULL_PARAMETER ?  MTM_NULL_PARAMETER : MTM_OUT_OF_MEMORY;
+    }
 }
