@@ -3,6 +3,7 @@
 #include "company.h"
 
 #define ERROR -1
+
 static bool IfCompanyEmailValid(char* email);
 
 struct company_t {
@@ -11,9 +12,8 @@ struct company_t {
     Set rooms;
 };
 
-
-/** Allocates a new company */
-Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result){
+Company companyCreate(char* email,TechnionFaculty faculty,
+                                                    CompanyReturn* Result){
     if(!IfCompanyEmailValid(email)){
         *Result= COM_NULL_PARAMETER;
         return NULL;
@@ -32,7 +32,7 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
     strcpy(company->email,email);
     company->Faculty=faculty;
 
-    company->rooms=setCreate(roomCopy,roomDestroy,roomCompare); ///<-void* in room.c
+    company->rooms=setCreate(roomCopy,roomDestroy,roomCompare);///<-void* in room.c
     if(!company->rooms){
         companyDestroy(company);
         *Result= COM_OUT_OF_MEMORY;
@@ -41,29 +41,29 @@ Company companyCreate(char* email, TechnionFaculty faculty,CompanyReturn* Result
     return company;
 }
 
-/** Frees an existing company object */
 void companyDestroy(void* company){
     if((((Company)company)->rooms)){
         setDestroy(((Company)company)->rooms);
     }
-
     free(((Company)company)->email);
     free(company);
 }
 
-/** Allocates a new company which is a copy of the argument */
 SetElement companyCopy(void* company){
     if (!company) {
         return NULL;
     }
     CompanyReturn Result=COM_SUCCESS;
-    return companyCreate(getEmailCompany((Company)company),getFacultyOfCompany((Company)company),&Result);
+    return companyCreate(getEmailCompany((Company)company),
+                                getFacultyOfCompany((Company)company),&Result);
 }
-/** Returns 0 if both email company are identical */
+
 int companyCompare(void* company1, void* company2){
     assert(company1 && company2);
-    return strcmp(getEmailCompany((Company)company1),getEmailCompany((Company)company2));
+    return strcmp(getEmailCompany((Company)company1),
+                                            getEmailCompany((Company)company2));
 }
+
 char* getEmailCompany(Company company){
     assert(company);
 
