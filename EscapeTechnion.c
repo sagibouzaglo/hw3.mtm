@@ -440,7 +440,8 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
 }
 
 
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion1){
+static MtmErrorCode print_order(FILE *output,Order order,
+                                                EscapeTechnion EscapeTechnion1){
     assert(EscapeTechnion1);
     Escaper escaper = getEscaperOrder(order);
     assert(escaper);
