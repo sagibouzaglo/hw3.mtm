@@ -53,7 +53,7 @@ typedef struct order* Order;
  * pointer to the new order
  */
 Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
-                  int room_id,OrderReturn* Result);
+                  int room_id,OrderReturn* Result,int curr_day);
 
 /**
  * free all allocated memory for the order

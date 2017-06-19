@@ -139,12 +139,12 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
             assert(*email && id && tmp && time && num_ppl);
             faculty=(TechnionFaculty)tmp;
             MtmErrorCode err = EscapeTechnion_add_escaper_order(email,faculty,id,time,num_ppl,EscapeTechnion1);
-            if(err != MTM_SUCCESS) printf("ERRRRROROROROROROR\n");
+            if(err != MTM_SUCCESS) return err;
         }else if (strcmp(buffer,"recommend")==0){
             fscanf(input, " %s %d", email, &num_ppl);
             assert(*email && num_ppl);
             MtmErrorCode err = EscapeTechnion_add_escaper_recommend(email,num_ppl,EscapeTechnion1);
-            if(err != MTM_SUCCESS) printf("ERRRRROROROROROROR\n");
+            if(err != MTM_SUCCESS)return err;
         }
     return MTM_SUCCESS;
 }
