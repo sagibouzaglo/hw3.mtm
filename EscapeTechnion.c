@@ -284,8 +284,10 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
         orderDestroy(order);
         return MTM_CLIENT_IN_ROOM;
     }
-    if(!isRoomAvalable(faculty,id,EscapeTechnion,getHourOrder(order),
-                                                        getDayOrder(order))){
+    if ((getOpenHRoom(room)>getHourOrder(order) ||
+            getCloseHRoom(room)<=getHourOrder(order))||
+            (!isRoomAvalable(faculty,id,EscapeTechnion,getHourOrder(order),
+                                                        getDayOrder(order)))){
         orderDestroy(order);
         return MTM_ROOM_NOT_AVAILABLE;
     }
@@ -319,13 +321,28 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
                                                 EscapeTechnion EscapeTechnion) {
     CHECK_NULL(email);
     CHECK_NULL(EscapeTechnion);
+    char* currEmail;
     if (setGetSize(EscapeTechnion->companies)) {
         SET_FOREACH(Company, iterator_comp, (EscapeTechnion)->companies) {
-            if (strcmp(email, getEmailCompany((Company) iterator_comp)) == 0) {
+            currEmail=getEmailCompany((Company) iterator_comp);
+            if (strcmp(email,currEmail ) == 0) {
+                free(currEmail);
                 return MTM_EMAIL_ALREADY_EXISTS;
             }
+            free(currEmail);
         }
-        if (setGetSize(EscapeTechnion->companies)) {
+    }
+    if (setGetSize(EscapeTechnion->escaper)) {
+        SET_FOREACH(Escaper, currentEscaper, EscapeTechnion->escaper) {
+            currEmail=getEmailEscaper(currentEscaper);
+           if (strcmp(email,currEmail)==0){
+               free(currEmail);
+               return MTM_EMAIL_ALREADY_EXISTS;
+           }
+            free(currEmail);
+        }
+    }
+        /*if (setGetSize(EscapeTechnion->companies)) {
             LIST_FOREACH(Order, iterator_order, EscapeTechnion->orders) {
                 char *emailEscaper = getEmailEscaper(
                         getEscaperOrder((Order) iterator_order));
@@ -336,8 +353,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
                     return MTM_EMAIL_ALREADY_EXISTS;
                 }
             }
-        }
-    }
+        }*/
     return MTM_SUCCESS;
 }
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
@@ -482,27 +498,39 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
     if(!bestFaculty){
         return MTM_OUT_OF_MEMORY;
     }
+
     for(int i=0; i<THREE_BEST_FACULTIES;++i) {
-      *(bestFaculty+i)=i;
+        *(bestFaculty+i)=i;
     }
-    for(int i=0; i<UNKNOWN;++i){
-        if (*(EscapeTechnion1->profit+i)!=*(EscapeTechnion1->profit +
-                                           bestFaculty[FIRST])) {
+    for(int i=0; i<UNKNOWN;++i) {
+        if (*(EscapeTechnion1->profit + i) != *(EscapeTechnion1->profit +
+                                                bestFaculty[FIRST])) {
             if (*(EscapeTechnion1->profit + i) > *(EscapeTechnion1->profit +
                                                    bestFaculty[FIRST])) {
                 bestFaculty[THIRD] = bestFaculty[SECOND];
                 bestFaculty[SECOND] = bestFaculty[FIRST];
                 bestFaculty[FIRST] = i;
-
-            } else if (*(EscapeTechnion1->profit+i)!=*(EscapeTechnion1->profit + bestFaculty[SECOND])){
-                if((*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit + bestFaculty[SECOND]))) {
-                    bestFaculty[THIRD] = bestFaculty[SECOND];
-                    bestFaculty[SECOND] = i;
-                } else if((*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit + bestFaculty[THIRD]))){
-                    bestFaculty[THIRD]=i;
-                 }
-
-                }
+                continue;
+            }
+        } else if (*(bestFaculty + FIRST) == i) {++i;}
+        if (*(EscapeTechnion1->profit + i) !=
+            *(EscapeTechnion1->profit + bestFaculty[SECOND])) {
+            if ((*(EscapeTechnion1->profit + i) >
+                 *(EscapeTechnion1->profit + bestFaculty[SECOND]))) {
+                bestFaculty[THIRD] = bestFaculty[SECOND];
+                bestFaculty[SECOND] = i;
+                continue;
+            }
+        } else if ((*(EscapeTechnion1->profit + i) ==
+                    *(EscapeTechnion1->profit + bestFaculty[THIRD]))) {
+            if  (*(bestFaculty + SECOND) != i && i<= bestFaculty[THIRD] ) {
+                bestFaculty[THIRD] = i;
+                continue;
+            }
+        }
+        if ((*(EscapeTechnion1->profit + i) >
+             *(EscapeTechnion1->profit + bestFaculty[THIRD]))) {
+            bestFaculty[THIRD] = i;
         }
     }
     int totalRevenue = 0;
@@ -574,6 +602,7 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
             }
         }
     }
+    if(!recommendRoom)return MTM_NO_ROOMS_AVAILABLE;
     return EscapeTechnion_add_escaper_order(email,
                 (TechnionFaculty)numFacultyBestScore,idRoom,
                     closestTimeAvailableRoom(recommendRoom,
@@ -607,16 +636,16 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     return (arg1+arg2);
 }
 static bool isRoomAvalable(TechnionFaculty faculty,int id,
-                           EscapeTechnion EscapeTechnion,int hour,int day){
+                           EscapeTechnion EscapeTechnion1,int hour,int day){
   // day+=EscapeTechnion->day;
-    LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
+    LIST_FOREACH(Order ,iteratorOrder ,EscapeTechnion1->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty &&
                                     getRoomIdOrder(iteratorOrder)==id &&
                                         getHourOrder(iteratorOrder)==hour &&
                                             getDayOrder(iteratorOrder)==day){
             return false;
         }
-        Room room = findRoom(id,faculty,EscapeTechnion);
+        Room room = findRoom(id,faculty,EscapeTechnion1);
         if(!room){
             return false;
         }
