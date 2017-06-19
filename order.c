@@ -7,7 +7,6 @@
 //
 
 #include "order.h"
-#include "list.h"
 
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
@@ -244,6 +243,7 @@ static int CalculatePrice(int priseRoom , int num_ppl, Order order) {
         return (num_ppl * priseRoom);
     }
 }
+
 static int findAndgetPriceRoom(Company company,int roomId){
     assert(company);
     Set rooms = getCompanyRooms(company);

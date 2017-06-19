@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "main.c"
-            timestampString = "519061082.473102"
+            filePath = "room_test.c"
+            timestampString = "519505621.281104"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "main()"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "testGetWorkigHRoom()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

@@ -33,7 +33,6 @@ struct room {
     char* working_h;
 };
 
-
 Room roomCreate(int id, int price, int num_ppl, char* working_hour,
                                             int difficulty,RoomReturn* Return){
     if(!working_hour){
@@ -65,6 +64,7 @@ Room roomCreate(int id, int price, int num_ppl, char* working_hour,
 
 char* getWorkigHRoom(Room room){
     assert(room);
+    assert(room->working_h);
     char* workH = malloc(sizeof(char)*(strlen(room->working_h)+1));
     if(!workH) return NULL;
     strcpy(workH,room->working_h);
@@ -91,44 +91,32 @@ int roomCompare(void* room1, void* room2) {
 }
 
 int getIdRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->id;
 }
 
 int getPriceRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->price;
 }
 
 int getNumPplRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->num_ppl;
 }
 
 int getDifficultyRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->difficulty;
 }
 
 int getOpenHRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->open_hour;
 }
 
 int getCloseHRoom(Room room){
-    if(!room){
-        return ERROR;
-    }
+    assert(room);
     return room->close_hour;
 }
 

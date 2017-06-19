@@ -20,7 +20,6 @@ typedef enum {
 
 typedef struct company_t* Company;
 
-
 /**
  * Allocates a new company,intialize it and return a pointer to the company
  *
@@ -72,7 +71,6 @@ SetElement companyCopy(void* company);
  * 0 - the companys are equal.
  * -1 - company2 is first.
  */
-
 int companyCompare(void* company1, void* company2);
 
 /**

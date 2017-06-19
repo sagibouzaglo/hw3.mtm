@@ -10,6 +10,7 @@ struct escaper {
     int skill_level;
 };
 
+
 Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
                                                     EscaperReturn* Result){
     if(email==NULL){
@@ -27,6 +28,7 @@ Escaper escaperCreate(char* email, TechnionFaculty faculty , int skill_level,
     }
     escaper->email=malloc((sizeof(char)*strlen(email))+1);
     if (!escaper->email) {
+        escaperDestroy(escaper);
         *Result= Esc_OUT_OF_MEMORY;
         return NULL;
     }
@@ -71,9 +73,7 @@ char* getEmailEscaper(Escaper escaper){
 }
 
 int getSkillLevel(Escaper escaper){
-    if(!escaper){
-        return ERROR;
-    }
+    assert(escaper);
     return escaper->skill_level;
 }
 
@@ -85,9 +85,7 @@ TechnionFaculty getFacultyEscaper(Escaper escaper){
 }
 
 bool IfEscaperEmailValid(char* email) {
-    if (!email) {
-        return NULL;
-    }
+    assert(email);
     int counter = 0;
     for (int i = 0; i < strlen(email); ++i) {
         if (*(email + i) == '@') {

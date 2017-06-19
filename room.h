@@ -146,6 +146,4 @@ int getOpenHRoom(Room room);
  */
 int getCloseHRoom(Room room);
 
-
-
 #endif /* ROOM_H */

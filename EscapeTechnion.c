@@ -17,22 +17,32 @@
                             };
 #define ReturnSetResult(setRes) if(setRes!=SET_SUCCESS){\
                                     switch(SetReturn){\
-                                        case SET_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        case SET_NULL_ARGUMENT :  return MTM_INVALID_PARAMETER;\
-                                        case SET_ITEM_ALREADY_EXISTS:  return MTM_EMAIL_ALREADY_EXISTS;\
-                                        case SET_ITEM_DOES_NOT_EXIST :  return MTM_INVALID_PARAMETER;\
+                                        case SET_OUT_OF_MEMORY :\
+                                            return MTM_OUT_OF_MEMORY;\
+                                        case SET_NULL_ARGUMENT :\
+                                            return MTM_INVALID_PARAMETER;\
+                                        case SET_ITEM_ALREADY_EXISTS:\
+                                            return MTM_EMAIL_ALREADY_EXISTS;\
+                                        case SET_ITEM_DOES_NOT_EXIST :\
+                                            return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
 #define ReturnListResult(ListRes) if(ListRes!=LIST_SUCCESS){\
                                     switch(ListRes){\
-                                        case LIST_OUT_OF_MEMORY :  return MTM_OUT_OF_MEMORY;\
-                                        case LIST_NULL_ARGUMENT :  return MTM_NULL_PARAMETER;\
-                                        case LIST_INVALID_CURRENT :  return MTM_INVALID_PARAMETER;\
+                                        case LIST_OUT_OF_MEMORY :\
+                                            return MTM_OUT_OF_MEMORY;\
+                                        case LIST_NULL_ARGUMENT :\
+                                            return MTM_NULL_PARAMETER;\
+                                        case LIST_INVALID_CURRENT :\
+                                            return MTM_INVALID_PARAMETER;\
                                         default: break;\
                                     }\
                                 };
-static void InsertPriceToFaculty(TechnionFaculty faculty,int priceOrder,EscapeTechnion escapeTechnion1);
+
+
+static void InsertPriceToFaculty(TechnionFaculty faculty,
+                                 int priceOrder,EscapeTechnion escapeTechnion1);
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
 static int getDayEtechnion(EscapeTechnion EscTechnion);
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
@@ -431,7 +441,8 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
 }
 
 
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion1){
+static MtmErrorCode print_order(FILE *output,Order order,
+                                                EscapeTechnion EscapeTechnion1){
     assert(EscapeTechnion1);
     Escaper escaper = getEscaperOrder(order);
     assert(escaper);
@@ -517,7 +528,7 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
 }
 
 MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
-                                                  EscapeTechnion escapeTechnion){
+                                                 EscapeTechnion escapeTechnion){
     if(!IfEscaperEmailValid(email)){
         return MTM_INVALID_PARAMETER;
     }
@@ -596,8 +607,10 @@ static bool isRoomAvalable(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
   // day+=EscapeTechnion->day;
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
-        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
-                && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty &&
+                                    getRoomIdOrder(iteratorOrder)==id &&
+                                        getHourOrder(iteratorOrder)==hour &&
+                                            getDayOrder(iteratorOrder)==day){
             return false;
         }
         Room room = findRoom(id,faculty,EscapeTechnion);
@@ -636,7 +649,7 @@ static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
 }
 
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder((Order)order) !=  *((int*)day)){
+    if (getDayOrder(order)!=*((int*)day)){
         return true;
     }
     return false;

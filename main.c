@@ -27,12 +27,10 @@
                                             };
 
 #define MAX 256
+
 int main(int argc, char* argv[]) {
-    // setting input and output channels
     EscapeTechnion EscapeTechnion1;
-
     if(create_EscapeTechnion(&EscapeTechnion1)!= MTM_SUCCESS) return 0;
-
     FILE *input = stdin;
     CHECK_NULL(input);
     FILE *output = stdout;
@@ -76,6 +74,5 @@ int main(int argc, char* argv[]) {
     }
     get_command(input, output, EscapeTechnion1);
     close_channels(input, output);
-
     return 0;
 }
