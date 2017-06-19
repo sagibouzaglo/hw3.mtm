@@ -179,73 +179,87 @@ static Room findRoom(int roomId,TechnionFaculty Faculty,
                                             EscapeTechnion EscapeTechnion);
 
 /**
- *  search for the company email.
+ *  search for the company match the sent email.
  *
- * @param email -  the room id.
+ * @param email -  the company email.
  * @param EscapeTechnion1 - the system ADT.
  *
  * @return
- * Room - the searched room.
- * NULL - room not found.
+ * Company - the searched company.
+ * NULL - company not found.
  *
  */
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion1);
 
 /**
- *  search for the company email.
+ *  search for the escaper match the sent email.
  *
- * @param email -  the room id.
- * @param EscapeTechnion1 - the system ADT.
+ * @param email -  the escaper email.
+ * @param EscapeTechnion - the system ADT.
  *
  * @return
- * Room - the searched room.
- * NULL - room not found.
+ * Escaper - the searched escaper.
+ * NULL - escaper not found.
  *
  */
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
 
 /**
- *  search for the company email.
+ * check if email already exist
  *
- * @param email -  the room id.
- * @param EscapeTechnion1 - the system ADT.
+ * @param email -  the searched email.
+ * @param EscapeTechnion - the system ADT.
  *
  * @return
- * Room - the searched room.
- * NULL - room not found.
+ * MTM_EMAIL_ALREADY_EXISTS - email already exist.
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_SUCCESS - email dosen't exist.
  *
  */
 static MtmErrorCode ifEmailAlreadyExists(char* email,
                                                 EscapeTechnion EscapeTechnion);
 
 /**
- *  search for the company email.
+ *  check if a room owned by the company is reserved.
  *
- * @param email -  the room id.
- * @param EscapeTechnion1 - the system ADT.
+ * @param company -  the company we searce in.
+ * @param EscapeTechnion - the system ADT.
  *
  * @return
- * Room - the searched room.
- * NULL - room not found.
+ * MTM_RESERVATION_EXISTS - the searched room is reserved.
+ * MTM_SUCCESS - reservasion dosen't exist.
  *
  */
 static MtmErrorCode ifReservionExistsInComp(Company company,
                                                 EscapeTechnion EscapeTechnion);
 
 /**
- *  search for the company email.
+ *  check if a room owned by the faculty is reserved.
  *
- * @param email -  the room id.
- * @param EscapeTechnion1 - the system ADT.
+ * @param room -  the company we searce in.
+ * @param faculty -  the faculty owns the room.
+ * @param EscapeTechnion - the system ADT.
  *
  * @return
- * Room - the searched room.
- * NULL - room not found.
+ * MTM_RESERVATION_EXISTS - the searched room is reserved.
+ * MTM_SUCCESS - reservasion dosen't exist.
  *
  */
-
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
                                                 EscapeTechnion EscapeTechnion);
+
+/**
+ *  print the given order.
+ *
+ * @param output -  the output channel.
+ * @param order -  the order channek.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_SUCCESS - order printed.
+ *
+ */
 static MtmErrorCode print_order(FILE *output,Order order,
                                             EscapeTechnion EscapeTechnion);
 
@@ -526,6 +540,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
     }
     return MTM_SUCCESS;
 }
+
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
     Set companies = (EscapeTechnion)->companies;
     if(!companies)        return NULL;
@@ -620,7 +635,6 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     EscapeTechnion1->day++;
     return MTM_SUCCESS;
 }
-
 
 static MtmErrorCode print_order(FILE *output,Order order,
                                                 EscapeTechnion EscapeTechnion1){
@@ -771,6 +785,7 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     arg2 *= arg2;
     return (arg1+arg2);
 }
+
 static bool isRoomAvalable(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
