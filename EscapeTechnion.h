@@ -37,7 +37,7 @@ MtmErrorCode create_EscapeTechnion(EscapeTechnion *EscapeTechnion);
  *
  * @param EscapeTechnion -  the system ADT.
  */
-MtmErrorCode destroy_EscapeTechnion(EscapeTechnion EscapeTechnion);
+void destroy_EscapeTechnion(EscapeTechnion EscapeTechnion);
 
 /**
  *  allocate new company and add it to the company set.

@@ -37,7 +37,7 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
 static int getDayEtechnion(EscapeTechnion EscTechnion);
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
-static bool isClientInRoom(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
+static bool isClientInRoom(Escaper escaper,EscapeTechnion EscapeTechnion,int hour,int day);
 static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
 static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion);
 static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
@@ -48,8 +48,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechni
 static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
 static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
-
-
+static bool orderEscaperFilter(ListElement order,ListFilterKey email);
 struct escapetechnion {
     Set companies;
     Set escaper;
@@ -218,24 +217,25 @@ MtmErrorCode EscapeTechnion_remove_escaper(char* email,
                                                 EscapeTechnion EscapeTechnion){
     CHECK_NULL(EscapeTechnion);
     CHECK_NULL(email);
+    char* mail = {"escaper2@gmail.com"};
+    if(strcmp(email,mail)==0){
+        mail=NULL;
+    }
     Escaper escaper = findEscaper(email,EscapeTechnion);
     if(!escaper){
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
-    LIST_FOREACH(Order,iterator_order,EscapeTechnion->orders){
-        char* emailEscaper = getEmailEscaper(
-                                        getEscaperOrder((Order)iterator_order));
-        if (!emailEscaper){
-            return MTM_NULL_PARAMETER;
-        }
-        if(strcmp(email,emailEscaper)==0){
-            free(emailEscaper);
-            ReturnListResult(listRemoveCurrent(EscapeTechnion->orders));
-        }
-    }
+    List newOrder = listFilter(EscapeTechnion->orders,orderEscaperFilter,(ListFilterKey)email);
+    listDestroy(EscapeTechnion->orders);
+    EscapeTechnion->orders=newOrder;
+    setRemove(EscapeTechnion->escaper,escaper);
     return MTM_SUCCESS;
 }
 
+static bool orderEscaperFilter(ListElement order,ListFilterKey email){
+    assert(order && email);
+    return (strcmp(((char *) email),getEmailEscaper(getEscaperOrder((Order)order))) != 0);
+}
 MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
                                                 TechnionFaculty faculty, int id,
                                                     char* time, int num_ppl,
@@ -250,6 +250,9 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
     OrderReturn Result=ORD_SUCCESS;
+    if ((id<0)||(faculty<0)){
+        return MTM_INVALID_PARAMETER;
+    }
     Room room = findRoom(id,faculty,EscapeTechnion);
     if(!room){
         return MTM_ID_DOES_NOT_EXIST;
@@ -259,14 +262,14 @@ MtmErrorCode EscapeTechnion_add_escaper_order(char* email,
     free(company_email);
     if(!company) return MTM_OUT_OF_MEMORY;
     Order order = orderCreate(time, escaper, num_ppl,
-                            company,id, &Result);
+                            company,id, &Result,EscapeTechnion->day);
     if(Result!=ORD_SUCCESS) {
         if (Result != ORD_NO_ROOMS_AVAILABLE) {
             return Result == ORD_OUT_OF_MEMORY ? MTM_OUT_OF_MEMORY
                                                     : MTM_NULL_PARAMETER;
         } else return MTM_NO_ROOMS_AVAILABLE;
     }
-    if(isClientInRoom(faculty,id,EscapeTechnion,getHourOrder(order),
+    if(isClientInRoom(escaper,EscapeTechnion,getHourOrder(order),
                                                     getDayOrder(order))){
         orderDestroy(order);
         return MTM_CLIENT_IN_ROOM;
@@ -397,12 +400,18 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     List currentDayOrders = listFilter(EscapeTechnion1->orders,
                                        orderDayEqualFilter,
                                        &currentDay);
+    //LIST_FOREACH(Order,itr,currentDayOrders){
+     //   printf("report day currentDayOrders ---> order: %s day:%d currDay: %d\n",(getEmailEscaper(getEscaperOrder((Order)itr))),getDayOrder(itr),currentDay);
+    //}
     if(!currentDayOrders){
         return MTM_OUT_OF_MEMORY;
     }
     List newOrdersList = listFilter(EscapeTechnion1->orders,
                                     orderDayNotEqualFilter,
                                     &currentDay);
+   // LIST_FOREACH(Order,itr,newOrdersList){
+  //      printf("report day newOrdersList ---> order: %s day:%d currDay: %d\n",(getEmailEscaper(getEscaperOrder((Order)itr))),getDayOrder(itr),currentDay);
+  //  }
     if(!newOrdersList){
         return MTM_OUT_OF_MEMORY;
     }
@@ -417,7 +426,7 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     }
     mtmPrintDayFooter(output, currentDay);
     listDestroy(currentDayOrders);
-    EscapeTechnion1->day++;
+    ++EscapeTechnion1->day;
     return MTM_SUCCESS;
 }
 
@@ -473,12 +482,18 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
             bestFaculty[FIRST]=i;
             continue;
         }
+        else if (*(EscapeTechnion1->profit+i)==*(EscapeTechnion1->profit +
+                                                bestFaculty[FIRST]))
+            continue;
         if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
                                                           bestFaculty[SECOND])){
             bestFaculty[THIRD]=bestFaculty[SECOND];
             bestFaculty[SECOND]=i;
             continue;
         }
+        else if (*(EscapeTechnion1->profit+i)==*(EscapeTechnion1->profit +
+                                                 bestFaculty[SECOND]))
+            continue;
         if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
                                                            bestFaculty[THIRD])){
             bestFaculty[THIRD]=i;
@@ -510,40 +525,45 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
     if(!escaper){
         return MTM_CLIENT_EMAIL_DOES_NOT_EXIST;
     }
-    int maxScore=0;
-    int numFacultyMaxScore=0;
+    int bestScore=-1;
+    int numFacultyBestScore=0;
     Room recommendRoom=NULL;
     SET_FOREACH(Company,iterator_comp,escapeTechnion->companies){
         SET_FOREACH(Room,roomCompIterator,getCompanyRooms(iterator_comp)){
             int Comparison_index=CalculationOfRecommendation(roomCompIterator,
                                                                escaper,num_ppl);
-            if(Comparison_index>maxScore){
-                maxScore=Comparison_index;
-                numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
+            if ((Comparison_index<bestScore)||(bestScore==-1)){
+                bestScore=Comparison_index;
+                numFacultyBestScore=getFacultyOfCompany(iterator_comp);
                 recommendRoom=roomCompIterator;
                 continue;
-            } else if(Comparison_index==maxScore){
+            } else if(Comparison_index==bestScore){
                 int distansFaculty =
                         (abs(getFacultyOfCompany(iterator_comp)-
                                         getFacultyEscaper(escaper))-
-                                            abs(numFacultyMaxScore-
+                                            abs(numFacultyBestScore-
                                                 getFacultyEscaper(escaper)));
                 if(distansFaculty>0) continue;
                 else if (distansFaculty<0 ||
                             (distansFaculty==0 &&
                                 getFacultyOfCompany(iterator_comp)<
-                                                        numFacultyMaxScore)){
-                    maxScore=Comparison_index;
-                    numFacultyMaxScore=(int)getFacultyOfCompany(iterator_comp);
-                    recommendRoom=roomCompIterator;
+                                                        numFacultyBestScore)){
+                    bestScore=Comparison_index;
+                    numFacultyBestScore=(int)getFacultyOfCompany(iterator_comp);
+                    recommendRoom = roomCompIterator;
+                   // if (getFacultyOfCompany(iterator_comp)==numFacultyBestScore){
+                       // if (recommendRoom>roomCompIterator){
+                           // recommendRoom=roomCompIterator;
+                       // }
+                    //}
                 }
             }
         }
     }
     return EscapeTechnion_add_escaper_order(email,
-                (TechnionFaculty)numFacultyMaxScore,getIdRoom(recommendRoom),
+                (TechnionFaculty)numFacultyBestScore,getIdRoom(recommendRoom),
                     closestTimeAvailableRoom(recommendRoom,
-                        (TechnionFaculty)numFacultyMaxScore,escapeTechnion),
+                        (TechnionFaculty)numFacultyBestScore,escapeTechnion),
                            num_ppl,escapeTechnion);
 }
 
@@ -551,7 +571,9 @@ static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
                                       EscapeTechnion escapeTechnion){
     for(int day=escapeTechnion->day; day>=0 ;++day){
         for(int hour=getOpenHRoom(room);hour<getCloseHRoom(room);++hour){
+
            if(isRoomAvalable(faculty,getIdRoom(room),escapeTechnion,hour,day)){
+               day-=escapeTechnion->day;
                char* time=malloc(sizeof(char)*5);
                if(!time) return NULL;
                sprintf(time, "%d-%d",day,hour);
@@ -572,6 +594,7 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
 }
 static bool isRoomAvalable(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion,int hour,int day){
+  // day+=EscapeTechnion->day;
     LIST_FOREACH(Order,iteratorOrder,(EscapeTechnion)->orders){
         if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
                 && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
@@ -581,24 +604,24 @@ static bool isRoomAvalable(TechnionFaculty faculty,int id,
         if(!room){
             return false;
         }
-        if(getOpenHRoom(room)<hour ||  getCloseHRoom(room)<hour){
+        if(getOpenHRoom(room)>hour ||  getCloseHRoom(room)<=hour){
             return false;
         }
     }
     return true;
 }
 
-static bool isClientInRoom(TechnionFaculty faculty,int id,
+static bool isClientInRoom(Escaper escaper,
                            EscapeTechnion EscapeTechnion,int hour,int day){
+
     LIST_FOREACH(Order,iteratorOrder,EscapeTechnion->orders){
-        if(getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id
-           && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
+        if(escaperEquals(escaper,getEscaperOrder(iteratorOrder))==0 && getHourOrder(iteratorOrder)==hour && getDayOrder(iteratorOrder)==day){
             return true;
         }
     }
     return false;
 }
-
+//getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id  &&
 static int getDayEtechnion(EscapeTechnion EscTechnion){
     assert(EscTechnion);
     return (EscTechnion->day);
@@ -606,11 +629,14 @@ static int getDayEtechnion(EscapeTechnion EscTechnion){
 
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day){
     assert(order && day);
-    return getDayOrder(order) == *((int*)day);
+
+    int DAY = *((int*)day);
+    int dayOrder = getDayOrder((Order)order);
+    return (dayOrder == DAY);
 }
 
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day){
-    if (getDayOrder(order)!=*((int*)day)){
+    if (getDayOrder((Order)order) !=  *((int*)day)){
         return true;
     }
     return false;

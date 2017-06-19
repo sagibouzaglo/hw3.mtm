@@ -11,7 +11,7 @@
 
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
-
+#define AFTER_COPYING -1
 /**
  * find the room ordered and return his price
  *
@@ -60,10 +60,14 @@ struct order {
 };
 
 Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
-                                              int room_id,OrderReturn* Result){
+                                              int room_id,OrderReturn* Result,int curr_day){
 
     if (!escaper || !company1) {
-        *Result= ORD_NULL_PARAMETER;
+        *Result = ORD_NULL_PARAMETER;
+        return NULL;
+    }
+    if (num_ppl<0){
+        *Result = ORD_INVALID_PARAMETER;
         return NULL;
     }
     Set roomsComp = getCompanyRooms(company1);
@@ -90,8 +94,22 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
     order->company=company1;
     strcpy(order->time,time);
     if(!hourOrder (time,order)){
+        *Result=ORD_INVALID_PARAMETER;
         return NULL;
     }
+    //switch (order->day){
+     //   case 0: order->day=curr_day;            break;
+      //  case 1:
+   // }
+    if(curr_day != AFTER_COPYING && order->day==0){
+        order->day = curr_day;
+        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,((Order)order)->hour);
+    }
+    else if(curr_day != AFTER_COPYING){
+       order->day += curr_day;
+        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,((Order)order)->hour);
+    }
+
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
@@ -111,7 +129,7 @@ ListElement orderCopy(void* order){
     OrderReturn Result=ORD_SUCCESS;
     return orderCreate(((Order)order)->time, ((Order)order)->escaper ,
                             ((Order)order)->num_ppl,((Order)order)->company,
-                                            ((Order)order)->room_id ,&Result);
+                                            ((Order)order)->room_id ,&Result,AFTER_COPYING);
 }
 
 int compareOrders(void* order1,void* order2){
@@ -199,6 +217,7 @@ static bool hourOrder (char* time, Order order){
         if(*(time + i) == '-'){
             *(time+i) = 0;
             order->day=(int)atol(time);
+            //order->day += curr_day;
             ++i;
             order->hour=(int)atol(time+i);
             break;

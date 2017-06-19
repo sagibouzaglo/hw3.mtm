@@ -52,8 +52,12 @@ SetElement escaperCopy(void* escaper){
 
 int escaperEquals(void* escaper1, void* escaper2) {
     assert(escaper1 && escaper2);
-    return strcmp(getEmailEscaper((Escaper)escaper1),
-                                            getEmailEscaper((Escaper)escaper2));
+    char* EmailEscaper1 = getEmailEscaper((Escaper)escaper1);
+    char* EmailEscaper2 = getEmailEscaper((Escaper)escaper2);
+    int Result = strcmp(EmailEscaper1,EmailEscaper2);
+    free(EmailEscaper1);
+    free(EmailEscaper2);
+    return Result;
 }
 
 char* getEmailEscaper(Escaper escaper){
