@@ -149,7 +149,6 @@ MtmErrorCode escaper_command(FILE* input,FILE* output,
     return MTM_SUCCESS;
 }
 
-
 /**
  * get the report commend from the input and call the relevany function
  *
@@ -181,6 +180,7 @@ MtmErrorCode report_command(FILE* input,FILE* output,
 
     return MTM_SUCCESS;
 }
+
 /** 
  *  get the type of command and call the relevant function
  *

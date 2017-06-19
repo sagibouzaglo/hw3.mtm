@@ -40,25 +40,229 @@
                                     }\
                                 };
 
-
+/**
+ *  add the earning from a room order to the relevant faculty.
+ *
+ * @param faculty - the faculty owns the room.
+ * @param priceOrder -  the earning from the room.
+ * @param escapeTechnion1 -  the system ADT.
+ *
+ */
 static void InsertPriceToFaculty(TechnionFaculty faculty,
                                  int priceOrder,EscapeTechnion escapeTechnion1);
+
+/**
+ *  calculate the recommended room.
+ *
+ * @param room - the room we check.
+ * @param escaper -  the escaper ordering the room.
+ * @param num_ppl -  number of people ordering the room.
+ *
+ * @return
+ * int - value of recommendation for the room
+ *
+ */
 static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl);
+
+/**
+ *  get the system day.
+ *
+ * @param EscTechnion -  the system ADT.
+ *
+ * @return
+ * int- system day
+ *
+ */
 static int getDayEtechnion(EscapeTechnion EscTechnion);
+
+/**
+ *  check if the order is for the given day.
+ *
+ * @param order -  and order.
+ * @param day - the day we check.
+ *
+ * @return
+ * true - the order is for the checked day.
+ * false - the order is not for the checked day.
+ *
+ */
 static bool orderDayEqualFilter(ListElement order, ListFilterKey day);
+
+/**
+ *  check if the order is not for the given day.
+ *
+ * @param order -  and order.
+ * @param day - the day we check.
+ *
+ * @return
+ * false - the order is for the checked day.
+ * true - the order is not for the checked day.
+ *
+ */
 static bool orderDayNotEqualFilter(ListElement order, ListFilterKey day);
-static bool isClientInRoom(Escaper escaper,EscapeTechnion EscapeTechnion,int hour,int day);
-static bool isRoomAvalable(TechnionFaculty faculty,int id,EscapeTechnion EscapeTechnion,int hour,int day);
-static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,EscapeTechnion escapeTechnion);
-static char* findEmailCompany(int id_room,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
-static Room findRoom(int roomId,TechnionFaculty Faculty,EscapeTechnion EscapeTechnion);
+
+/**
+ *  check if escaper is inside a room.
+ *
+ * @param faculty -  faculty of the escaper .
+ * @param id - the room id.
+ * @param EscapeTechnion - the system ADT.
+ * @param hour - hour of the order for escaper.
+ * @param day - day of the order for escaper.
+ *
+ * @return
+ * false - the escaper is not in the room.
+ * true - the escaper is in the room.
+ *
+ */
+static bool isClientInRoom(TechnionFaculty faculty,int id,
+                                EscapeTechnion EscapeTechnion,int hour,int day);
+
+/**
+ *  check if the room is available in the given day and hour.
+ *
+ * @param faculty -  faculty of the escaper .
+ * @param id - the room id.
+ * @param EscapeTechnion - the system ADT.
+ * @param hour - hour of the order for escaper.
+ * @param day - day of the order for escaper.
+ *
+ * @return
+ * false - the room is not available.
+ * true - the room is available.
+ *
+ */
+static bool isRoomAvalable(TechnionFaculty faculty,int id,
+                                EscapeTechnion EscapeTechnion,int hour,int day);
+
+/**
+ *  check the closest time the sent room is available.
+ *
+ * @param room -  and order.
+ * @param faculty -  faculty of the escaper.
+ * @param escapeTechnion - the system ADT.
+ *
+ * @return
+ * time - closest time the room available.
+ * NULL -
+ */
+static char* closestTimeAvailableRoom(Room room,TechnionFaculty faculty,
+                                                EscapeTechnion escapeTechnion);
+
+/**
+ *  search for the company owns the room email.
+ *
+ * @param id_room -  the room id.
+ * @param faculty - room faculty.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * char* - the company searched mail.
+ * NULL - the company doesn't exist.
+ */
+static char* findEmailCompany(int id_room,TechnionFaculty faculty,
+                                                EscapeTechnion EscapeTechnion);
+
+/**
+ *  search for the company email.
+ *
+ * @param roomId -  the room id.
+ * @param Faculty - the room faculty.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * Room - the searched room.
+ * NULL - room not found.
+ *
+ */
+static Room findRoom(int roomId,TechnionFaculty Faculty,
+                                            EscapeTechnion EscapeTechnion);
+
+/**
+ *  search for the company match the sent email.
+ *
+ * @param email -  the company email.
+ * @param EscapeTechnion1 - the system ADT.
+ *
+ * @return
+ * Company - the searched company.
+ * NULL - company not found.
+ *
+ */
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion1);
+
+/**
+ *  search for the escaper match the sent email.
+ *
+ * @param email -  the escaper email.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * Escaper - the searched escaper.
+ * NULL - escaper not found.
+ *
+ */
 static Escaper findEscaper(char* email ,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifEmailAlreadyExists(char* email,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifReservionExistsInComp(Company company,EscapeTechnion EscapeTechnion);
-static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,EscapeTechnion EscapeTechnion);
-static MtmErrorCode print_order(FILE *output,Order order,EscapeTechnion EscapeTechnion);
-static bool orderEscaperFilter(ListElement order,ListFilterKey email);
+
+/**
+ * check if email already exist
+ *
+ * @param email -  the searched email.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * MTM_EMAIL_ALREADY_EXISTS - email already exist.
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_SUCCESS - email dosen't exist.
+ *
+ */
+static MtmErrorCode ifEmailAlreadyExists(char* email,
+                                                EscapeTechnion EscapeTechnion);
+
+/**
+ *  check if a room owned by the company is reserved.
+ *
+ * @param company -  the company we searce in.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * MTM_RESERVATION_EXISTS - the searched room is reserved.
+ * MTM_SUCCESS - reservasion dosen't exist.
+ *
+ */
+static MtmErrorCode ifReservionExistsInComp(Company company,
+                                                EscapeTechnion EscapeTechnion);
+
+/**
+ *  check if a room owned by the faculty is reserved.
+ *
+ * @param room -  the company we searce in.
+ * @param faculty -  the faculty owns the room.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * MTM_RESERVATION_EXISTS - the searched room is reserved.
+ * MTM_SUCCESS - reservasion dosen't exist.
+ *
+ */
+static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
+                                                EscapeTechnion EscapeTechnion);
+
+/**
+ *  print the given order.
+ *
+ * @param output -  the output channel.
+ * @param order -  the order channek.
+ * @param EscapeTechnion - the system ADT.
+ *
+ * @return
+ * MTM_OUT_OF_MEMORY - allocation failed.
+ * MTM_SUCCESS - order printed.
+ *
+ */
+static MtmErrorCode print_order(FILE *output,Order order,
+                                            EscapeTechnion EscapeTechnion);
+
 struct escapetechnion {
     Set companies;
     Set escaper;
@@ -356,6 +560,7 @@ static MtmErrorCode ifEmailAlreadyExists(char* email,
         }*/
     return MTM_SUCCESS;
 }
+
 static Company findCompany (char* email,EscapeTechnion EscapeTechnion){
     Set companies = (EscapeTechnion)->companies;
     if(!companies)        return NULL;
@@ -378,6 +583,7 @@ static MtmErrorCode ifReservionExistsInComp(Company company,
     }
     return MTM_SUCCESS;
 }
+
 static MtmErrorCode ifReservionExistsInRoom(Room room ,TechnionFaculty faculty,
                                                 EscapeTechnion EscapeTechnion){
     LIST_FOREACH(Order, iterator_order, (EscapeTechnion)->orders) {
@@ -455,7 +661,6 @@ MtmErrorCode technion_report_day(FILE* output, EscapeTechnion EscapeTechnion1){
     ++EscapeTechnion1->day;
     return MTM_SUCCESS;
 }
-
 
 static MtmErrorCode print_order(FILE *output,Order order,
                                                 EscapeTechnion EscapeTechnion1){
@@ -635,6 +840,7 @@ static int CalculationOfRecommendation(Room room,Escaper escaper,int num_ppl){
     arg2 *= arg2;
     return (arg1+arg2);
 }
+
 static bool isRoomAvalable(TechnionFaculty faculty,int id,
                            EscapeTechnion EscapeTechnion1,int hour,int day){
   // day+=EscapeTechnion->day;
