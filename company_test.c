@@ -14,6 +14,9 @@ static bool testCompanyCreate(){
     CompanyReturn Result;
     ASSERT_TEST(companyCreate(NULL, 0, &Result)==NULL);
     ASSERT_TEST(Result == COM_NULL_PARAMETER);
+    char* email = {"test"} ;
+    ASSERT_TEST(companyCreate(email, 0, &Result)==NULL);
+
     return true;
 }
 
