@@ -486,29 +486,23 @@ MtmErrorCode technion_report_best(FILE *output,EscapeTechnion EscapeTechnion1){
       *(bestFaculty+i)=i;
     }
     for(int i=0; i<UNKNOWN;++i){
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
-                                                           bestFaculty[FIRST])){
-            bestFaculty[THIRD]=bestFaculty[SECOND];
-            bestFaculty[SECOND]=bestFaculty[FIRST];
-            bestFaculty[FIRST]=i;
-            continue;
-        }
-        else if (*(EscapeTechnion1->profit+i)==*(EscapeTechnion1->profit +
-                                                bestFaculty[FIRST]))
-            continue;
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
-                                                          bestFaculty[SECOND])){
-            bestFaculty[THIRD]=bestFaculty[SECOND];
-            bestFaculty[SECOND]=i;
-            continue;
-        }
-        else if (*(EscapeTechnion1->profit+i)==*(EscapeTechnion1->profit +
-                                                 bestFaculty[SECOND]))
-            continue;
-        if(*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit +
-                                                           bestFaculty[THIRD])){
-            bestFaculty[THIRD]=i;
-            continue;
+        if (*(EscapeTechnion1->profit+i)!=*(EscapeTechnion1->profit +
+                                           bestFaculty[FIRST])) {
+            if (*(EscapeTechnion1->profit + i) > *(EscapeTechnion1->profit +
+                                                   bestFaculty[FIRST])) {
+                bestFaculty[THIRD] = bestFaculty[SECOND];
+                bestFaculty[SECOND] = bestFaculty[FIRST];
+                bestFaculty[FIRST] = i;
+
+            } else if (*(EscapeTechnion1->profit+i)!=*(EscapeTechnion1->profit + bestFaculty[SECOND])){
+                if((*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit + bestFaculty[SECOND]))) {
+                    bestFaculty[THIRD] = bestFaculty[SECOND];
+                    bestFaculty[SECOND] = i;
+                } else if((*(EscapeTechnion1->profit+i)>*(EscapeTechnion1->profit + bestFaculty[THIRD]))){
+                    bestFaculty[THIRD]=i;
+                 }
+
+                }
         }
     }
     int totalRevenue = 0;
@@ -539,14 +533,18 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
     int bestScore=-1;
     int numFacultyBestScore=0;
     Room recommendRoom=NULL;
+    int idRoom =-1;
     SET_FOREACH(Company,iterator_comp,escapeTechnion->companies){
         SET_FOREACH(Room,roomCompIterator,getCompanyRooms(iterator_comp)){
             int Comparison_index=CalculationOfRecommendation(roomCompIterator,
                                                                escaper,num_ppl);
+
+
             if ((Comparison_index<bestScore)||(bestScore==-1)){
                 bestScore=Comparison_index;
                 numFacultyBestScore=getFacultyOfCompany(iterator_comp);
                 recommendRoom=roomCompIterator;
+                idRoom = getIdRoom(recommendRoom);
                 continue;
             } else if(Comparison_index==bestScore){
                 int distansFaculty =
@@ -555,24 +553,29 @@ MtmErrorCode EscapeTechnion_add_escaper_recommend(char* email, int num_ppl,
                                             abs(numFacultyBestScore-
                                                 getFacultyEscaper(escaper)));
                 if(distansFaculty>0) continue;
-                else if (distansFaculty<0 ||
+                if (distansFaculty<0 ||
                             (distansFaculty==0 &&
                                 getFacultyOfCompany(iterator_comp)<
-                                                        numFacultyBestScore)){
-                    bestScore=Comparison_index;
-                    numFacultyBestScore=(int)getFacultyOfCompany(iterator_comp);
+                                                        numFacultyBestScore)) {
+                    bestScore = Comparison_index;
+                    numFacultyBestScore = (int) getFacultyOfCompany(
+                            iterator_comp);
                     recommendRoom = roomCompIterator;
-                   // if (getFacultyOfCompany(iterator_comp)==numFacultyBestScore){
-                       // if (recommendRoom>roomCompIterator){
-                           // recommendRoom=roomCompIterator;
-                       // }
-                    //}
+                    idRoom = getIdRoom(recommendRoom);
+                } else if(getFacultyOfCompany(iterator_comp)==numFacultyBestScore){
+                        if(idRoom > getIdRoom(roomCompIterator)) {
+                            bestScore = Comparison_index;
+                            numFacultyBestScore = (int) getFacultyOfCompany(
+                                    iterator_comp);
+                            recommendRoom = roomCompIterator;
+                            idRoom = getIdRoom(recommendRoom);
+                        }
                 }
             }
         }
     }
     return EscapeTechnion_add_escaper_order(email,
-                (TechnionFaculty)numFacultyBestScore,getIdRoom(recommendRoom),
+                (TechnionFaculty)numFacultyBestScore,idRoom,
                     closestTimeAvailableRoom(recommendRoom,
                         (TechnionFaculty)numFacultyBestScore,escapeTechnion),
                            num_ppl,escapeTechnion);
@@ -634,7 +637,7 @@ static bool isClientInRoom(Escaper escaper,
     }
     return false;
 }
-//getFacultyOfCompany(getCompanyOrder(iteratorOrder))==faculty && getRoomIdOrder(iteratorOrder)==id  &&
+
 static int getDayEtechnion(EscapeTechnion EscTechnion){
     assert(EscTechnion);
     return (EscTechnion->day);
