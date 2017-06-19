@@ -11,6 +11,11 @@
 #define AFTER_DISCOUNT 0.75
 #define HOURS_DAY 23
 #define AFTER_COPYING -1
+#define CHECK_NULL(ptr,result,ret) if (!ptr){\
+                                        *result=ret;\
+                                        return NULL;\
+                                    };
+
 /**
  * find the room ordered and return his price
  *
@@ -58,8 +63,10 @@ struct order {
     int tot_price;
 };
 
-Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
-                                              int room_id,OrderReturn* Result,int curr_day){
+Order orderCreate(char* time, Escaper escaper,
+                            int num_ppl, Company company1,
+                                    int room_id,OrderReturn* Result,
+                                                            int curr_day){
 
     if (!escaper || !company1) {
         *Result = ORD_NULL_PARAMETER;
@@ -81,34 +88,22 @@ Order orderCreate(char* time, Escaper escaper, int num_ppl, Company company1,
         return NULL;
     }
     Order order = malloc(sizeof(*order));
-    if (!order) {
-        *Result= ORD_OUT_OF_MEMORY;
-        return NULL;
-    }
+    CHECK_NULL(order,Result,ORD_OUT_OF_MEMORY);
     order->time=malloc(sizeof(char)*(strlen(time)+1));
-    if(!order->time) {
-        *Result = ORD_OUT_OF_MEMORY;
-        return NULL;
-    }
+    CHECK_NULL(order->time,Result,ORD_OUT_OF_MEMORY);
     order->company=company1;
     strcpy(order->time,time);
-    if(!hourOrder (time,order)){
-        *Result=ORD_INVALID_PARAMETER;
-        return NULL;
-    }
-    //switch (order->day){
-     //   case 0: order->day=curr_day;            break;
-      //  case 1:
-   // }
+    CHECK_NULL(hourOrder (time,order),Result,ORD_INVALID_PARAMETER);
     if(curr_day != AFTER_COPYING && order->day==0){
         order->day = curr_day;
-        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,((Order)order)->hour);
+        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,
+                                                          ((Order)order)->hour);
     }
     else if(curr_day != AFTER_COPYING){
        order->day += curr_day;
-        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,((Order)order)->hour);
+        sprintf(((Order)order)->time, "%d-%d",((Order)order)->day,
+                                                          ((Order)order)->hour);
     }
-
     order->escaper=escaper;
     order->num_ppl = num_ppl;
     order->room_id=room_id;
